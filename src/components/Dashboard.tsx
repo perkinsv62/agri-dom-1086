@@ -20,7 +20,6 @@ import {
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import GuadeloupeWeatherAlerts from './GuadeloupeWeatherAlerts';
-import { EditableField } from './ui/editable-field';
 import { Button } from './ui/button';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from './ui/dialog';
@@ -31,73 +30,62 @@ import PageHeader from './layout/PageHeader';
 
 // Sample data for charts - Adapté pour la Guadeloupe
 const revenueData = [
-  { month: 'Jan', revenue: 1500 },
-  { month: 'Fév', revenue: 2200 },
-  { month: 'Mar', revenue: 2500 },
-  { month: 'Avr', revenue: 2800 },
-  { month: 'Mai', revenue: 3200 },
-  { month: 'Juin', revenue: 3500 },
-  { month: 'Juil', revenue: 4000 },
+  { month: 'Tháng 1', revenue: 1500 },
+  { month: 'Tháng 2', revenue: 2200 },
+  { month: 'Tháng 3', revenue: 2500 },
+  { month: 'Tháng 4', revenue: 2800 },
+  { month: 'Tháng 5', revenue: 3200 },
+  { month: 'Tháng 6', revenue: 3500 },
+  { month: 'Tháng 7', revenue: 4000 },
 ];
 
 const productionData = [
-  { name: 'Canne à Sucre', value: 40 },
-  { name: 'Banane', value: 25 },
-  { name: 'Ananas', value: 15 },
-  { name: 'Igname', value: 10 },
-  { name: 'Autre', value: 10 },
+  { name: 'Đường mía', value: 40 },
+  { name: 'Chuối', value: 25 },
+  { name: 'Dứa', value: 15 },
+  { name: 'Khoai lang', value: 10 },
+  { name: 'Khác', value: 10 },
 ];
 
 // Task list adapté au contexte guadeloupéen
 const initialUpcomingTasks = [
-  { id: 1, title: 'Récolter la canne à sucre', due: 'Aujourd\'hui', priority: 'high' },
-  { id: 2, title: 'Commander des plants de bananier', due: 'Demain', priority: 'medium' },
-  { id: 3, title: 'Maintenance du tracteur', due: '28/08', priority: 'low' },
-  { id: 4, title: 'Irrigation des plantations d\'ananas', due: '30/08', priority: 'medium' },
+  { id: 1, title: 'Thu hoạch đường mía', due: 'Hôm nay', priority: 'high' },
+  { id: 2, title: 'Đặt hàng cây chuối giống', due: 'Ngày mai', priority: 'medium' },
+  { id: 3, title: 'Bảo dưỡng máy kéo', due: '28/08', priority: 'low' },
+  { id: 4, title: 'Tưới tiêu vườn dứa', due: '30/08', priority: 'medium' },
 ];
 
 // Alerts pour les agriculteurs en Guadeloupe
 const initialAlerts = [
-  { id: 1, message: 'Niveau bas de plants de bananier', type: 'warning' },
-  { id: 2, message: 'Risque cyclonique pour la semaine prochaine', type: 'danger' },
-  { id: 3, message: 'Échéance de subvention régionale approche', type: 'info' },
+  { id: 1, message: 'Mức cây chuối giống thấp', type: 'warning' },
+  { id: 2, message: 'Nguy cơ bão lũ trong tuần tới', type: 'danger' },
+  { id: 3, message: 'Hạn nộp trợ cấp vùng sắp đến', type: 'info' },
 ];
 
 // Weather alerts data
 const initialWeatherAlerts = [
   { 
     id: 1, 
-    type: 'Cyclone', 
-    region: 'Toute la Guadeloupe', 
+    type: 'Bão', 
+    region: 'Toàn bộ vùng', 
     startDate: '2023-09-10', 
     endDate: '2023-09-12', 
-    severity: 'critique', 
-    description: 'Cyclone tropical de catégorie 2 en approche' 
+    severity: 'nghiêm trọng', 
+    description: 'Bão nhiệt đới cấp 2 đang tiếp cận' 
   },
   { 
     id: 2, 
-    type: 'Pluie', 
-    region: 'Basse-Terre', 
+    type: 'Mưa', 
+    region: 'Vùng thấp', 
     startDate: '2023-09-20', 
     endDate: '2023-09-23', 
-    severity: 'modérée', 
-    description: 'Fortes précipitations attendues' 
+    severity: 'trung bình', 
+    description: 'Dự kiến mưa lớn' 
   }
 ];
 
 const Dashboard = () => {
-  // State for editable content
-  const [title, setTitle] = useState('Bonjour, Agriculteur Guadeloupéen');
-  const [description, setDescription] = useState('Voici un aperçu de votre exploitation agricole en Guadeloupe');
-  const [currentMonth, setCurrentMonth] = useState('Août 2023');
-  
   // Stats cards
-  const [monthlyRevenue, setMonthlyRevenue] = useState(15450);
-  const [revenueGrowth, setRevenueGrowth] = useState(8.5);
-  const [cultivatedArea, setCultivatedArea] = useState(35);
-  const [parcelsCount, setParcelsCount] = useState(5);
-  const [averageYield, setAverageYield] = useState(75);
-  const [yieldGrowth, setYieldGrowth] = useState(5.2);
   const [alertsCount, setAlertsCount] = useState(3);
   
   // Tasks and alerts
@@ -120,53 +108,6 @@ const Dashboard = () => {
   const [editingTask, setEditingTask] = useState<number | null>(null);
   const [editedTaskTitle, setEditedTaskTitle] = useState('');
   
-  // Handle changes
-  const handleTitleChange = (value: string | number) => {
-    setTitle(String(value));
-    toast.success('Titre mis à jour');
-  };
-  
-  const handleDescriptionChange = (value: string | number) => {
-    setDescription(String(value));
-    toast.success('Description mise à jour');
-  };
-  
-  const handleMonthChange = (value: string | number) => {
-    setCurrentMonth(String(value));
-    toast.success('Mois mis à jour');
-  };
-  
-  // Stat card updates
-  const handleRevenueChange = (value: string | number) => {
-    setMonthlyRevenue(Number(value));
-    toast.success('Revenu mensuel mis à jour');
-  };
-  
-  const handleRevenueGrowthChange = (value: string | number) => {
-    setRevenueGrowth(Number(value));
-    toast.success('Croissance du revenu mise à jour');
-  };
-  
-  const handleAreaChange = (value: string | number) => {
-    setCultivatedArea(Number(value));
-    toast.success('Superficie cultivée mise à jour');
-  };
-  
-  const handleParcelsCountChange = (value: string | number) => {
-    setParcelsCount(Number(value));
-    toast.success('Nombre de parcelles mis à jour');
-  };
-  
-  const handleYieldChange = (value: string | number) => {
-    setAverageYield(Number(value));
-    toast.success('Rendement moyen mis à jour');
-  };
-  
-  const handleYieldGrowthChange = (value: string | number) => {
-    setYieldGrowth(Number(value));
-    toast.success('Croissance du rendement mise à jour');
-  };
-  
   // Task management
   const handleEditTask = (taskId: number) => {
     const task = upcomingTasks.find(t => t.id === taskId);
@@ -183,12 +124,12 @@ const Dashboard = () => {
       task.id === taskId ? { ...task, title: editedTaskTitle } : task
     ));
     setEditingTask(null);
-    toast.success('Tâche mise à jour');
+    toast.success('Nhiệm vụ đã được cập nhật');
   };
   
   const handleDeleteTask = (taskId: number) => {
     setUpcomingTasks(upcomingTasks.filter(task => task.id !== taskId));
-    toast.success('Tâche supprimée');
+    toast.success('Nhiệm vụ đã được xóa');
   };
   
   // Alert management
@@ -196,25 +137,25 @@ const Dashboard = () => {
     setAlerts(alerts.map(alert => 
       alert.id === id ? { ...alert, message } : alert
     ));
-    toast.success('Alerte mise à jour');
+    toast.success('Cảnh báo đã được cập nhật');
   };
   
   const handleDeleteAlert = (id: number) => {
     setAlerts(alerts.filter(alert => alert.id !== id));
     setAlertsCount(prev => prev - 1);
-    toast.success('Alerte supprimée');
+    toast.success('Cảnh báo đã được xóa');
   };
   
   // Weather alert management
   const handleDeleteWeatherAlert = (id: number) => {
     setWeatherAlerts(weatherAlerts.filter(alert => alert.id !== id));
-    toast.success('Alerte météorologique supprimée');
+    toast.success('Cảnh báo thời tiết đã được xóa');
   };
   
   const handleAddWeatherAlert = () => {
     // Validation
     if (!newAlert.region || !newAlert.startDate || !newAlert.endDate || !newAlert.description) {
-      toast.error('Veuillez remplir tous les champs obligatoires');
+      toast.error('Vui lòng điền đầy đủ các trường bắt buộc');
       return;
     }
     
@@ -227,20 +168,20 @@ const Dashboard = () => {
     setWeatherAlerts([...weatherAlerts, alertToAdd]);
     setShowAddAlertDialog(false);
     setNewAlert({
-      type: 'Cyclone',
+      type: 'Bão',
       region: '',
       startDate: '',
       endDate: '',
-      severity: 'modérée',
+      severity: 'trung bình',
       description: ''
     });
     
-    toast.success('Nouvelle alerte météorologique ajoutée');
+    toast.success('Cảnh báo thời tiết mới đã được thêm');
   };
   
   // Add transaction handler (placeholder for future implementation)
   const handleAddTransaction = () => {
-    toast.info('Redirection vers la page de finances');
+    toast.info('Chuyển hướng đến trang tài chính');
     // In a real app, this would navigate to the finance page
   };
   
@@ -249,37 +190,23 @@ const Dashboard = () => {
       <header className="flex justify-between items-center mb-6">
         <div>
           <h1 className="text-2xl font-bold mb-1">
-            <EditableField
-              value={title}
-              onSave={handleTitleChange}
-              className="inline-block"
-              showEditIcon={true}
-            />
+            Xin chào, Nông dân Việt Nam
           </h1>
           <p className="text-muted-foreground">
-            <EditableField
-              value={description}
-              onSave={handleDescriptionChange}
-              className="inline-block"
-              showEditIcon={true}
-            />
+            Đây là tổng quan về trang trại nông nghiệp của bạn
           </p>
         </div>
         <div className="flex items-center space-x-4">
           <button className="px-4 py-2 text-sm text-agri-primary font-medium bg-agri-primary/10 rounded-lg hover:bg-agri-primary/20 transition-colors">
             <Calendar className="h-4 w-4 inline mr-2" />
-            <EditableField
-              value={currentMonth}
-              onSave={handleMonthChange}
-              className="inline-block"
-            />
+            Tháng 8 năm 2023
           </button>
           <button 
             className="px-4 py-2 text-sm bg-agri-primary text-white rounded-lg hover:bg-agri-primary-dark transition-colors"
             onClick={handleAddTransaction}
           >
             <Wallet className="h-4 w-4 inline mr-2" />
-            Ajouter une transaction
+            Thêm giao dịch
           </button>
         </div>
       </header>
@@ -287,79 +214,49 @@ const Dashboard = () => {
       {/* Quick Stats Row - Adapté à l'agriculture guadeloupéenne */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="stat-card card-hover">
-          <p className="stat-label">Revenu mensuel</p>
+          <p className="stat-label">Doanh thu hàng tháng</p>
           <div className="flex items-baseline justify-between mt-2">
             <p className="stat-value">
-              <EditableField
-                value={monthlyRevenue}
-                type="number"
-                onSave={handleRevenueChange}
-                className="inline-block font-bold"
-              /> €
+              15450 €
             </p>
             <span className="text-agri-success text-sm font-medium flex items-center">
               <TrendingUp className="h-4 w-4 mr-1" /> +
-              <EditableField
-                value={revenueGrowth}
-                type="number"
-                onSave={handleRevenueGrowthChange}
-                className="inline-block"
-              />%
+              8.5%
             </span>
           </div>
         </div>
         
         <div className="stat-card card-hover">
-          <p className="stat-label">Superficie cultivée</p>
+          <p className="stat-label">Diện tích canh tác</p>
           <div className="flex items-baseline justify-between mt-2">
             <p className="stat-value">
-              <EditableField
-                value={cultivatedArea}
-                type="number"
-                onSave={handleAreaChange}
-                className="inline-block font-bold"
-              /> ha
+              35 ha
             </p>
             <span className="text-agri-primary text-sm font-medium">
-              <EditableField
-                value={parcelsCount}
-                type="number"
-                onSave={handleParcelsCountChange}
-                className="inline-block"
-              /> parcelles
+              5 lô đất
             </span>
           </div>
         </div>
         
         <div className="stat-card card-hover">
-          <p className="stat-label">Rendement moyen</p>
+          <p className="stat-label">Năng suất trung bình</p>
           <div className="flex items-baseline justify-between mt-2">
             <p className="stat-value">
-              <EditableField
-                value={averageYield}
-                type="number"
-                onSave={handleYieldChange}
-                className="inline-block font-bold"
-              /> t/ha
+              75 t/ha
             </p>
             <span className="text-agri-success text-sm font-medium flex items-center">
               <TrendingUp className="h-4 w-4 mr-1" /> +
-              <EditableField
-                value={yieldGrowth}
-                type="number"
-                onSave={handleYieldGrowthChange}
-                className="inline-block"
-              />%
+              5.2%
             </span>
           </div>
         </div>
         
         <div className="stat-card card-hover">
-          <p className="stat-label">Alertes</p>
+          <p className="stat-label">Cảnh báo</p>
           <div className="flex items-baseline justify-between mt-2">
             <p className="stat-value">{alertsCount}</p>
             <span className="text-agri-warning text-sm font-medium flex items-center">
-              <AlertTriangle className="h-4 w-4 mr-1" /> Récent
+              <AlertTriangle className="h-4 w-4 mr-1" /> Gần đây
             </span>
           </div>
         </div>
@@ -368,39 +265,39 @@ const Dashboard = () => {
       {/* Weather alerts section */}
       <div className="bg-white rounded-xl border p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold">Alertes Météorologiques</h2>
+          <h2 className="text-xl font-semibold">Cảnh báo Thời tiết</h2>
           <Button 
             onClick={() => setShowAddAlertDialog(true)}
             className="bg-agri-primary hover:bg-agri-primary-dark"
           >
-            <Plus size={16} className="mr-2" /> Ajouter une alerte
+            <Plus size={16} className="mr-2" /> Thêm cảnh báo
           </Button>
         </div>
         <p className="text-muted-foreground mb-6">
-          Suivez les alertes météorologiques impactant l'agriculture en Guadeloupe
+          Theo dõi các cảnh báo thời tiết ảnh hưởng đến nông nghiệp
         </p>
         
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted text-xs uppercase">
               <tr>
-                <th className="px-4 py-3 text-left">Type</th>
-                <th className="px-4 py-3 text-left">Région</th>
-                <th className="px-4 py-3 text-left">Période</th>
-                <th className="px-4 py-3 text-left">Sévérité</th>
-                <th className="px-4 py-3 text-left">Description</th>
-                <th className="px-4 py-3 text-left">Actions</th>
+                <th className="px-4 py-3 text-left">Loại</th>
+                <th className="px-4 py-3 text-left">Vùng</th>
+                <th className="px-4 py-3 text-left">Thời gian</th>
+                <th className="px-4 py-3 text-left">Mức độ</th>
+                <th className="px-4 py-3 text-left">Mô tả</th>
+                <th className="px-4 py-3 text-left">Hành động</th>
               </tr>
             </thead>
             <tbody>
               {weatherAlerts.map(alert => (
                 <tr key={alert.id} className="border-t hover:bg-muted/30">
                   <td className="px-4 py-3 flex items-center">
-                    {alert.type === 'Cyclone' ? (
+                    {alert.type === 'Bão' ? (
                       <span className="flex items-center text-red-500">
                         <AlertTriangle size={16} className="mr-1" /> {alert.type}
                       </span>
-                    ) : alert.type === 'Pluie' ? (
+                    ) : alert.type === 'Mưa' ? (
                       <span className="flex items-center text-blue-500">
                         <CloudRain size={16} className="mr-1" /> {alert.type}
                       </span>
@@ -411,75 +308,33 @@ const Dashboard = () => {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <EditableField
-                      value={alert.region}
-                      onSave={(value) => {
-                        setWeatherAlerts(weatherAlerts.map(a => 
-                          a.id === alert.id ? { ...a, region: String(value) } : a
-                        ));
-                        toast.success('Région mise à jour');
-                      }}
-                    />
+                    {alert.region}
                   </td>
                   <td className="px-4 py-3">
                     <div className="space-y-1">
                       <div>
-                        <span className="text-xs text-muted-foreground">Début:</span>
-                        <EditableField
-                          value={alert.startDate}
-                          type="date"
-                          onSave={(value) => {
-                            setWeatherAlerts(weatherAlerts.map(a => 
-                              a.id === alert.id ? { ...a, startDate: String(value) } : a
-                            ));
-                            toast.success('Date de début mise à jour');
-                          }}
-                        />
+                        <span className="text-xs text-muted-foreground">Bắt đầu:</span>
+                        {alert.startDate}
                       </div>
                       <div>
-                        <span className="text-xs text-muted-foreground">Fin:</span>
-                        <EditableField
-                          value={alert.endDate}
-                          type="date"
-                          onSave={(value) => {
-                            setWeatherAlerts(weatherAlerts.map(a => 
-                              a.id === alert.id ? { ...a, endDate: String(value) } : a
-                            ));
-                            toast.success('Date de fin mise à jour');
-                          }}
-                        />
+                        <span className="text-xs text-muted-foreground">Kết thúc:</span>
+                        {alert.endDate}
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-                      alert.severity === 'critique' 
+                      alert.severity === 'nghiêm trọng' 
                         ? 'bg-red-100 text-red-800' 
-                        : alert.severity === 'modérée'
+                        : alert.severity === 'trung bình'
                           ? 'bg-yellow-100 text-yellow-800'
                           : 'bg-green-100 text-green-800'
                     }`}>
-                      <EditableField
-                        value={alert.severity}
-                        onSave={(value) => {
-                          setWeatherAlerts(weatherAlerts.map(a => 
-                            a.id === alert.id ? { ...a, severity: String(value) } : a
-                          ));
-                          toast.success('Sévérité mise à jour');
-                        }}
-                      />
+                      {alert.severity}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <EditableField
-                      value={alert.description}
-                      onSave={(value) => {
-                        setWeatherAlerts(weatherAlerts.map(a => 
-                          a.id === alert.id ? { ...a, description: String(value) } : a
-                        ));
-                        toast.success('Description mise à jour');
-                      }}
-                    />
+                    {alert.description}
                   </td>
                   <td className="px-4 py-3">
                     <Button 
@@ -496,7 +351,7 @@ const Dashboard = () => {
               {weatherAlerts.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-4 text-center text-muted-foreground">
-                    Aucune alerte météorologique disponible
+                    Không có cảnh báo thời tiết nào
                   </td>
                 </tr>
               )}
@@ -510,7 +365,7 @@ const Dashboard = () => {
         {/* Revenue Chart */}
         <div className="dashboard-card col-span-full lg:col-span-2 card-hover">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Revenu Mensuel</h3>
+            <h3 className="font-semibold">Doanh thu Hàng tháng</h3>
             <div className="flex space-x-2">
               <button className="text-xs px-3 py-1.5 bg-muted rounded-md text-foreground">2023</button>
               <button className="text-xs px-3 py-1.5 text-muted-foreground hover:bg-muted rounded-md">2022</button>
@@ -531,7 +386,7 @@ const Dashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f5f5f5" />
                 <XAxis dataKey="month" axisLine={false} tickLine={false} />
                 <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `${value} €`} />
-                <Tooltip formatter={(value) => [`${value} €`, 'Revenu']} />
+                <Tooltip formatter={(value) => [`${value} €`, 'Doanh thu']} />
                 <Area 
                   type="monotone" 
                   dataKey="revenue" 
@@ -547,7 +402,7 @@ const Dashboard = () => {
 
         {/* Production Distribution - Adapté aux cultures guadeloupéennes */}
         <div className="dashboard-card card-hover">
-          <h3 className="font-semibold mb-4">Répartition des Cultures</h3>
+          <h3 className="font-semibold mb-4">Phân bổ Cây trồng</h3>
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -564,7 +419,7 @@ const Dashboard = () => {
                   tickLine={false} 
                   width={80} 
                 />
-                <Tooltip formatter={(value) => [`${value}%`, 'Pourcentage']} />
+                <Tooltip formatter={(value) => [`${value}%`, 'Tỷ lệ phần trăm']} />
                 <Bar 
                   dataKey="value" 
                   fill="#8D6E63" 
@@ -582,8 +437,8 @@ const Dashboard = () => {
         {/* Upcoming Tasks - Adapté au contexte agricole guadeloupéen */}
         <div className="dashboard-card card-hover">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Tâches à venir</h3>
-            <button className="text-xs text-agri-primary hover:underline">Voir tout</button>
+            <h3 className="font-semibold">Nhiệm vụ Sắp tới</h3>
+            <button className="text-xs text-agri-primary hover:underline">Xem tất cả</button>
           </div>
           
           <div className="space-y-3">
@@ -627,7 +482,7 @@ const Dashboard = () => {
                   ) : (
                     <>
                       <p className="text-sm font-medium">{task.title}</p>
-                      <p className="text-xs text-muted-foreground">Échéance: {task.due}</p>
+                      <p className="text-xs text-muted-foreground">Hạn: {task.due}</p>
                     </>
                   )}
                 </div>
@@ -652,7 +507,7 @@ const Dashboard = () => {
               </div>
             ))}
             {upcomingTasks.length === 0 && (
-              <p className="text-center text-muted-foreground py-4">Aucune tâche à venir</p>
+              <p className="text-center text-muted-foreground py-4">Không có nhiệm vụ sắp tới</p>
             )}
           </div>
         </div>
@@ -660,8 +515,8 @@ const Dashboard = () => {
         {/* Alerts - Adapté à l'agriculture en Guadeloupe */}
         <div className="dashboard-card card-hover">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-semibold">Alertes</h3>
-            <button className="text-xs text-agri-primary hover:underline">Gérer les alertes</button>
+            <h3 className="font-semibold">Cảnh báo</h3>
+            <button className="text-xs text-agri-primary hover:underline">Quản lý cảnh báo</button>
           </div>
           
           <div className="space-y-3">
@@ -685,11 +540,7 @@ const Dashboard = () => {
                           ? 'text-agri-warning' 
                           : 'text-agri-info'
                     }`} />
-                    <EditableField 
-                      value={alert.message} 
-                      onSave={(value) => handleEditAlert(alert.id, String(value))}
-                      className="text-sm"
-                    />
+                    <span className="text-sm">{alert.message}</span>
                   </div>
                   <button 
                     onClick={() => handleDeleteAlert(alert.id)}
@@ -701,7 +552,7 @@ const Dashboard = () => {
               </div>
             ))}
             {alerts.length === 0 && (
-              <p className="text-center text-muted-foreground py-4">Aucune alerte active</p>
+              <p className="text-center text-muted-foreground py-4">Không có cảnh báo hoạt động</p>
             )}
           </div>
         </div>
@@ -711,12 +562,12 @@ const Dashboard = () => {
       <Dialog open={showAddAlertDialog} onOpenChange={setShowAddAlertDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Ajouter une alerte météorologique</DialogTitle>
+            <DialogTitle>Thêm cảnh báo thời tiết</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="alertType" className="text-right">
-                Type
+                Loại
               </Label>
               <select
                 id="alertType"
@@ -724,15 +575,15 @@ const Dashboard = () => {
                 onChange={(e) => setNewAlert({...newAlert, type: e.target.value})}
                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                <option value="Cyclone">Cyclone</option>
-                <option value="Pluie">Pluie</option>
-                <option value="Sécheresse">Sécheresse</option>
-                <option value="Vent">Vent</option>
+                <option value="Bão">Bão</option>
+                <option value="Mưa">Mưa</option>
+                <option value="Hạn hán">Hạn hán</option>
+                <option value="Gió">Gió</option>
               </select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="region" className="text-right">
-                Région
+                Vùng
               </Label>
               <Input
                 id="region"
@@ -743,7 +594,7 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="startDate" className="text-right">
-                Date de début
+                Ngày bắt đầu
               </Label>
               <Input
                 id="startDate"
@@ -755,7 +606,7 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="endDate" className="text-right">
-                Date de fin
+                Ngày kết thúc
               </Label>
               <Input
                 id="endDate"
@@ -767,7 +618,7 @@ const Dashboard = () => {
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="severity" className="text-right">
-                Sévérité
+                Mức độ
               </Label>
               <select
                 id="severity"
@@ -775,14 +626,14 @@ const Dashboard = () => {
                 onChange={(e) => setNewAlert({...newAlert, severity: e.target.value})}
                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                <option value="faible">Faible</option>
-                <option value="modérée">Modérée</option>
-                <option value="critique">Critique</option>
+                <option value="thấp">Thấp</option>
+                <option value="trung bình">Trung bình</option>
+                <option value="nghiêm trọng">Nghiêm trọng</option>
               </select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="description" className="text-right">
-                Description
+                Mô tả
               </Label>
               <Input
                 id="description"
@@ -793,8 +644,8 @@ const Dashboard = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddAlertDialog(false)}>Annuler</Button>
-            <Button onClick={handleAddWeatherAlert}>Ajouter</Button>
+            <Button variant="outline" onClick={() => setShowAddAlertDialog(false)}>Hủy</Button>
+            <Button onClick={handleAddWeatherAlert}>Thêm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

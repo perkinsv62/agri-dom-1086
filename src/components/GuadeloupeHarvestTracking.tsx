@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { EditableField } from './ui/editable-field';
 import { EditableTable, Column } from './ui/editable-table';
 import { Tractor, Carrot, ArrowUp, ArrowDown } from 'lucide-react';
 import { useStatistics } from '../contexts/StatisticsContext';
@@ -13,13 +12,11 @@ interface HarvestData {
   previousYield: number;
   unit: string;
   harvestArea: number;
-  quality: 'Excellente' | 'Bonne' | 'Moyenne' | 'Faible';
+  quality: 'Xuất sắc' | 'Tốt' | 'Trung bình' | 'Kém';
 }
 
 const GuadeloupeHarvestTracking = () => {
   const { yieldData } = useStatistics();
-  const [title, setTitle] = useState('Suivi des Récoltes en Guadeloupe');
-  const [description, setDescription] = useState('Suivez les rendements et la qualité des récoltes pour les principales cultures guadeloupéennes');
   
   // Convertir les données de rendement pour les adapter au format attendu
   const [harvestData, setHarvestData] = useState<HarvestData[]>(
@@ -32,29 +29,20 @@ const GuadeloupeHarvestTracking = () => {
                    item.name === 'Banane' ? 2300 :
                    item.name === 'Ananas' ? 350 :
                    item.name === 'Igname' ? 420 : 180,
-      quality: item.name === 'Banane' ? 'Excellente' :
-               item.name === 'Ananas' || item.name === 'Canne à Sucre' || item.name === 'Madère' ? 'Bonne' : 'Moyenne'
+      quality: item.name === 'Banane' ? 'Xuất sắc' :
+               item.name === 'Ananas' || item.name === 'Canne à Sucre' || item.name === 'Madère' ? 'Tốt' : 'Trung bình'
     }))
   );
   
   // Colonnes pour le tableau éditable
   const columns: Column[] = [
-    { id: 'crop', header: 'Culture', accessorKey: 'crop', isEditable: true },
-    { id: 'currentYield', header: 'Rendement actuel', accessorKey: 'currentYield', type: 'number', isEditable: true },
-    { id: 'previousYield', header: 'Rendement précédent', accessorKey: 'previousYield', type: 'number', isEditable: true },
-    { id: 'unit', header: 'Unité', accessorKey: 'unit', isEditable: true },
-    { id: 'harvestArea', header: 'Surface (ha)', accessorKey: 'harvestArea', type: 'number', isEditable: true },
-    { id: 'quality', header: 'Qualité', accessorKey: 'quality', isEditable: true }
+    { id: 'crop', header: 'Cây trồng', accessorKey: 'crop', isEditable: true },
+    { id: 'currentYield', header: 'Năng suất hiện tại', accessorKey: 'currentYield', type: 'number', isEditable: true },
+    { id: 'previousYield', header: 'Năng suất trước đó', accessorKey: 'previousYield', type: 'number', isEditable: true },
+    { id: 'unit', header: 'Đơn vị', accessorKey: 'unit', isEditable: true },
+    { id: 'harvestArea', header: 'Diện tích (ha)', accessorKey: 'harvestArea', type: 'number', isEditable: true },
+    { id: 'quality', header: 'Chất lượng', accessorKey: 'quality', isEditable: true }
   ];
-  
-  // Handlers
-  const handleTitleChange = (value: string | number) => {
-    setTitle(String(value));
-  };
-  
-  const handleDescriptionChange = (value: string | number) => {
-    setDescription(String(value));
-  };
   
   const handleTableUpdate = (rowIndex: number, columnId: string, value: any) => {
     const newData = [...harvestData];
@@ -68,14 +56,14 @@ const GuadeloupeHarvestTracking = () => {
     
     newData[rowIndex] = updatedRow as HarvestData;
     setHarvestData(newData);
-    console.log('Données de récolte mises à jour');
+    console.log('Dữ liệu thu hoạch đã được cập nhật');
   };
   
   const handleDeleteRow = (rowIndex: number) => {
     const newData = [...harvestData];
     newData.splice(rowIndex, 1);
     setHarvestData(newData);
-    console.log('Culture supprimée du suivi');
+    console.log('Cây trồng đã được xóa khỏi theo dõi');
   };
   
   const handleAddRow = (newRow: Record<string, any>) => {
@@ -85,10 +73,10 @@ const GuadeloupeHarvestTracking = () => {
       previousYield: Number(newRow.previousYield || 0),
       unit: String(newRow.unit || 't/ha'),
       harvestArea: Number(newRow.harvestArea || 0),
-      quality: (newRow.quality as HarvestData['quality']) || 'Moyenne'
+      quality: (newRow.quality as HarvestData['quality']) || 'Trung bình'
     };
     setHarvestData([...harvestData, typedRow]);
-    console.log('Nouvelle culture ajoutée au suivi');
+    console.log('Cây trồng mới đã được thêm vào theo dõi');
   };
   
   // Données pour le graphique comparatif
@@ -112,12 +100,12 @@ const GuadeloupeHarvestTracking = () => {
   
   // Columns for preview/print
   const printColumns = [
-    { key: "culture", header: "Culture" },
-    { key: "rendement_actuel", header: "Rendement actuel" },
-    { key: "rendement_precedent", header: "Rendement précédent" },
-    { key: "surface", header: "Surface (ha)" },
-    { key: "qualite", header: "Qualité" },
-    { key: "evolution", header: "Évolution" }
+    { key: "culture", header: "Cây trồng" },
+    { key: "rendement_actuel", header: "Năng suất hiện tại" },
+    { key: "rendement_precedent", header: "Năng suất trước đó" },
+    { key: "surface", header: "Diện tích (ha)" },
+    { key: "qualite", header: "Chất lượng" },
+    { key: "evolution", header: "Sự thay đổi" }
   ];
   
   return (
@@ -127,25 +115,17 @@ const GuadeloupeHarvestTracking = () => {
           <div>
             <h2 className="text-xl font-bold flex items-center">
               <Tractor className="h-6 w-6 mr-2 text-agri-primary" />
-              <EditableField
-                value={title}
-                onSave={handleTitleChange}
-                className="inline-block"
-              />
+              Theo dõi Thu hoạch tại Guadeloupe
             </h2>
             <p className="text-muted-foreground">
-              <EditableField
-                value={description}
-                onSave={handleDescriptionChange}
-                className="inline-block"
-              />
+              Theo dõi năng suất và chất lượng thu hoạch cho các loại cây trồng chính của Guadeloupe
             </p>
           </div>
           
           <PreviewPrintButton 
             data={printData} 
             moduleName="harvest_data"
-            title={title}
+            title="Theo dõi Thu hoạch tại Guadeloupe"
             columns={printColumns}
             variant="outline"
           />
@@ -163,14 +143,14 @@ const GuadeloupeHarvestTracking = () => {
               <Tooltip 
                 formatter={(value, name, props) => {
                   if (name === 'différence') {
-                    return [`${Number(value) > 0 ? '+' : ''}${value} ${props.payload.unité}`, 'Évolution'];
+                    return [`${Number(value) > 0 ? '+' : ''}${value} ${props.payload.unité}`, 'Sự thay đổi'];
                   }
                   return [`${value} ${props.payload.unité}`, name];
                 }}
               />
               <Legend />
-              <Bar name="Rendement actuel" dataKey="actuel" fill="#4CAF50" />
-              <Bar name="Rendement précédent" dataKey="précédent" fill="#8D6E63" />
+              <Bar name="Năng suất hiện tại" dataKey="actuel" fill="#4CAF50" />
+              <Bar name="Năng suất trước đó" dataKey="précédent" fill="#8D6E63" />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -197,7 +177,7 @@ const GuadeloupeHarvestTracking = () => {
                   <span>{isPositive ? '+' : ''}{change} {item.unit} ({isPositive ? '+' : ''}{changePercent}%)</span>
                 </div>
                 <div className="mt-2 text-xs text-muted-foreground">
-                  Qualité: <span className="font-medium">{item.quality}</span>
+                  Chất lượng: <span className="font-medium">{item.quality}</span>
                 </div>
               </div>
             );

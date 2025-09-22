@@ -29,23 +29,23 @@ const CropsPage = () => {
   // Print columns for different tabs
   const printColumns = {
     harvest: [
-      { key: "nom", header: "Culture" },
-      { key: "rendement", header: "Rendement (t/ha)" },
-      { key: "surface", header: "Surface (ha)" },
-      { key: "date", header: "Date de récolte" }
+      { key: "nom", header: "Cây trồng" },
+      { key: "rendement", header: "Năng suất (t/ha)" },
+      { key: "surface", header: "Diện tích (ha)" },
+      { key: "date", header: "Ngày thu hoạch" }
     ],
     specific: [
-      { key: "nom", header: "Nom" },
-      { key: "variete", header: "Variété" },
-      { key: "dateDebut", header: "Date de début" },
-      { key: "dateFin", header: "Date de fin" }
+      { key: "nom", header: "Tên" },
+      { key: "variete", header: "Giống" },
+      { key: "dateDebut", header: "Ngày bắt đầu" },
+      { key: "dateFin", header: "Ngày kết thúc" }
     ],
     planning: [
-      { key: "nom", header: "Culture" },
-      { key: "activite", header: "Activité" },
-      { key: "dateDebut", header: "Date de début" },
-      { key: "dateFin", header: "Date de fin" },
-      { key: "statut", header: "Statut" }
+      { key: "nom", header: "Cây trồng" },
+      { key: "activite", header: "Hoạt động" },
+      { key: "dateDebut", header: "Ngày bắt đầu" },
+      { key: "dateFin", header: "Ngày kết thúc" },
+      { key: "statut", header: "Trạng thái" }
     ]
   };
 
@@ -58,7 +58,7 @@ const CropsPage = () => {
             <PreviewPrintButton 
               data={harvestData}
               moduleName="harvest"
-              title="Suivi des Récoltes"
+              title="Theo dõi Thu hoạch"
               columns={printColumns.harvest}
               variant="outline"
             />
@@ -67,7 +67,7 @@ const CropsPage = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="flex items-center gap-2 transition-colors">
                   <Download className="h-4 w-4" />
-                  Exporter
+                  Xuất dữ liệu
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="bg-white border shadow-lg">
@@ -75,19 +75,19 @@ const CropsPage = () => {
                   onClick={() => console.log("Export CSV des données de récolte")}
                   className="cursor-pointer"
                 >
-                  Export CSV
+                  Xuất CSV
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => console.log("Export Excel des données de récolte")}
                   className="cursor-pointer"
                 >
-                  Export Excel
+                  Xuất Excel
                 </DropdownMenuItem>
                 <DropdownMenuItem 
                   onClick={() => console.log("Export PDF des données de récolte")}
                   className="cursor-pointer"
                 >
-                  Export PDF
+                  Xuất PDF
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -100,7 +100,7 @@ const CropsPage = () => {
               }}
             >
               <RefreshCw className="h-4 w-4" />
-              Synchroniser
+              Đồng bộ
             </Button>
             <Button 
               variant="outline" 
@@ -110,7 +110,7 @@ const CropsPage = () => {
               }}
             >
               <Filter className="h-4 w-4" />
-              Filtrer
+              Lọc
             </Button>
           </div>
         );
@@ -120,7 +120,7 @@ const CropsPage = () => {
             <PreviewPrintButton 
               data={getModuleData('cultures').items || []}
               moduleName="cultures"
-              title="Cultures Spécifiques"
+              title="Cây trồng Đặc biệt"
               columns={printColumns.specific}
               variant="outline"
             />
@@ -132,7 +132,7 @@ const CropsPage = () => {
               }}
             >
               <Plus className="h-4 w-4" />
-              Ajouter
+              Thêm
             </Button>
             <Button 
               variant="outline" 
@@ -142,7 +142,7 @@ const CropsPage = () => {
               }}
             >
               <Download className="h-4 w-4" />
-              Exporter
+              Xuất dữ liệu
             </Button>
           </div>
         );
@@ -152,7 +152,7 @@ const CropsPage = () => {
             <PreviewPrintButton 
               data={[]}
               moduleName="planning"
-              title="Planification des Cultures"
+              title="Lập kế hoạch Cây trồng"
               columns={printColumns.planning}
               variant="outline"
             />
@@ -165,7 +165,7 @@ const CropsPage = () => {
               }}
             >
               <CalendarRange className="h-4 w-4" />
-              Planifier
+              Lập kế hoạch
             </Button>
             <Button 
               className="flex items-center gap-2 transition-colors"
@@ -174,7 +174,7 @@ const CropsPage = () => {
               }}
             >
               <Plus className="h-4 w-4" />
-              Nouvelle tâche
+              Tác vụ mới
             </Button>
           </div>
         );
@@ -187,29 +187,29 @@ const CropsPage = () => {
     setActiveTab(value);
     
     const tabLabels = {
-      harvest: 'Suivi des Récoltes',
-      specific: 'Cultures Spécifiques',
-      planning: 'Planification'
+      harvest: 'Theo dõi Thu hoạch',
+      specific: 'Cây trồng Đặc biệt',
+      planning: 'Lập kế hoạch'
     };
     
     const label = tabLabels[value as keyof typeof tabLabels] || value;
-    console.log(`${label} activé - Affichage des données correspondantes`);
+    console.log(`${label} được kích hoạt - Hiển thị dữ liệu tương ứng`);
   };
 
   const tabs: TabItem[] = [
     {
       value: 'harvest',
-      label: 'Suivi des Récoltes',
+      label: 'Theo dõi Thu hoạch',
       content: <GuadeloupeHarvestTracking />
     },
     {
       value: 'specific',
-      label: 'Cultures Spécifiques',
+      label: 'Cây trồng Đặc biệt',
       content: <GuadeloupeSpecificCrops />
     },
     {
       value: 'planning',
-      label: 'Planification',
+      label: 'Lập kế hoạch',
       content: <CropPlanning />
     }
   ];
@@ -226,9 +226,9 @@ const CropsPage = () => {
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
               <div>
-                <h1 className="text-3xl font-bold">Gestion des Cultures</h1>
+                <h1 className="text-3xl font-bold">Quản lý Cây trồng</h1>
                 <p className="text-muted-foreground">
-                  Gérez vos cultures tropicales et suivez leur rendement
+                  Quản lý các loại cây trồng nhiệt đới và theo dõi năng suất của chúng
                 </p>
               </div>
               {getTabActions()}

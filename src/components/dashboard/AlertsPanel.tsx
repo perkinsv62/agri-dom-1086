@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { AlertTriangle, Trash2, Edit, X, Check, Plus } from 'lucide-react';
 import { toast } from 'sonner';
-import { EditableField } from '../ui/editable-field';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
 import { Input } from '../ui/input';
@@ -99,11 +98,7 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
                       ? 'text-agri-warning' 
                       : 'text-agri-info'
                 }`} />
-                <EditableField 
-                  value={alert.message} 
-                  onSave={(value) => handleEditAlert(alert.id, String(value))}
-                  className="text-sm"
-                />
+                <div className="text-sm">{alert.message}</div>
               </div>
               <button 
                 onClick={() => handleDeleteAlert(alert.id)}

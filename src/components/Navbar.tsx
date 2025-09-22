@@ -15,13 +15,16 @@ import {
   ChevronRight,
   Settings,
   Users,
-  FileText
+  FileText,
+  Shield
 } from 'lucide-react';
+import { useUser } from '../contexts/UserContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
+  const { isAdmin } = useUser();
   
   // Close mobile menu when route changes
   useEffect(() => {
@@ -53,14 +56,15 @@ const Navbar = () => {
   };
 
   const navItems = [
-    { title: 'Tableau de bord', path: '/', icon: Home },
-    { title: 'Parcelles', path: '/parcelles', icon: MapPin },
-    { title: 'Cultures', path: '/cultures', icon: Sprout },
-    { title: 'Inventaire', path: '/inventaire', icon: Package },
-    { title: 'Finances', path: '/finances', icon: Wallet },
-    { title: 'Statistiques', path: '/statistiques', icon: BarChart2 },
-    { title: 'Rapports', path: '/rapports', icon: FileText },
-    { title: 'Paramètres', path: '/parametres', icon: Settings },
+    { title: 'Bảng điều khiển', path: '/', icon: Home },
+    { title: 'Lô đất', path: '/parcelles', icon: MapPin },
+    { title: 'Cây trồng', path: '/cultures', icon: Sprout },
+    { title: 'Kho hàng', path: '/inventaire', icon: Package },
+    { title: 'Tài chính', path: '/finances', icon: Wallet },
+    { title: 'Thống kê', path: '/statistiques', icon: BarChart2 },
+    { title: 'Báo cáo', path: '/rapports', icon: FileText },
+    { title: 'Cài đặt', path: '/parametres', icon: Settings },
+    ...(isAdmin ? [{ title: 'Quản lý Admin', path: '/admin', icon: Shield }] : [])
   ];
 
   const isActive = (path: string) => {
@@ -133,8 +137,8 @@ const Navbar = () => {
               <span className="text-sm font-medium">AD</span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Utilisateur</p>
-              <p className="text-xs text-muted-foreground truncate">agriculteur@example.com</p>
+              <p className="text-sm font-medium truncate">Người dùng</p>
+              <p className="text-xs text-muted-foreground truncate">nongdan@example.com</p>
             </div>
           </div>
         </div>

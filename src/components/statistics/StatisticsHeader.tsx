@@ -83,15 +83,15 @@ const StatisticsHeader = () => {
             <PreviewPrintButton 
               data={statisticsData}
               moduleName="statistiques"
-              title="Statistiques et Analyses"
+              title="Thống kê và Phân tích"
               className="bg-white border-gray-200 hover:bg-gray-50 text-xs md:text-sm h-auto py-1.5 md:py-2"
               variant="outline"
               columns={[
-                { key: "type", header: "Type" },
-                { key: "name", header: "Nom" },
-                { key: "current", header: "Valeur actuelle" },
-                { key: "previous", header: "Valeur précédente" },
-                { key: "unit", header: "Unité" }
+                { key: "type", header: "Loại" },
+                { key: "name", header: "Tên" },
+                { key: "current", header: "Giá trị hiện tại" },
+                { key: "previous", header: "Giá trị trước" },
+                { key: "unit", header: "Đơn vị" }
               ]}
             />
             

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { EditableField } from './ui/editable-field';
 import { EditableTable, Column } from './ui/editable-table';
 import { CloudLightning, CloudRain, Wind, Thermometer, Sun, AlertTriangle, Filter, Calendar, PlusCircle, ArrowDown, ArrowUp } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
@@ -29,30 +28,28 @@ import * as z from "zod";
 interface WeatherAlert {
   id: number;
   date: string;
-  type: 'Pluie intense' | 'Tempête tropicale' | 'Sécheresse' | 'Chaleur excessive' | 'Inondation';
+  type: 'Mưa lớn' | 'Bão nhiệt đới' | 'Hạn hán' | 'Nóng quá mức' | 'Ngập lụt';
   region: string;
-  severity: 'Basse' | 'Moyenne' | 'Haute' | 'Extrême';
-  impactCrops: 'Faible' | 'Modéré' | 'Sévère';
+  severity: 'Thấp' | 'Trung bình' | 'Cao' | 'Cực cao';
+  impactCrops: 'Nhẹ' | 'Trung bình' | 'Nặng';
   description: string;
   recommendation: string;
-  status: 'Active' | 'Terminée' | 'Prévue';
+  status: 'Hoạt động' | 'Kết thúc' | 'Dự kiến';
 }
 
 const alertFormSchema = z.object({
-  date: z.string().min(1, { message: "La date est requise" }),
-  type: z.enum(['Pluie intense', 'Tempête tropicale', 'Sécheresse', 'Chaleur excessive', 'Inondation']),
-  region: z.string().min(1, { message: "La région est requise" }),
-  severity: z.enum(['Basse', 'Moyenne', 'Haute', 'Extrême']),
-  impactCrops: z.enum(['Faible', 'Modéré', 'Sévère']),
-  description: z.string().min(5, { message: "Description trop courte" }),
-  recommendation: z.string().min(5, { message: "Recommandation trop courte" }),
-  status: z.enum(['Active', 'Terminée', 'Prévue']),
+  date: z.string().min(1, { message: "Ngày là bắt buộc" }),
+  type: z.enum(['Mưa lớn', 'Bão nhiệt đới', 'Hạn hán', 'Nóng quá mức', 'Ngập lụt']),
+  region: z.string().min(1, { message: "Vùng là bắt buộc" }),
+  severity: z.enum(['Thấp', 'Trung bình', 'Cao', 'Cực cao']),
+  impactCrops: z.enum(['Nhẹ', 'Trung bình', 'Nặng']),
+  description: z.string().min(5, { message: "Mô tả quá ngắn" }),
+  recommendation: z.string().min(5, { message: "Khuyến nghị quá ngắn" }),
+  status: z.enum(['Hoạt động', 'Kết thúc', 'Dự kiến']),
 });
 
 const GuadeloupeWeatherAlerts = () => {
   const { toast } = useToast();
-  const [title, setTitle] = useState('Alertes Météorologiques en Guadeloupe');
-  const [description, setDescription] = useState('Suivez les alertes météo impactant les cultures et préparez vos actions préventives');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSeverity, setFilterSeverity] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -63,13 +60,13 @@ const GuadeloupeWeatherAlerts = () => {
     resolver: zodResolver(alertFormSchema),
     defaultValues: {
       date: new Date().toISOString().slice(0, 10),
-      type: 'Pluie intense',
-      region: 'Basse-Terre',
-      severity: 'Moyenne',
-      impactCrops: 'Modéré',
+      type: 'Mưa lớn',
+      region: 'Vùng thấp',
+      severity: 'Trung bình',
+      impactCrops: 'Trung bình',
       description: '',
       recommendation: '',
-      status: 'Active',
+      status: 'Hoạt động',
     },
   });
   
@@ -77,83 +74,67 @@ const GuadeloupeWeatherAlerts = () => {
     {
       id: 1,
       date: '2024-06-15',
-      type: 'Pluie intense',
-      region: 'Basse-Terre',
-      severity: 'Haute',
-      impactCrops: 'Modéré',
-      description: 'Fortes précipitations attendues durant 48 heures avec risque d\'inondation dans les zones de basse altitude.',
-      recommendation: 'Vérifier le drainage des parcelles et protéger les jeunes plants. Suspendre temporairement l\'irrigation.',
-      status: 'Active'
+      type: 'Mưa lớn',
+      region: 'Vùng thấp',
+      severity: 'Cao',
+      impactCrops: 'Trung bình',
+      description: 'Dự kiến mưa lớn trong 48 giờ với nguy cơ ngập lụt ở vùng thấp.',
+      recommendation: 'Kiểm tra hệ thống thoát nước và bảo vệ cây con. Tạm ngừng tưới tiêu.',
+      status: 'Hoạt động'
     },
     {
       id: 2,
       date: '2024-06-20',
-      type: 'Tempête tropicale',
-      region: 'Grande-Terre',
-      severity: 'Extrême',
-      impactCrops: 'Sévère',
-      description: 'Tempête tropicale Emily approchant avec des vents pouvant dépasser 120 km/h et fortes précipitations.',
-      recommendation: 'Récolter préventivement les cultures matures. Renforcer les tuteurs des bananiers. Sécuriser les équipements agricoles.',
-      status: 'Prévue'
+      type: 'Bão nhiệt đới',
+      region: 'Vùng cao',
+      severity: 'Cực cao',
+      impactCrops: 'Nặng',
+      description: 'Bão nhiệt đới Emily đang tiếp cận với gió có thể vượt quá 120 km/h và mưa lớn.',
+      recommendation: 'Thu hoạch dự phòng các cây trồng đã chín. Củng cố giá đỡ chuối. Bảo vệ trang thiết bị nông nghiệp.',
+      status: 'Dự kiến'
     },
     {
       id: 3,
       date: '2024-05-25',
-      type: 'Sécheresse',
-      region: 'Grande-Terre',
-      severity: 'Moyenne',
-      impactCrops: 'Modéré',
-      description: 'Période prolongée sans précipitations significatives causant un stress hydrique pour certaines cultures.',
-      recommendation: 'Prioriser l\'irrigation des cultures sensibles. Utiliser du paillage pour conserver l\'humidité du sol.',
-      status: 'Terminée'
+      type: 'Hạn hán',
+      region: 'Vùng cao',
+      severity: 'Trung bình',
+      impactCrops: 'Trung bình',
+      description: 'Thời gian dài không có mưa đáng kể gây căng thẳng nước cho một số cây trồng.',
+      recommendation: 'Ưu tiên tưới tiêu cho cây trồng nhạy cảm. Sử dụng lớp phủ để giữ độ ẩm đất.',
+      status: 'Kết thúc'
     },
     {
       id: 4,
       date: '2024-07-05',
-      type: 'Chaleur excessive',
-      region: 'Les Saintes',
-      severity: 'Moyenne',
-      impactCrops: 'Modéré',
-      description: 'Vague de chaleur avec températures dépassant 35°C pendant plusieurs jours consécutifs.',
-      recommendation: 'Ombrager les cultures sensibles. Augmenter la fréquence d\'irrigation, de préférence tôt le matin ou tard le soir.',
-      status: 'Prévue'
+      type: 'Nóng quá mức',
+      region: 'Các đảo nhỏ',
+      severity: 'Trung bình',
+      impactCrops: 'Trung bình',
+      description: 'Đợt nóng với nhiệt độ vượt quá 35°C trong nhiều ngày liên tiếp.',
+      recommendation: 'Che bóng cho cây trồng nhạy cảm. Tăng tần suất tưới, ưu tiên sáng sớm hoặc tối muộn.',
+      status: 'Dự kiến'
     },
     {
       id: 5,
       date: '2024-06-10',
-      type: 'Inondation',
-      region: 'Basse-Terre',
-      severity: 'Haute',
-      impactCrops: 'Sévère',
-      description: 'Débordement des rivières suite aux pluies intenses des derniers jours affectant les parcelles en zone basse.',
-      recommendation: 'Évacuer les cultures pouvant être récoltées. Préparer les demandes d\'indemnisation. Surveiller les maladies fongiques.',
-      status: 'Terminée'
+      type: 'Ngập lụt',
+      region: 'Vùng thấp',
+      severity: 'Cao',
+      impactCrops: 'Nặng',
+      description: 'Tràn sông suối sau những cơn mưa lớn những ngày qua ảnh hưởng đến các lô đất ở vùng thấp.',
+      recommendation: 'Di chuyển cây trồng có thể thu hoạch. Chuẩn bị đơn đền bù. Giám sát bệnh nấm.',
+      status: 'Kết thúc'
     }
   ]);
   
   const columns: Column[] = [
-    { id: 'date', header: 'Date', accessorKey: 'date', isEditable: true },
-    { id: 'type', header: 'Type d\'alerte', accessorKey: 'type', isEditable: true },
-    { id: 'region', header: 'Région', accessorKey: 'region', isEditable: true },
-    { id: 'severity', header: 'Sévérité', accessorKey: 'severity', isEditable: true },
-    { id: 'status', header: 'Statut', accessorKey: 'status', isEditable: true },
+    { id: 'date', header: 'Ngày', accessorKey: 'date', isEditable: true },
+    { id: 'type', header: 'Loại cảnh báo', accessorKey: 'type', isEditable: true },
+    { id: 'region', header: 'Vùng', accessorKey: 'region', isEditable: true },
+    { id: 'severity', header: 'Mức độ', accessorKey: 'severity', isEditable: true },
+    { id: 'status', header: 'Trạng thái', accessorKey: 'status', isEditable: true },
   ];
-  
-  const handleTitleChange = (value: string | number) => {
-    setTitle(String(value));
-    toast({
-      title: "Titre mis à jour",
-      description: "Le titre du module a été modifié avec succès"
-    });
-  };
-  
-  const handleDescriptionChange = (value: string | number) => {
-    setDescription(String(value));
-    toast({
-      title: "Description mise à jour",
-      description: "La description du module a été modifiée avec succès"
-    });
-  };
   
   const filteredAlerts = weatherAlerts.filter(alert => {
     const matchesSearch = 
@@ -179,8 +160,8 @@ const GuadeloupeWeatherAlerts = () => {
       setWeatherAlerts(newData);
       
       toast({
-        title: "Alerte mise à jour",
-        description: `Les informations de l'alerte ont été mises à jour`
+        title: "Cảnh báo đã cập nhật",
+        description: `Thông tin cảnh báo đã được cập nhật`
       });
     }
   };
@@ -191,8 +172,8 @@ const GuadeloupeWeatherAlerts = () => {
     setWeatherAlerts(newData);
     
     toast({
-      title: "Alerte supprimée",
-      description: "L'alerte a été supprimée avec succès"
+      title: "Cảnh báo đã xóa",
+      description: "Cảnh báo đã được xóa thành công"
     });
   };
   
@@ -216,8 +197,8 @@ const GuadeloupeWeatherAlerts = () => {
     form.reset();
     
     toast({
-      title: "Alerte ajoutée",
-      description: `Nouvelle alerte météo ajoutée pour ${data.region}`
+      title: "Cảnh báo đã thêm",
+      description: `Cảnh báo thời tiết mới đã thêm cho ${data.region}`
     });
   };
   
@@ -227,15 +208,15 @@ const GuadeloupeWeatherAlerts = () => {
   
   const getAlertIcon = (type: string) => {
     switch (type) {
-      case 'Pluie intense':
+      case 'Mưa lớn':
         return <CloudRain className="h-6 w-6 text-blue-500" />;
-      case 'Tempête tropicale':
+      case 'Bão nhiệt đới':
         return <Wind className="h-6 w-6 text-purple-500" />;
-      case 'Sécheresse':
+      case 'Hạn hán':
         return <Sun className="h-6 w-6 text-orange-500" />;
-      case 'Chaleur excessive':
+      case 'Nóng quá mức':
         return <Thermometer className="h-6 w-6 text-red-500" />;
-      case 'Inondation':
+      case 'Ngập lụt':
         return <CloudLightning className="h-6 w-6 text-indigo-500" />;
       default:
         return <AlertTriangle className="h-6 w-6 text-gray-500" />;
@@ -244,13 +225,13 @@ const GuadeloupeWeatherAlerts = () => {
   
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'Basse':
+      case 'Thấp':
         return 'bg-green-100 text-green-800';
-      case 'Moyenne':
+      case 'Trung bình':
         return 'bg-yellow-100 text-yellow-800';
-      case 'Haute':
+      case 'Cao':
         return 'bg-orange-100 text-orange-800';
-      case 'Extrême':
+      case 'Cực cao':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -259,11 +240,11 @@ const GuadeloupeWeatherAlerts = () => {
   
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'Active':
+      case 'Hoạt động':
         return 'bg-blue-100 text-blue-800';
-      case 'Terminée':
+      case 'Kết thúc':
         return 'bg-gray-100 text-gray-800';
-      case 'Prévue':
+      case 'Dự kiến':
         return 'bg-purple-100 text-purple-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -276,18 +257,10 @@ const GuadeloupeWeatherAlerts = () => {
         <div className="mb-6">
           <h2 className="text-xl font-bold flex items-center">
             <CloudLightning className="h-6 w-6 mr-2 text-purple-500" />
-            <EditableField
-              value={title}
-              onSave={handleTitleChange}
-              className="inline-block"
-            />
+            Cảnh báo Thời tiết
           </h2>
           <p className="text-muted-foreground">
-            <EditableField
-              value={description}
-              onSave={handleDescriptionChange}
-              className="inline-block"
-            />
+            Theo dõi các cảnh báo thời tiết ảnh hưởng đến cây trồng và chuẩn bị hành động phòng ngừa
           </p>
         </div>
         
@@ -576,8 +549,8 @@ const GuadeloupeWeatherAlerts = () => {
                     </div>
                     <div className="mt-4">
                       <h4 className="text-sm font-semibold mb-1">Impact sur les cultures</h4>
-                      <Badge className={alert.impactCrops === 'Sévère' ? 'bg-red-100 text-red-800' : 
-                                      alert.impactCrops === 'Modéré' ? 'bg-yellow-100 text-yellow-800' : 
+                      <Badge className={alert.impactCrops === 'Nặng' ? 'bg-red-100 text-red-800' : 
+                                      alert.impactCrops === 'Trung bình' ? 'bg-yellow-100 text-yellow-800' : 
                                       'bg-green-100 text-green-800'}>
                         {alert.impactCrops}
                       </Badge>

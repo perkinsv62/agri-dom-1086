@@ -16,7 +16,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { EditableField } from '@/components/ui/editable-field';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import FinancialCharts from '../components/statistics/FinancialCharts';
 import FinancialForecast from '../components/statistics/FinancialForecast';
@@ -32,31 +31,21 @@ const FinancePage = () => {
     handleTitleChange, 
     handleDescriptionChange 
   } = usePageMetadata({
-    defaultTitle: 'Gestion Financière',
-    defaultDescription: 'Suivez vos revenus, dépenses et la rentabilité de votre exploitation agricole'
+    defaultTitle: 'Quản Lý Tài Chính',
+    defaultDescription: 'Theo dõi doanh thu, chi phí và lợi nhuận của trang trại nông nghiệp của bạn'
   });
 
   const [timeFrame, setTimeFrame] = useState('year');
   const [filterCategory, setFilterCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('overview');
-  const [incomeTitle, setIncomeTitle] = useState('Gestion des Revenus');
-  const [incomeDescription, setIncomeDescription] = useState('Suivez, catégorisez et analysez toutes vos sources de revenus agricoles');
-  const [expensesTitle, setExpensesTitle] = useState('Gestion des Dépenses');
-  const [expensesDescription, setExpensesDescription] = useState('Catégorisez et optimisez toutes vos dépenses liées à l\'exploitation');
-  const [reportsTitle, setReportsTitle] = useState('Rapports Financiers');
-  const [reportsDescription, setReportsDescription] = useState('Générez des rapports détaillés pour analyser la performance financière de votre exploitation');
-  const [forecastTitle, setForecastTitle] = useState('Prévisions Financières');
-  const [forecastDescription, setForecastDescription] = useState('Simulez différents scénarios pour anticiper l\'évolution de votre situation financière');
-  const [budgetTitle, setBudgetTitle] = useState('Gestion Budgétaire');
-  const [budgetDescription, setBudgetDescription] = useState('Planifiez et suivez votre budget pour optimiser vos dépenses');
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [showAddIncomeForm, setShowAddIncomeForm] = useState(false);
   const [showAddExpenseForm, setShowAddExpenseForm] = useState(false);
   const [reportGenerating, setReportGenerating] = useState(false);
 
   const handleExportData = () => {
-    toast.success("Export des données financières", {
-      description: "Vos données ont été exportées au format Excel"
+    toast.success("Xuất dữ liệu tài chính", {
+      description: "Dữ liệu của bạn đã được xuất dưới định dạng Excel"
     });
   };
 
@@ -66,8 +55,8 @@ const FinancePage = () => {
 
   const handleImportConfirm = (importType: string) => {
     setImportDialogOpen(false);
-    toast.success("Import de données réussi", {
-      description: `Les données ${importType} ont été importées avec succès`
+    toast.success("Nhập dữ liệu thành công", {
+      description: `Dữ liệu ${importType} đã được nhập thành công`
     });
   };
 
@@ -76,8 +65,8 @@ const FinancePage = () => {
     
     setTimeout(() => {
       setReportGenerating(false);
-      toast.success("Génération de rapport", {
-        description: `Rapport financier ${timeFrame} généré et prêt à télécharger`
+      toast.success("Tạo báo cáo", {
+        description: `Báo cáo tài chính ${timeFrame} đã được tạo và sẵn sàng tải xuống`
       });
     }, 1500);
   };
@@ -87,8 +76,8 @@ const FinancePage = () => {
     
     setTimeout(() => {
       setShowAddIncomeForm(false);
-      toast.success("Revenu ajouté", {
-        description: "Le nouveau revenu a été ajouté avec succès"
+      toast.success("Đã thêm doanh thu", {
+        description: "Doanh thu mới đã được thêm thành công"
       });
     }, 1000);
   };
@@ -98,32 +87,32 @@ const FinancePage = () => {
     
     setTimeout(() => {
       setShowAddExpenseForm(false);
-      toast.success("Dépense ajoutée", {
-        description: "La nouvelle dépense a été ajoutée avec succès"
+      toast.success("Đã thêm chi phí", {
+        description: "Chi phí mới đã được thêm thành công"
       });
     }, 1000);
   };
   
   const handleActivateModule = (moduleName: string) => {
-    toast.success(`Module ${moduleName} activé`, {
-      description: `Le module de ${moduleName.toLowerCase()} a été activé avec succès`
+    toast.success(`Đã kích hoạt module ${moduleName}`, {
+      description: `Module ${moduleName.toLowerCase()} đã được kích hoạt thành công`
     });
   };
   
   const handleCardDetailClick = (cardType: string) => {
-    toast.info(`Détails ${cardType}`, {
-      description: `Affichage des détails de ${cardType.toLowerCase()}`
+    toast.info(`Chi tiết ${cardType}`, {
+      description: `Hiển thị chi tiết của ${cardType.toLowerCase()}`
     });
   };
   
   const handleTabChange = (value: string) => {
     setActiveTab(value);
-    toast.info("Changement d'onglet", {
-      description: `Vous consultez maintenant l'onglet ${value === 'overview' ? 'Aperçu' : 
-                                                        value === 'income' ? 'Revenus' : 
-                                                        value === 'expenses' ? 'Dépenses' :
-                                                        value === 'forecast' ? 'Prévisions' :
-                                                        value === 'budget' ? 'Budget' : 'Rapports'}`
+    toast.info("Thay đổi tab", {
+      description: `Bạn đang xem tab ${value === 'overview' ? 'Tổng quan' : 
+                                                        value === 'income' ? 'Doanh thu' : 
+                                                        value === 'expenses' ? 'Chi phí' :
+                                                        value === 'forecast' ? 'Dự báo' :
+                                                        value === 'budget' ? 'Ngân sách' : 'Báo cáo'}`
     });
   };
 
@@ -132,12 +121,12 @@ const FinancePage = () => {
       <div className="flex flex-wrap space-x-2">
         <Button variant="outline" onClick={handleExportData}>
           <Download className="mr-2 h-4 w-4" />
-          Exporter
+          Xuất dữ liệu
         </Button>
         
         <Button variant="outline" onClick={handleImportData}>
           <Upload className="mr-2 h-4 w-4" />
-          Importer
+          Nhập dữ liệu
         </Button>
         
         <Button 
@@ -149,12 +138,12 @@ const FinancePage = () => {
             } else if (activeTab === 'expenses') {
               handleAddExpense();
             } else if (activeTab === 'forecast') {
-              toast.info("Simulation lancée", {
-                description: "La simulation financière est en cours d'exécution"
+              toast.info("Đã khởi chạy mô phỏng", {
+                description: "Mô phỏng tài chính đang được thực hiện"
               });
             } else if (activeTab === 'budget') {
-              toast.info("Budget enregistré", {
-                description: "Les modifications du budget ont été sauvegardées"
+              toast.info("Đã lưu ngân sách", {
+                description: "Các thay đổi của ngân sách đã được lưu"
               });
             } else {
               handleGenerateReport();
@@ -164,32 +153,32 @@ const FinancePage = () => {
           {activeTab === 'overview' ? (
             <>
               <FileText className="mr-2 h-4 w-4" />
-              Générer un rapport
+              Tạo báo cáo
             </>
           ) : activeTab === 'income' ? (
             <>
               <Plus className="mr-2 h-4 w-4" />
-              Ajouter un revenu
+              Thêm doanh thu
             </>
           ) : activeTab === 'expenses' ? (
             <>
               <Plus className="mr-2 h-4 w-4" />
-              Ajouter une dépense
+              Thêm chi phí
             </>
           ) : activeTab === 'forecast' ? (
             <>
               <BarChart className="mr-2 h-4 w-4" />
-              Lancer une simulation
+              Khởi chạy mô phỏng
             </>
           ) : activeTab === 'budget' ? (
             <>
               <Plus className="mr-2 h-4 w-4" />
-              Ajouter une catégorie
+              Thêm danh mục
             </>
           ) : (
             <>
               <FileText className="mr-2 h-4 w-4" />
-              Nouveau rapport
+              Báo cáo mới
             </>
           )}
         </Button>
@@ -197,27 +186,27 @@ const FinancePage = () => {
         <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Importer des données financières</DialogTitle>
+              <DialogTitle>Nhập dữ liệu tài chính</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-muted-foreground">Choisissez le type de données à importer:</p>
+              <p className="text-muted-foreground">Chọn loại dữ liệu cần nhập:</p>
               <div className="grid grid-cols-1 gap-2">
-                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('bancaires')}>
+                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('ngân hàng')}>
                   <CreditCard className="h-4 w-4 mr-2" />
-                  Données bancaires (CSV)
+                  Dữ liệu ngân hàng (CSV)
                 </Button>
-                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('comptables')}>
+                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('kế toán')}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Données comptables (Excel)
+                  Dữ liệu kế toán (Excel)
                 </Button>
-                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('factures')}>
+                <Button variant="outline" className="justify-start" onClick={() => handleImportConfirm('hóa đơn')}>
                   <DollarSign className="h-4 w-4 mr-2" />
-                  Factures scannées (PDF)
+                  Hóa đơn đã quét (PDF)
                 </Button>
               </div>
               <div className="flex justify-end">
                 <Button variant="ghost" onClick={() => setImportDialogOpen(false)}>
-                  Annuler
+                  Hủy
                 </Button>
               </div>
             </div>
@@ -230,7 +219,7 @@ const FinancePage = () => {
   const tabs: TabItem[] = [
     {
       value: 'overview',
-      label: 'Aperçu général',
+      label: 'Tổng quan',
       content: (
         <StatisticsProvider>
           <div className="space-y-6">
@@ -242,41 +231,25 @@ const FinancePage = () => {
     },
     {
       value: 'income',
-      label: 'Revenus',
+      label: 'Doanh thu',
       content: (
         <div className="p-6 bg-white rounded-xl border">
           <h2 className="text-xl font-bold mb-4 flex items-center">
             <DollarSign className="h-5 w-5 mr-2 text-green-500" />
-            <EditableField
-              value={incomeTitle}
-              onSave={(value) => {
-                setIncomeTitle(String(value));
-                toast.success("Titre mis à jour", {
-                  description: "Le titre de la section revenus a été modifié"
-                });
-              }}
-            />
+            Quản Lý Doanh Thu
           </h2>
           <p className="text-muted-foreground mb-6">
-            <EditableField
-              value={incomeDescription}
-              onSave={(value) => {
-                setIncomeDescription(String(value));
-                toast.success("Description mise à jour", {
-                  description: "La description de la section revenus a été modifiée"
-                });
-              }}
-            />
+            Theo dõi, phân loại và phân tích tất cả nguồn doanh thu nông nghiệp của bạn
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-            <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Récoltes')}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Thu hoạch')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-green-100 text-green-800 hover:bg-green-200">Ventes</Badge> 
-                  Récoltes
+                  <Badge className="mr-2 bg-green-100 text-green-800 hover:bg-green-200">Bán hàng</Badge> 
+                  Thu hoạch
                 </CardTitle>
-                <CardDescription>Ventes de produits agricoles</CardDescription>
+                <CardDescription>Bán sản phẩm nông nghiệp</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">45 860 €</div>
@@ -284,16 +257,16 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586l3.293-3.293A1 1 0 0114 7h-2z" clipRule="evenodd" />
                   </svg>
-                  +12.5% comparée à l'an dernier
+                  +12.5% so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
                 <Button variant="outline" size="sm" className="w-full" onClick={(e) => {
                   e.stopPropagation();
-                  handleCardDetailClick('Récoltes');
+                  handleCardDetailClick('Thu hoạch');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
@@ -301,10 +274,10 @@ const FinancePage = () => {
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('PAC')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-blue-100 text-blue-800 hover:bg-blue-200">Subventions</Badge> 
+                  <Badge className="mr-2 bg-blue-100 text-blue-800 hover:bg-blue-200">Trợ cấp</Badge> 
                   PAC
                 </CardTitle>
-                <CardDescription>Aides agricoles et subventions</CardDescription>
+                <CardDescription>Trợ giúp nông nghiệp và trợ cấp</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">18 500 €</div>
@@ -312,7 +285,7 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M1 10a5 5 0 015-5h8a5 5 0 015 5v8a1 1 0 01-2 0v-8z" clipRule="evenodd" />
                   </svg>
-                  Stable par rapport à l'an dernier
+                  Ổn định so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
@@ -321,7 +294,7 @@ const FinancePage = () => {
                   handleCardDetailClick('PAC');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
@@ -329,10 +302,10 @@ const FinancePage = () => {
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Autres revenues')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-purple-100 text-purple-800 hover:bg-purple-200">Autres</Badge> 
-                  Revenues
+                  <Badge className="mr-2 bg-purple-100 text-purple-800 hover:bg-purple-200">Khác</Badge> 
+                  Doanh thu
                 </CardTitle>
-                <CardDescription>Locations, visites, services</CardDescription>
+                <CardDescription>Cho thuê, thăm quan, dịch vụ</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">7 250 €</div>
@@ -340,7 +313,7 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586l3.293-3.293A1 1 0 0114 7h-2z" clipRule="evenodd" />
                   </svg>
-                  +28.3% comparé à l'an dernier
+                  +28.3% so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
@@ -349,25 +322,25 @@ const FinancePage = () => {
                   handleCardDetailClick('Autres revenues');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
           </div>
           
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Sources de revenus récentes</h3>
+            <h3 className="text-lg font-semibold">Nguồn doanh thu gần đây</h3>
             <Button onClick={handleAddIncome}>
               <Plus className="h-4 w-4 mr-2" />
-              Ajouter un revenu
+              Thêm doanh thu
             </Button>
           </div>
           
           {showAddIncomeForm ? (
             <div className="animate-fade-in bg-muted/20 rounded-lg p-6 text-center border border-primary/20">
               <DollarSign className="h-12 w-12 mx-auto text-primary mb-2" />
-              <h3 className="text-lg font-semibold mb-2">Ajout d'un nouveau revenu</h3>
-              <p className="text-muted-foreground mb-4">Traitement en cours...</p>
+              <h3 className="text-lg font-semibold mb-2">Thêm doanh thu mới</h3>
+              <p className="text-muted-foreground mb-4">Đang xử lý...</p>
               <div className="w-full bg-muted rounded-full h-2 mb-4">
                 <div className="bg-primary h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
               </div>
@@ -375,12 +348,12 @@ const FinancePage = () => {
           ) : (
             <div className="bg-muted/20 rounded-lg p-6 text-center">
               <DollarSign className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-              <h3 className="text-lg font-semibold mb-2">Module de gestion des revenus</h3>
+              <h3 className="text-lg font-semibold mb-2">Module quản lý doanh thu</h3>
               <p className="text-muted-foreground mb-4">
-                Activez ce module pour suivre en détail toutes vos sources de revenus
-                et générer des rapports personnalisés.
+                Kích hoạt module này để theo dõi chi tiết tất cả nguồn doanh thu
+                và tạo báo cáo tùy chỉnh.
               </p>
-              <Button onClick={() => handleActivateModule('gestion des revenus')}>Activer ce module</Button>
+              <Button onClick={() => handleActivateModule('quản lý doanh thu')}>Kích hoạt module</Button>
             </div>
           )}
         </div>
@@ -388,41 +361,25 @@ const FinancePage = () => {
     },
     {
       value: 'expenses',
-      label: 'Dépenses',
+      label: 'Chi phí',
       content: (
         <div className="p-6 bg-white rounded-xl border">
           <h2 className="text-xl font-bold mb-4 flex items-center">
             <CreditCard className="h-5 w-5 mr-2 text-red-500" />
-            <EditableField
-              value={expensesTitle}
-              onSave={(value) => {
-                setExpensesTitle(String(value));
-                toast.success("Titre mis à jour", {
-                  description: "Le titre de la section dépenses a été modifié"
-                });
-              }}
-            />
+            Quản Lý Chi Phí
           </h2>
           <p className="text-muted-foreground mb-6">
-            <EditableField
-              value={expensesDescription}
-              onSave={(value) => {
-                setExpensesDescription(String(value));
-                toast.success("Description mise à jour", {
-                  description: "La description de la section dépenses a été modifiée"
-                });
-              }}
-            />
+            Phân loại và tối ưu hóa tất cả chi phí liên quan đến trang trại
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Semences & Fertilisants')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-amber-100 text-amber-800 hover:bg-amber-200">Intrants</Badge> 
-                  Semences & Fertilisants
+                  <Badge className="mr-2 bg-amber-100 text-amber-800 hover:bg-amber-200">Đầu vào</Badge> 
+                  Hạt giống & Phân bón
                 </CardTitle>
-                <CardDescription>Achats pour la production</CardDescription>
+                <CardDescription>Mua sắm cho sản xuất</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12 750 €</div>
@@ -430,7 +387,7 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M12 13a1 1 0 100-2H7.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L7.414 13H12z" clipRule="evenodd" />
                   </svg>
-                  +8.3% comparé à l'an dernier
+                  +8.3% so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
@@ -439,7 +396,7 @@ const FinancePage = () => {
                   handleCardDetailClick('Semences & Fertilisants');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
@@ -447,10 +404,10 @@ const FinancePage = () => {
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Matériel')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-indigo-100 text-indigo-800 hover:bg-indigo-200">Équipement</Badge> 
-                  Matériel
+                  <Badge className="mr-2 bg-indigo-100 text-indigo-800 hover:bg-indigo-200">Thiết bị</Badge> 
+                  Vật liệu
                 </CardTitle>
-                <CardDescription>Machines et outils</CardDescription>
+                <CardDescription>Máy móc và công cụ</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">23 600 €</div>
@@ -458,7 +415,7 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M8 7a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H4a1 1 0 110-2h3V8a1 1 0 011-1z" clipRule="evenodd" />
                   </svg>
-                  -15.2% comparé à l'an dernier
+                  -15.2% so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
@@ -467,7 +424,7 @@ const FinancePage = () => {
                   handleCardDetailClick('Matériel');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
@@ -475,10 +432,10 @@ const FinancePage = () => {
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Main d\'oeuvre')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-teal-100 text-teal-800 hover:bg-teal-200">Services</Badge> 
-                  Main d'oeuvre
+                  <Badge className="mr-2 bg-teal-100 text-teal-800 hover:bg-teal-200">Dịch vụ</Badge> 
+                  Lao động
                 </CardTitle>
-                <CardDescription>Salaires, prestataires</CardDescription>
+                <CardDescription>Lương, nhà thầu</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">15 320 €</div>
@@ -486,7 +443,7 @@ const FinancePage = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4 mr-1">
                     <path fillRule="evenodd" d="M12 13a1 1 0 100-2H7.414l1.293-1.293a1 1 0 10-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L7.414 13H12z" clipRule="evenodd" />
                   </svg>
-                  +5.7% comparé à l'an dernier
+                  +5.7% so với năm trước
                 </p>
               </CardContent>
               <CardFooter className="pt-0">
@@ -495,25 +452,25 @@ const FinancePage = () => {
                   handleCardDetailClick('Main d\'oeuvre');
                 }}>
                   <FileText className="h-4 w-4 mr-2" />
-                  Détails
+                  Chi tiết
                 </Button>
               </CardFooter>
             </Card>
           </div>
           
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold">Dépenses récentes</h3>
+            <h3 className="text-lg font-semibold">Chi phí gần đây</h3>
             <Select value={filterCategory} onValueChange={setFilterCategory}>
               <SelectTrigger className="w-[180px]">
                 <Filter className="h-4 w-4 mr-2" />
-                <SelectValue placeholder="Catégorie" />
+                <SelectValue placeholder="Danh mục" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">Toutes les catégories</SelectItem>
-                <SelectItem value="intrants">Intrants</SelectItem>
-                <SelectItem value="equipement">Équipement</SelectItem>
-                <SelectItem value="services">Services</SelectItem>
-                <SelectItem value="administrative">Administrative</SelectItem>
+                <SelectItem value="all">Tất cả danh mục</SelectItem>
+                <SelectItem value="intrants">Đầu vào</SelectItem>
+                <SelectItem value="equipement">Thiết bị</SelectItem>
+                <SelectItem value="services">Dịch vụ</SelectItem>
+                <SelectItem value="administrative">Hành chính</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -521,8 +478,8 @@ const FinancePage = () => {
           {showAddExpenseForm ? (
             <div className="animate-fade-in bg-muted/20 rounded-lg p-6 text-center border border-primary/20">
               <CreditCard className="h-12 w-12 mx-auto text-primary mb-2" />
-              <h3 className="text-lg font-semibold mb-2">Ajout d'une nouvelle dépense</h3>
-              <p className="text-muted-foreground mb-4">Traitement en cours...</p>
+              <h3 className="text-lg font-semibold mb-2">Thêm chi phí mới</h3>
+              <p className="text-muted-foreground mb-4">Đang xử lý...</p>
               <div className="w-full bg-muted rounded-full h-2 mb-4">
                 <div className="bg-primary h-2 rounded-full animate-pulse" style={{width: '60%'}}></div>
               </div>
@@ -530,12 +487,12 @@ const FinancePage = () => {
           ) : (
             <div className="bg-muted/20 rounded-lg p-6 text-center">
               <CreditCard className="h-12 w-12 mx-auto text-muted-foreground mb-2" />
-              <h3 className="text-lg font-semibold mb-2">Module de gestion des dépenses</h3>
+              <h3 className="text-lg font-semibold mb-2">Module quản lý chi phí</h3>
               <p className="text-muted-foreground mb-4">
-                Activez ce module pour catégoriser, suivre et optimiser 
-                toutes vos dépenses en détail.
+                Kích hoạt module này để phân loại, theo dõi và tối ưu hóa 
+                tất cả chi phí chi tiết.
               </p>
-              <Button onClick={() => handleActivateModule('gestion des dépenses')}>Activer ce module</Button>
+              <Button onClick={() => handleActivateModule('quản lý chi phí')}>Kích hoạt module</Button>
             </div>
           )}
         </div>
@@ -543,32 +500,16 @@ const FinancePage = () => {
     },
     {
       value: 'forecast',
-      label: 'Prévisions',
+      label: 'Dự báo',
       content: (
         <StatisticsProvider>
           <div className="p-6 bg-white rounded-xl border">
             <h2 className="text-xl font-bold mb-4 flex items-center">
               <BarChart className="h-5 w-5 mr-2 text-indigo-500" />
-              <EditableField
-                value={forecastTitle}
-                onSave={(value) => {
-                  setForecastTitle(String(value));
-                  toast.success("Titre mis à jour", {
-                    description: "Le titre de la section prévisions a été modifié"
-                  });
-                }}
-              />
+              Dự Báo Tài Chính
             </h2>
             <p className="text-muted-foreground mb-6">
-              <EditableField
-                value={forecastDescription}
-                onSave={(value) => {
-                  setForecastDescription(String(value));
-                  toast.success("Description mise à jour", {
-                    description: "La description de la section prévisions a été modifiée"
-                  });
-                }}
-              />
+              Mô phỏng các kịch bản khác nhau để dự đoán sự phát triển của tình hình tài chính
             </p>
             
             <FinancialForecast />
@@ -578,31 +519,15 @@ const FinancePage = () => {
     },
     {
       value: 'budget',
-      label: 'Budget',
+      label: 'Ngân sách',
       content: (
         <div className="p-6 bg-white rounded-xl border">
           <h2 className="text-xl font-bold mb-4 flex items-center">
             <PieChart className="h-5 w-5 mr-2 text-orange-500" />
-            <EditableField
-              value={budgetTitle}
-              onSave={(value) => {
-                setBudgetTitle(String(value));
-                toast.success("Titre mis à jour", {
-                  description: "Le titre de la section budget a été modifié"
-                });
-              }}
-            />
+            Quản Lý Ngân Sách
           </h2>
           <p className="text-muted-foreground mb-6">
-            <EditableField
-              value={budgetDescription}
-              onSave={(value) => {
-                setBudgetDescription(String(value));
-                toast.success("Description mise à jour", {
-                  description: "La description de la section budget a été modifiée"
-                });
-              }}
-            />
+            Lập kế hoạch và theo dõi ngân sách để tối ưu hóa chi tiêu
           </p>
           
           <BudgetPlanning />
@@ -611,60 +536,44 @@ const FinancePage = () => {
     },
     {
       value: 'reports',
-      label: 'Rapports',
+      label: 'Báo cáo',
       content: (
         <div className="p-6 bg-white rounded-xl border">
           <h2 className="text-xl font-bold mb-4 flex items-center">
             <BarChart className="h-5 w-5 mr-2 text-blue-500" />
-            <EditableField
-              value={reportsTitle}
-              onSave={(value) => {
-                setReportsTitle(String(value));
-                toast.success("Titre mis à jour", {
-                  description: "Le titre de la section rapports a été modifié"
-                });
-              }}
-            />
+            Báo Cáo Tài Chính
           </h2>
           <p className="text-muted-foreground mb-6">
-            <EditableField
-              value={reportsDescription}
-              onSave={(value) => {
-                setReportsDescription(String(value));
-                toast.success("Description mise à jour", {
-                  description: "La description de la section rapports a été modifiée"
-                });
-              }}
-            />
+            Tạo báo cáo chi tiết để phân tích hiệu suất tài chính của trang trại
           </p>
           
           <div className="mb-6">
             <div className="p-4 bg-muted/30 rounded-lg mb-4">
-              <h3 className="font-medium mb-2">Période d'analyse</h3>
+              <h3 className="font-medium mb-2">Giai đoạn phân tích</h3>
               <div className="tabs tabs-boxed inline-flex p-1 bg-muted rounded-md">
                 <button 
                   className={`py-1.5 px-3 rounded-sm ${timeFrame === 'month' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
                   onClick={() => setTimeFrame('month')}
                 >
-                  Mois en cours
+                  Tháng hiện tại
                 </button>
                 <button 
                   className={`py-1.5 px-3 rounded-sm ${timeFrame === 'quarter' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
                   onClick={() => setTimeFrame('quarter')}
                 >
-                  Trimestre
+                  Quý
                 </button>
                 <button 
                   className={`py-1.5 px-3 rounded-sm ${timeFrame === 'year' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
                   onClick={() => setTimeFrame('year')}
                 >
-                  Année
+                  Năm
                 </button>
                 <button 
                   className={`py-1.5 px-3 rounded-sm ${timeFrame === 'custom' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
                   onClick={() => setTimeFrame('custom')}
                 >
-                  Personnalisé
+                  Tùy chỉnh
                 </button>
               </div>
             </div>
@@ -675,20 +584,20 @@ const FinancePage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <PieChart className="h-4 w-4 mr-2 text-muted-foreground" />
-                  Rapports disponibles
+                  Báo cáo có sẵn
                 </CardTitle>
                 <CardDescription>
-                  Sélectionnez un rapport à générer
+                  Chọn báo cáo cần tạo
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-2">
                 <Button variant="outline" className="w-full justify-start" onClick={handleGenerateReport}>
                   <BarChart className="h-4 w-4 mr-2" />
-                  Rapport de rentabilité
+                  Báo cáo lợi nhuận
                 </Button>
                 <Button variant="outline" className="w-full justify-start" onClick={handleGenerateReport}>
                   <CreditCard className="h-4 w-4 mr-2" />
-                  Analyse des dépenses
+                  Phân tích chi phí
                 </Button>
               </CardContent>
             </Card>
@@ -697,35 +606,35 @@ const FinancePage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
-                  Génération de rapports
+                  Tạo báo cáo
                 </CardTitle>
                 <CardDescription>
-                  État de la génération
+                  Trạng thái tạo
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 {reportGenerating ? (
                   <div className="space-y-4">
                     <div className="flex items-center justify-between mb-2">
-                      <span>Génération du rapport {timeFrame}...</span>
+                      <span>Đang tạo báo cáo {timeFrame}...</span>
                       <span className="text-sm text-muted-foreground">75%</span>
                     </div>
                     <div className="w-full bg-muted rounded-full h-2">
                       <div className="bg-primary h-2 rounded-full animate-pulse" style={{width: '75%'}}></div>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Veuillez patienter pendant la compilation des données financières...
+                      Vui lòng đợi trong khi biên soạn dữ liệu tài chính...
                     </p>
                   </div>
                 ) : (
                   <div className="text-center py-6">
                     <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                    <h4 className="text-lg font-medium mb-2">Aucun rapport en cours</h4>
+                    <h4 className="text-lg font-medium mb-2">Không có báo cáo nào đang chạy</h4>
                     <p className="text-sm text-muted-foreground mb-4">
-                      Choisissez un type de rapport à gauche pour lancer la génération
+                      Chọn loại báo cáo bên trái để bắt đầu tạo
                     </p>
                     <Button variant="outline" onClick={handleGenerateReport}>
-                      Générer un rapport
+                      Tạo báo cáo
                     </Button>
                   </div>
                 )}

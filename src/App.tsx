@@ -9,11 +9,13 @@ import CropsPage from "./pages/CropsPage";
 import InventoryPage from "./pages/InventoryPage";
 import FinancePage from "./pages/FinancePage";
 import StatsPage from "./pages/StatsPage";
+import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
 import { useEffect } from "react";
 import { CRMProvider } from "./contexts/CRMContext";
 import { StatisticsProvider } from "./contexts/StatisticsContext";
 import { AppSettingsProvider } from "./contexts/AppSettingsContext";
+import { UserProvider } from "./contexts/UserContext";
 import { trackPageView } from "./utils/analytics";
 
 // Define routes configuration with redirects
@@ -25,6 +27,7 @@ const routes = [
   { path: "/inventaire", element: <InventoryPage /> },
   { path: "/finances", element: <FinancePage /> },
   { path: "/statistiques", element: <StatisticsProvider><StatsPage /></StatisticsProvider> },
+  { path: "/admin", element: <AdminPage /> },
   { path: "/rapports", element: <Navigate to="/statistiques" replace /> },
   { path: "/parametres", element: <Navigate to="/" replace /> },
   { path: "/dashboard", element: <Navigate to="/" replace /> },
@@ -63,22 +66,24 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AppSettingsProvider>
-        <CRMProvider>
-          <BrowserRouter>
-            <TooltipProvider>
-              <RouterChangeHandler />
-              <Routes>
-                {routes.map((route) => (
-                  <Route 
-                    key={route.path} 
-                    path={route.path} 
-                    element={route.element} 
-                  />
-                ))}
-              </Routes>
-            </TooltipProvider>
-          </BrowserRouter>
-        </CRMProvider>
+        <UserProvider>
+          <CRMProvider>
+            <BrowserRouter>
+              <TooltipProvider>
+                <RouterChangeHandler />
+                <Routes>
+                  {routes.map((route) => (
+                    <Route 
+                      key={route.path} 
+                      path={route.path} 
+                      element={route.element} 
+                    />
+                  ))}
+                </Routes>
+              </TooltipProvider>
+            </BrowserRouter>
+          </CRMProvider>
+        </UserProvider>
       </AppSettingsProvider>
     </QueryClientProvider>
   );

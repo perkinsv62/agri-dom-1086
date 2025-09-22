@@ -16,7 +16,6 @@ import {
   Upload,
   ChevronDown
 } from 'lucide-react';
-import { EditableField } from './ui/editable-field';
 import { useToast } from "@/hooks/use-toast";
 import { toast } from 'sonner';
 import { EditableTable, Column } from './ui/editable-table';
@@ -57,44 +56,44 @@ interface CropHistoryEntry {
 const initialParcelData: ParcelData[] = [
   { 
     id: 1, 
-    name: 'Parcelle Nord', 
+    name: 'Lô đất Bắc', 
     area: 12.5, 
-    crop: 'Blé', 
+    crop: 'Lúa mì', 
     status: 'active', 
     lastActivity: '2023-08-15', 
-    soilType: 'Argileux', 
+    soilType: 'Đất sét', 
     coordinates: { lat: 45.4397, lng: 4.3872 },
     ph: 6.8,
     organicMatter: 3.2
   },
   { 
     id: 2, 
-    name: 'Parcelle Est', 
+    name: 'Lô đất Đông', 
     area: 8.3, 
-    crop: 'Maïs', 
+    crop: 'Ngô', 
     status: 'active', 
     lastActivity: '2023-08-10', 
-    soilType: 'Limoneux', 
+    soilType: 'Đất thịt', 
     coordinates: { lat: 45.4412, lng: 4.3901 }
   },
   { 
     id: 3, 
-    name: 'Parcelle Sud', 
+    name: 'Lô đất Nam', 
     area: 15.7, 
-    crop: 'Tournesol', 
+    crop: 'Hướng dương', 
     status: 'active', 
     lastActivity: '2023-08-05', 
-    soilType: 'Sableux', 
+    soilType: 'Đất cát', 
     coordinates: { lat: 45.4380, lng: 4.3855 }
   },
   { 
     id: 4, 
-    name: 'Parcelle Ouest', 
+    name: 'Lô đất Tây', 
     area: 10.2, 
-    crop: 'Orge', 
+    crop: 'Lúa mạch', 
     status: 'inactive', 
     lastActivity: '2023-07-20', 
-    soilType: 'Argileux-Limoneux', 
+    soilType: 'Đất sét thịt', 
     coordinates: { lat: 45.4405, lng: 4.3840 }
   },
   { 
@@ -111,9 +110,9 @@ const initialParcelData: ParcelData[] = [
 
 // Initial crop history data
 const initialCropHistory: CropHistoryEntry[] = [
-  { year: '2022', crop: 'Maïs', yield: '8.2 t/ha', notes: 'Été sec' },
-  { year: '2021', crop: 'Blé', yield: '7.5 t/ha', notes: '-' },
-  { year: '2020', crop: 'Colza', yield: '3.8 t/ha', notes: 'Problèmes d\'insectes' }
+  { year: '2022', crop: 'Ngô', yield: '8.2 t/ha', notes: 'Mùa hè khô hạn' },
+  { year: '2021', crop: 'Lúa mì', yield: '7.5 t/ha', notes: '-' },
+  { year: '2020', crop: 'Cải dầu', yield: '3.8 t/ha', notes: 'Vấn đề sâu bệnh' }
 ];
 
 // Component for the visual representation of a parcel
@@ -139,10 +138,10 @@ const ParcelCard = ({
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'active': return 'Active';
-      case 'inactive': return 'Inactive';
-      case 'planned': return 'Planifiée';
-      default: return 'Inconnu';
+      case 'active': return 'Hoạt động';
+      case 'inactive': return 'Không hoạt động';
+      case 'planned': return 'Đã lên kế hoạch';
+      default: return 'Không xác định';
     }
   };
 
@@ -286,7 +285,7 @@ const ParcelManagement = () => {
       setParcels(parcels.map(p => p.id === updatedParcel.id ? updatedParcel : p));
       setSelectedParcel(updatedParcel);
       setIsEditing(false);
-      toast.success('Parcelle mise à jour');
+      toast.success('Lô đất đã được cập nhật');
     }
   };
 
@@ -330,7 +329,7 @@ const ParcelManagement = () => {
     if (selectedParcel?.id === id) {
       setSelectedParcel(null);
     }
-    toast.success('Parcelle supprimée');
+    toast.success('Lô đất đã được xóa');
   };
 
   const handleAddParcel = () => {
@@ -361,7 +360,7 @@ const ParcelManagement = () => {
       coordinates: { lat: 45.4390, lng: 4.3885 }
     });
     setShowAddParcelForm(false);
-    toast.success('Nouvelle parcelle créée');
+    toast.success('Lô đất mới đã được tạo');
   };
 
   const handleNewParcelInputChange = (field: keyof ParcelData, value: string | number) => {
@@ -384,10 +383,10 @@ const ParcelManagement = () => {
 
   // Crop history table columns
   const cropHistoryColumns: Column[] = [
-    { id: 'year', header: 'Année', accessorKey: 'year', isEditable: true, width: '100px' },
-    { id: 'crop', header: 'Culture', accessorKey: 'crop', isEditable: true },
-    { id: 'yield', header: 'Rendement', accessorKey: 'yield', isEditable: true, width: '120px' },
-    { id: 'notes', header: 'Remarques', accessorKey: 'notes', isEditable: true }
+    { id: 'year', header: 'Năm', accessorKey: 'year', isEditable: true, width: '100px' },
+    { id: 'crop', header: 'Cây trồng', accessorKey: 'crop', isEditable: true },
+    { id: 'yield', header: 'Năng suất', accessorKey: 'yield', isEditable: true, width: '120px' },
+    { id: 'notes', header: 'Ghi chú', accessorKey: 'notes', isEditable: true }
   ];
 
   const handleCropHistoryUpdate = (rowIndex: number, columnId: string, value: any) => {
@@ -397,7 +396,7 @@ const ParcelManagement = () => {
       [columnId]: value
     };
     setCropHistory(updatedHistory);
-    toast.success('Historique mis à jour');
+    toast.success('Lịch sử đã được cập nhật');
   };
 
   const handleAddCropHistory = (newRow: Record<string, any>) => {
@@ -407,14 +406,14 @@ const ParcelManagement = () => {
       yield: newRow.yield || '',
       notes: newRow.notes || ''
     }]);
-    toast.success('Entrée d\'historique ajoutée');
+    toast.success('Đã thêm mục lịch sử');
   };
 
   const handleDeleteCropHistory = (rowIndex: number) => {
     const updatedHistory = [...cropHistory];
     updatedHistory.splice(rowIndex, 1);
     setCropHistory(updatedHistory);
-    toast.success('Entrée d\'historique supprimée');
+    toast.success('Đã xóa mục lịch sử');
   };
   
   const handleSort = (field: string) => {
@@ -427,11 +426,11 @@ const ParcelManagement = () => {
   };
   
   const handleBulkExport = () => {
-    toast.success('Export des parcelles au format CSV lancé');
+    toast.success('Đã bắt đầu xuất lô đất sang định dạng CSV');
   };
   
   const handleBulkImport = () => {
-    toast.success('Import de parcelles depuis CSV lancé');
+    toast.success('Đã bắt đầu nhập lô đất từ CSV');
   };
   
   const handleNotesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -443,7 +442,7 @@ const ParcelManagement = () => {
       {showAddParcelForm && (
         <div className="mb-6 border rounded-xl p-4 bg-white">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">Ajouter une nouvelle parcelle</h2>
+            <h2 className="text-lg font-semibold">Thêm lô đất mới</h2>
             <button 
               className="p-1.5 hover:bg-gray-100 rounded"
               onClick={() => setShowAddParcelForm(false)}
@@ -456,47 +455,47 @@ const ParcelManagement = () => {
             <div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Nom</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Tên</label>
                   <input 
                     type="text" 
                     value={newParcel.name || ''} 
                     onChange={(e) => handleNewParcelInputChange('name', e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md"
-                    placeholder="Nom de la parcelle"
+                    placeholder="Tên lô đất"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Surface (ha)</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Diện tích (ha)</label>
                   <input 
                     type="number" 
                     value={newParcel.area || ''} 
                     onChange={(e) => handleNewParcelInputChange('area', e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md"
-                    placeholder="Surface en hectares"
+                    placeholder="Diện tích tính bằng ha"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Culture</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Cây trồng</label>
                   <input 
                     type="text" 
                     value={newParcel.crop || ''} 
                     onChange={(e) => handleNewParcelInputChange('crop', e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md"
-                    placeholder="Culture principale"
+                    placeholder="Cây trồng chính"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Type de sol</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Loại đất</label>
                   <input 
                     type="text" 
                     value={newParcel.soilType || ''} 
                     onChange={(e) => handleNewParcelInputChange('soilType', e.target.value)}
                     className="w-full px-3 py-2 border border-input rounded-md"
-                    placeholder="Type de sol"
+                    placeholder="Loại đất"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Dernière activité</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Hoạt động cuối cùng</label>
                   <input 
                     type="date" 
                     value={newParcel.lastActivity || ''} 
@@ -505,35 +504,35 @@ const ParcelManagement = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-muted-foreground mb-1">Statut</label>
+                  <label className="block text-sm font-medium text-muted-foreground mb-1">Trạng thái</label>
                   <div className="flex space-x-2 mt-1">
                     <button 
                       className={`px-3 py-1.5 text-xs rounded-md ${newParcel.status === 'active' ? 'bg-agri-success text-white' : 'bg-muted'}`}
                       onClick={() => handleNewParcelStatusChange('active')}
                     >
-                      Active
+                      Hoạt động
                     </button>
                     <button 
                       className={`px-3 py-1.5 text-xs rounded-md ${newParcel.status === 'planned' ? 'bg-agri-warning text-white' : 'bg-muted'}`}
                       onClick={() => handleNewParcelStatusChange('planned')}
                     >
-                      Planifiée
+                      Đã lên kế hoạch
                     </button>
                     <button 
                       className={`px-3 py-1.5 text-xs rounded-md ${newParcel.status === 'inactive' ? 'bg-agri-danger text-white' : 'bg-muted'}`}
                       onClick={() => handleNewParcelStatusChange('inactive')}
                     >
-                      Inactive
+                      Không hoạt động
                     </button>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-1">Position sur la carte</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Vị trí trên bản đồ</label>
               <ParcelMap 
                 coordinates={newParcel.coordinates || { lat: 45.4390, lng: 4.3885 }}
-                parcelName={newParcel.name || "Nouvelle parcelle"}
+                parcelName={newParcel.name || "Lô đất mới"}
                 isEditing={true}
                 onCoordinatesChange={handleNewParcelCoordinatesChange}
               />
@@ -545,13 +544,13 @@ const ParcelManagement = () => {
               className="mr-2 px-4 py-2 border rounded-lg hover:bg-muted"
               onClick={() => setShowAddParcelForm(false)}
             >
-              Annuler
+              Hủy
             </button>
             <button 
               className="px-4 py-2 bg-agri-primary text-white rounded-lg hover:bg-agri-primary-dark"
               onClick={handleSaveNewParcel}
             >
-              Créer
+              Tạo
             </button>
           </div>
         </div>
@@ -561,7 +560,7 @@ const ParcelManagement = () => {
         {/* Left Column - Parcel List */}
         <div className="lg:col-span-1 space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-medium">Liste des parcelles</h2>
+            <h2 className="text-lg font-medium">Danh sách lô đất</h2>
             
             <div className="flex space-x-2">
               <Button variant="outline" size="sm" onClick={handleBulkExport}>
@@ -580,7 +579,7 @@ const ParcelManagement = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
                 type="text" 
-                placeholder="Rechercher..." 
+                placeholder="Tìm kiếm..." 
                 className="pl-10 pr-4 py-2 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -593,10 +592,10 @@ const ParcelManagement = () => {
                   <SelectValue placeholder="Tous" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Tous</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                  <SelectItem value="planned">Planifiée</SelectItem>
+                  <SelectItem value="all">Tất cả</SelectItem>
+                  <SelectItem value="active">Hoạt động</SelectItem>
+                  <SelectItem value="inactive">Không hoạt động</SelectItem>
+                  <SelectItem value="planned">Đã lên kế hoạch</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -610,7 +609,7 @@ const ParcelManagement = () => {
               className={sortBy === 'name' ? 'bg-muted' : ''}
               onClick={() => handleSort('name')}
             >
-              Nom
+              Tên
               {sortBy === 'name' && (
                 <ChevronDown className={`h-4 w-4 ml-1 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
               )}
@@ -621,7 +620,7 @@ const ParcelManagement = () => {
               className={sortBy === 'area' ? 'bg-muted' : ''}
               onClick={() => handleSort('area')}
             >
-              Surface
+              Diện tích
               {sortBy === 'area' && (
                 <ChevronDown className={`h-4 w-4 ml-1 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
               )}
@@ -632,7 +631,7 @@ const ParcelManagement = () => {
               className={sortBy === 'crop' ? 'bg-muted' : ''}
               onClick={() => handleSort('crop')}
             >
-              Culture
+              Cây trồng
               {sortBy === 'crop' && (
                 <ChevronDown className={`h-4 w-4 ml-1 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
               )}
@@ -643,7 +642,7 @@ const ParcelManagement = () => {
               className={sortBy === 'date' ? 'bg-muted' : ''}
               onClick={() => handleSort('date')}
             >
-              Date
+              Ngày
               {sortBy === 'date' && (
                 <ChevronDown className={`h-4 w-4 ml-1 ${sortDirection === 'desc' ? 'rotate-180' : ''}`} />
               )}
@@ -664,7 +663,7 @@ const ParcelManagement = () => {
             ) : (
               <div className="text-center py-8 px-4 border border-dashed rounded-lg">
                 <AlertCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-muted-foreground">Aucune parcelle trouvée avec ces critères</p>
+                <p className="text-muted-foreground">Không tìm thấy lô đất nào với tiêu chí này</p>
               </div>
             )}
           </div>
@@ -674,7 +673,7 @@ const ParcelManagement = () => {
             onClick={handleAddParcel}
           >
             <Plus className="h-4 w-4 mr-2" />
-            Ajouter une parcelle
+            Thêm lô đất
           </Button>
         </div>
 

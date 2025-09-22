@@ -22,8 +22,8 @@ const ParcelsPage = () => {
     handleTitleChange, 
     handleDescriptionChange 
   } = usePageMetadata({
-    defaultTitle: 'Gestion des Parcelles',
-    defaultDescription: 'Gérez, organisez et optimisez toutes vos parcelles agricoles'
+    defaultTitle: 'Quản Lý Lô Đất',
+    defaultDescription: 'Quản lý, tổ chức và tối ưu hóa tất cả các lô đất nông nghiệp của bạn'
   });
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,20 +44,20 @@ const ParcelsPage = () => {
   });
   
   const [activeParcelAlerts, setActiveParcelAlerts] = useState([
-    { id: 1, parcel: 'Parcelle A12', type: 'Pluie intense', severity: 'Haute' },
-    { id: 2, parcel: 'Parcelle B05', type: 'Sécheresse', severity: 'Moyenne' }
+    { id: 1, parcel: 'Lô đất A12', type: 'Mưa lớn', severity: 'Cao' },
+    { id: 2, parcel: 'Lô đất B05', type: 'Hạn hán', severity: 'Trung bình' }
   ]);
 
   // Simuler la synchronisation des données avec les autres modules
   useEffect(() => {
     const syncWithOtherModules = () => {
-      console.log("Synchronisation des données avec les modules de cultures et de statistiques");
+      console.log("Đồng bộ dữ liệu với các module cây trồng và thống kê");
       
       // Simule un délai de synchronisation
       const timer = setTimeout(() => {
         setLastSyncDate(new Date());
         syncDataAcrossCRM();
-        console.log("Les données des parcelles sont maintenant synchronisées avec tous les modules");
+        console.log("Dữ liệu lô đất hiện đã được đồng bộ với tất cả các module");
       }, 1500);
       
       return () => clearTimeout(timer);
@@ -67,8 +67,8 @@ const ParcelsPage = () => {
   }, [syncDataAcrossCRM]);
 
   const handleExportData = () => {
-    console.log("L'export de toutes les données des parcelles a démarré");
-    console.log("Les données exportées sont maintenant disponibles dans le module Statistiques");
+    console.log("Đã bắt đầu xuất tất cả dữ liệu lô đất");
+    console.log("Dữ liệu đã xuất hiện có sẵn trong module Thống kê");
   };
 
   const handleImportData = () => {
@@ -77,26 +77,26 @@ const ParcelsPage = () => {
   
   const handleImportConfirm = (importType: string) => {
     setImportDialogOpen(false);
-    console.log(`Les données ${importType} ont été importées avec succès`);
-    console.log("Les modules Cultures et Statistiques ont été mis à jour avec les nouvelles données");
+    console.log(`Dữ liệu ${importType} đã được nhập thành công`);
+    console.log("Các module Cây trồng và Thống kê đã được cập nhật với dữ liệu mới");
   };
   
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm) {
-      console.log(`Recherche effectuée pour "${searchTerm}"`);
+      console.log(`Đã thực hiện tìm kiếm cho "${searchTerm}"`);
     }
   };
   
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'Basse':
+      case 'Thấp':
         return 'bg-green-100 text-green-800';
-      case 'Moyenne':
+      case 'Trung bình':
         return 'bg-yellow-100 text-yellow-800';
-      case 'Haute':
+      case 'Cao':
         return 'bg-orange-100 text-orange-800';
-      case 'Extrême':
+      case 'Cực cao':
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -111,7 +111,7 @@ const ParcelsPage = () => {
 
   const handleGenerateStatistics = () => {
     setStatsDialogOpen(true);
-    console.log("Les statistiques de vos parcelles ont été générées");
+    console.log("Thống kê lô đất của bạn đã được tạo");
   };
 
   const handleOpenLayerManager = () => {
@@ -135,7 +135,7 @@ const ParcelsPage = () => {
               onDescriptionChange={handleDescriptionChange}
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Dernière synchronisation avec les autres modules: {lastSyncDate.toLocaleString()}
+              Đồng bộ cuối với các module khác: {lastSyncDate.toLocaleString()}
             </p>
           </div>
           
@@ -171,7 +171,7 @@ const ParcelsPage = () => {
               className="inline-flex items-center px-4 py-2 border border-input bg-white rounded-lg hover:bg-muted/30 transition-colors"
               onClick={toggleView}
             >
-              {showGuadeloupeView ? 'Vue Standard' : 'Vue Guadeloupe'}
+              {showGuadeloupeView ? 'Chế độ Chuẩn' : 'Chế độ Guadeloupe'}
             </button>
           </div>
         </div>
@@ -184,23 +184,23 @@ const ParcelsPage = () => {
         >
           <div className="flex items-center mb-2">
             <FileSpreadsheet className="h-5 w-5 mr-2 text-agri-primary" />
-            <h2 className="text-lg font-medium">Aperçu des statistiques parcellaires</h2>
+            <h2 className="text-lg font-medium">Tổng quan thống kê lô đất</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="p-3 bg-muted/20 rounded-lg hover:bg-muted/30 transition-colors">
-              <p className="text-sm text-muted-foreground">Surface totale</p>
+              <p className="text-sm text-muted-foreground">Diện tích tổng</p>
               <p className="text-2xl font-semibold">128.5 ha</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg hover:bg-muted/30 transition-colors">
-              <p className="text-sm text-muted-foreground">Parcelles actives</p>
+              <p className="text-sm text-muted-foreground">Lô đất hoạt động</p>
               <p className="text-2xl font-semibold">42</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg hover:bg-muted/30 transition-colors">
-              <p className="text-sm text-muted-foreground">Rendement moyen</p>
+              <p className="text-sm text-muted-foreground">Năng suất trung bình</p>
               <p className="text-2xl font-semibold">7.2 t/ha</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg hover:bg-muted/30 transition-colors">
-              <p className="text-sm text-muted-foreground">Cultures principales</p>
+              <p className="text-sm text-muted-foreground">Cây trồng chính</p>
               <p className="text-xl font-semibold">Maïs, Blé, Colza</p>
             </div>
           </div>

@@ -31,19 +31,19 @@ const Statistics = () => {
   
   const getChartTitle = () => {
     switch (currentChart) {
-      case 'yields': return 'Évolution des rendements';
-      case 'financial': return 'Analyse financière';
-      case 'environmental': return 'Indicateurs environnementaux';
-      default: return 'Statistiques';
+      case 'yields': return 'Tiến triển năng suất';
+      case 'financial': return 'Phân tích tài chính';
+      case 'environmental': return 'Chỉ số môi trường';
+      default: return 'Thống kê';
     }
   };
   
   const getChartDescription = () => {
     switch (currentChart) {
-      case 'yields': return 'Évolution des rendements par culture au fil des années';
-      case 'financial': return 'Analyse détaillée des performances financières';
-      case 'environmental': return 'Suivi des indicateurs de performance environnementale';
-      default: return 'Données statistiques de votre exploitation';
+      case 'yields': return 'Tiến triển năng suất theo cây trồng qua các năm';
+      case 'financial': return 'Phân tích chi tiết hiệu suất tài chính';
+      case 'environmental': return 'Theo dõi chỉ số hiệu suất môi trường';
+      default: return 'Dữ liệu thống kê của trang trại bạn';
     }
   };
 
@@ -79,18 +79,18 @@ const Statistics = () => {
         ];
       case 'financial':
         return [
-          { key: "name", header: "Parcelle" },
-          { key: "profitability", header: "Rentabilité (€)" },
-          { key: "size", header: "Surface (ha)" },
-          { key: "crop", header: "Culture" }
+          { key: "name", header: "Lô đất" },
+          { key: "profitability", header: "Lợi nhuận (€)" },
+          { key: "size", header: "Diện tích (ha)" },
+          { key: "crop", header: "Cây trồng" }
         ];
       case 'environmental':
         return [
-          { key: "indicator", header: "Indicateur" },
-          { key: "current", header: "Valeur actuelle" },
-          { key: "target", header: "Objectif" },
-          { key: "trend", header: "Tendance" },
-          { key: "status", header: "Statut" }
+          { key: "indicator", header: "Chỉ số" },
+          { key: "current", header: "Giá trị hiện tại" },
+          { key: "target", header: "Mục tiêu" },
+          { key: "trend", header: "Xu hướng" },
+          { key: "status", header: "Trạng thái" }
         ];
       default:
         return [];
@@ -99,7 +99,7 @@ const Statistics = () => {
   
   // Handle export for the chart filters
   const handleExportData = async () => {
-    console.log(`Exportation des données ${currentChart} en cours...`);
+    console.log(`Đang xuất dữ liệu ${currentChart}...`);
   };
   
   return (
@@ -110,13 +110,13 @@ const Statistics = () => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/">Tableau de bord</Link>
+              <Link to="/">Bảng điều khiển</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to="/statistiques">Statistiques</Link>
+              <Link to="/statistiques">Thống kê</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -173,7 +173,7 @@ const Statistics = () => {
           >
             <Link to="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Retour au tableau de bord
+              Quay lại bảng điều khiển
             </Link>
           </Button>
           
@@ -183,7 +183,7 @@ const Statistics = () => {
             asChild
           >
             <Link to="/rapports">
-              Voir tous les rapports
+              Xem tất cả báo cáo
               <ChevronRight className="h-4 w-4 ml-2" />
             </Link>
           </Button>

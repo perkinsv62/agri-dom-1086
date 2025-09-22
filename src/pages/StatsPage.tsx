@@ -19,8 +19,8 @@ interface PerformanceData {
 }
 
 const StatsPage = () => {
-  const [pageTitle, setPageTitle] = useState('Statistiques et Analyses');
-  const [pageDescription, setPageDescription] = useState('Visualisez et analysez les données de votre exploitation en Guadeloupe');
+  const [pageTitle, setPageTitle] = useState('Thống kê và Phân tích');
+  const [pageDescription, setPageDescription] = useState('Hiển thị và phân tích dữ liệu của trang trại Guadeloupe của bạn');
   const [activeView, setActiveView] = useState<'performance' | 'harvest' | 'detailed'>('performance');
   const [lastSyncDate, setLastSyncDate] = useState<Date>(new Date());
   const [isSyncing, setIsSyncing] = useState<boolean>(false);
@@ -36,7 +36,7 @@ const StatsPage = () => {
   
   useEffect(() => {
     const initialSync = setTimeout(() => {
-      console.log('Les modules Parcelles, Cultures et Finances sont maintenant connectés aux statistiques');
+      console.log('Các module Lô đất, Cây trồng và Tài chính hiện đã được kết nối với thống kê');
     }, 1000);
     
     return () => clearTimeout(initialSync);
@@ -44,21 +44,21 @@ const StatsPage = () => {
   
   const syncData = () => {
     setIsSyncing(true);
-    console.log('Récupération des dernières données depuis tous les modules connectés...');
+    console.log('Đang lấy dữ liệu mới nhất từ tất cả các module đã kết nối...');
     
     setTimeout(() => {
       setIsSyncing(false);
       setLastSyncDate(new Date());
-      console.log('Toutes les statistiques sont à jour avec les dernières données des modules');
-      console.log("Les indicateurs de performance ont été recalculés avec les dernières données");
+      console.log('Tất cả thống kê đã được cập nhật với dữ liệu mới nhất từ các module');
+      console.log("Các chỉ số hiệu suất đã được tính toán lại với dữ liệu mới nhất");
     }, 2000);
   };
   
   const columns: Column[] = [
-    { id: 'name', header: 'Indicateur', accessorKey: 'name', isEditable: true },
-    { id: 'current', header: 'Valeur actuelle', accessorKey: 'current', type: 'number', isEditable: true },
-    { id: 'target', header: 'Objectif', accessorKey: 'target', type: 'number', isEditable: true },
-    { id: 'unit', header: 'Unité', accessorKey: 'unit', isEditable: true },
+    { id: 'name', header: 'Chỉ số', accessorKey: 'name', isEditable: true },
+    { id: 'current', header: 'Giá trị hiện tại', accessorKey: 'current', type: 'number', isEditable: true },
+    { id: 'target', header: 'Mục tiêu', accessorKey: 'target', type: 'number', isEditable: true },
+    { id: 'unit', header: 'Đơn vị', accessorKey: 'unit', isEditable: true },
   ];
   
   const handleTableUpdate = (rowIndex: number, columnId: string, value: any) => {
@@ -74,8 +74,8 @@ const StatsPage = () => {
     newData[rowIndex] = updatedRow;
     setPerformanceData(newData);
     
-    console.log(`L'indicateur ${updatedRow.name} a été mis à jour avec succès.`);
-    console.log(`Les modules connectés ont été informés de la mise à jour de ${updatedRow.name}`);
+    console.log(`Chỉ số ${updatedRow.name} đã được cập nhật thành công.`);
+    console.log(`Các module đã kết nối đã được thông báo về việc cập nhật ${updatedRow.name}`);
   };
   
   const handleDeleteRow = (rowIndex: number) => {
@@ -84,8 +84,8 @@ const StatsPage = () => {
     newData.splice(rowIndex, 1);
     setPerformanceData(newData);
     
-    console.log(`L'indicateur ${deletedItem.name} a été supprimé avec succès.`);
-    console.log(`Les modules connectés ont été informés de la suppression de ${deletedItem.name}`);
+    console.log(`Chỉ số ${deletedItem.name} đã được xóa thành công.`);
+    console.log(`Các module đã kết nối đã được thông báo về việc xóa ${deletedItem.name}`);
   };
   
   const handleAddRow = (newRow: Record<string, any>) => {
@@ -97,33 +97,33 @@ const StatsPage = () => {
     };
     setPerformanceData([...performanceData, typedRow]);
     
-    console.log(`L'indicateur ${typedRow.name} a été ajouté avec succès.`);
-    console.log(`Les modules connectés ont été informés de l'ajout de ${typedRow.name}`);
+    console.log(`Chỉ số ${typedRow.name} đã được thêm thành công.`);
+    console.log(`Các module đã kết nối đã được thông báo về việc thêm ${typedRow.name}`);
   };
 
   const handleTitleChange = (value: string | number) => {
     setPageTitle(String(value));
-    console.log('Le titre de la page a été mis à jour.');
+    console.log('Tiêu đề trang đã được cập nhật.');
   };
 
   const handleDescriptionChange = (value: string | number) => {
     setPageDescription(String(value));
-    console.log('La description de la page a été mise à jour.');
+    console.log('Mô tả trang đã được cập nhật.');
   };
   
   const handleViewChange = (view: 'performance' | 'harvest' | 'detailed') => {
     setActiveView(view);
-    console.log(`Vous consultez maintenant la vue ${
-      view === 'performance' ? 'Indicateurs de performance' : 
-      view === 'harvest' ? 'Suivi des récoltes' : 'Statistiques détaillées'
+    console.log(`Bạn đang xem chế độ ${
+      view === 'performance' ? 'Chỉ số hiệu suất' : 
+      view === 'harvest' ? 'Theo dõi thu hoạch' : 'Thống kê chi tiết'
     }`);
     
-    console.log(`Les modules connectés ont été adaptés à la vue ${view === 'performance' ? 'indicateurs' : view === 'harvest' ? 'récoltes' : 'détaillée'}`);
+    console.log(`Các module đã kết nối đã được điều chỉnh cho chế độ ${view === 'performance' ? 'chỉ số' : view === 'harvest' ? 'thu hoạch' : 'chi tiết'}`);
   };
   
   const handleExportData = () => {
-    console.log('Les données statistiques ont été exportées avec succès.');
-    console.log("Les données exportées sont disponibles pour tous les modules");
+    console.log('Dữ liệu thống kê đã được xuất thành công.');
+    console.log("Dữ liệu đã xuất có sẵn cho tất cả các module");
   };
 
   return (
@@ -160,7 +160,7 @@ const StatsPage = () => {
                 </p>
                 <div className="flex items-center mt-1 text-xs text-muted-foreground">
                   <span className="mr-2">Modules connectés: {connectedModules.join(', ')}</span>
-                  <span>Dernière synchro: {lastSyncDate.toLocaleString()}</span>
+                  <span>Dồng bộ cuối: {lastSyncDate.toLocaleString()}</span>
                 </div>
               </div>
               
@@ -174,7 +174,7 @@ const StatsPage = () => {
                   }`}
                 >
                   <PieChart className="h-4 w-4 mr-1.5" />
-                  Indicateurs
+                  Chỉ số
                 </button>
                 
                 <button 
@@ -186,7 +186,7 @@ const StatsPage = () => {
                   }`}
                 >
                   <BarChart className="h-4 w-4 mr-1.5" />
-                  Récoltes
+                  Thu hoạch
                 </button>
                 
                 <button 
@@ -198,18 +198,18 @@ const StatsPage = () => {
                   }`}
                 >
                   <TrendingUp className="h-4 w-4 mr-1.5" />
-                  Détaillé
+                  Chi tiết
                 </button>
                 
                 <PreviewPrintButton
                   data={performanceData}
                   moduleName="performance-indicators"
-                  title="Indicateurs de Performance Agricole"
+                  title="Chỉ số Hiệu suất Nông nghiệp"
                   columns={[
-                    { key: "name", header: "Indicateur" },
-                    { key: "current", header: "Valeur actuelle" },
-                    { key: "target", header: "Objectif" },
-                    { key: "unit", header: "Unité" }
+                    { key: "name", header: "Chỉ số" },
+                    { key: "current", header: "Giá trị hiện tại" },
+                    { key: "target", header: "Mục tiêu" },
+                    { key: "unit", header: "Đơn vị" }
                   ]}
                   className="px-3 py-1.5 rounded-md flex items-center text-sm bg-muted hover:bg-muted/80 transition-colors"
                   variant="ghost"
@@ -220,7 +220,7 @@ const StatsPage = () => {
                   className="px-3 py-1.5 rounded-md flex items-center text-sm bg-muted hover:bg-muted/80 transition-colors"
                 >
                   <Download className="h-4 w-4 mr-1.5" />
-                  Exporter
+                  Xuất
                 </button>
                 
                 <button 
@@ -229,17 +229,17 @@ const StatsPage = () => {
                   disabled={isSyncing}
                 >
                   <RefreshCw className={`h-4 w-4 mr-1.5 ${isSyncing ? 'animate-spin' : ''}`} />
-                  {isSyncing ? 'Synchronisation...' : 'Synchroniser'}
+                  {isSyncing ? 'Đang đồng bộ...' : 'Đồng bộ'}
                 </button>
                 
                 <button 
                   onClick={() => {
-                    console.log('Vos préférences de notification ont été mises à jour');
+                    console.log('Tùy chọn thông báo của bạn đã được cập nhật');
                   }}
                   className="px-3 py-1.5 rounded-md flex items-center text-sm bg-muted hover:bg-muted/80 transition-colors"
                 >
                   <Bell className="h-4 w-4 mr-1.5" />
-                  Alertes
+                  Cảnh báo
                 </button>
               </div>
             </motion.header>
@@ -252,16 +252,16 @@ const StatsPage = () => {
                 className="mb-8"
               >
                 <ChartConfig 
-                  title="Indicateurs de performance agricole en Guadeloupe"
-                  description="Suivez vos performances par rapport à vos objectifs pour les cultures guadeloupéennes"
+                  title="Chỉ số hiệu suất nông nghiệp ở Guadeloupe"
+                  description="Theo dõi hiệu suất của bạn so với mục tiêu cho các loại cây trồng Guadeloupe"
                   onTitleChange={(title) => {
-                    console.log('Le titre du graphique a été mis à jour.');
+                    console.log('Tiêu đề biểu đồ đã được cập nhật.');
                   }}
                   onDescriptionChange={(desc) => {
-                    console.log('La description du graphique a été mise à jour.');
+                    console.log('Mô tả biểu đồ đã được cập nhật.');
                   }}
                   onOptionsChange={(options) => {
-                    console.log('Les options du graphique ont été mises à jour.');
+                    console.log('Tùy chọn biểu đồ đã được cập nhật.');
                   }}
                   className="mb-6"
                 >

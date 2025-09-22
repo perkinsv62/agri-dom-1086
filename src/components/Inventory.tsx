@@ -328,7 +328,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
       setSelectedItem(null);
     }
     
-    toast.success(`${itemToDeleteObj.name} a été supprimé de l'inventaire`);
+    toast.success(`${itemToDeleteObj.name} đã được xóa khỏi kho`);
     setItemToDelete(null);
     setDeleteConfirmOpen(false);
   };
@@ -357,14 +357,14 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
       Math.max(0, selectedItem.quantity + quantityChange)
     );
     
-    toast.success("Transaction supprimée et stock ajusté");
+    toast.success("Giao dịch đã được xóa và kho đã được điều chỉnh");
     setTransactionToDelete(null);
     setTransactionDeleteConfirmOpen(false);
   };
   
   const handleAddItem = () => {
     if (!newItem.name || !newItem.category || !newItem.unit) {
-      toast.error("Veuillez remplir tous les champs obligatoires");
+      toast.error("Vui lòng điền đầy đủ các trường bắt buộc");
       return;
     }
     
@@ -407,7 +407,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
       notes: ''
     });
     
-    toast.success(`${newItem.name} a été ajouté à l'inventaire`);
+    toast.success(`${newItem.name} đã được thêm vào kho`);
   };
   
   const getRandomColor = () => {
@@ -454,7 +454,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
   
   const handleSubmitTransaction = () => {
     if (!selectedItem || !showTransactionForm || newTransaction.quantity <= 0) {
-      toast.error("Veuillez spécifier une quantité valide");
+      toast.error("Vui lòng chỉ định số lượng hợp lệ");
       return;
     }
     
@@ -465,7 +465,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
       type: showTransactionForm,
       quantity: newTransaction.quantity,
       date: newTransaction.date,
-      user: 'Utilisateur actuel',
+      user: 'Người dùng hiện tại',
       notes: newTransaction.notes
     };
     
@@ -484,7 +484,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
       date: new Date().toISOString().split('T')[0]
     });
     
-    toast.success(`${newTransaction.quantity} ${selectedItem.unit} ${showTransactionForm === 'in' ? 'ajoutés' : 'retirés'} de l'inventaire`);
+    toast.success(`${newTransaction.quantity} ${selectedItem.unit} ${showTransactionForm === 'in' ? 'đã được thêm vào' : 'đã được lấy ra khỏi'} kho`);
   };
   
   const itemTransactions = selectedItem 
@@ -528,8 +528,8 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
     <div className="animate-enter">
       <header className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Gestion des Stocks</h1>
-          <p className="text-muted-foreground">Gérez votre inventaire et suivez les niveaux de stock</p>
+          <h1 className="text-2xl font-bold mb-1">Quản lý Kho</h1>
+          <p className="text-muted-foreground">Quản lý kho hàng và theo dõi mức tồn kho</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button 
@@ -537,7 +537,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             onClick={() => setView('list')}
             className="px-4 py-2"
           >
-            Liste
+            Danh sách
           </Button>
           <Button 
             variant={view === 'stats' ? 'default' : 'outline'}
@@ -545,7 +545,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             className="px-4 py-2"
           >
             <BarChart2 className="mr-2 h-4 w-4" />
-            Statistiques
+            Thống kê
           </Button>
           <Button 
             variant="outline"
@@ -553,7 +553,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             className="px-4 py-2"
           >
             <FileDown className="mr-2 h-4 w-4" />
-            Exporter
+            Xuất
           </Button>
           <div className="relative">
             <Button 
@@ -562,7 +562,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
               className="px-4 py-2"
             >
               <FileUp className="mr-2 h-4 w-4" />
-              Importer
+              Nhập
             </Button>
             <input 
               type="file" 
@@ -577,7 +577,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             className="ml-2"
           >
             <Plus className="mr-2 h-4 w-4" />
-            Ajouter un article
+            Thêm mặt hàng
           </Button>
         </div>
       </header>
@@ -595,7 +595,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                 <button 
                   onClick={() => setSelectedItem(null)}
                   className="mr-3 hover:bg-white/10 p-1 rounded"
-                  aria-label="Retour à la liste"
+                  aria-label="Quay lại danh sách"
                 >
                   <ChevronRight className="h-5 w-5 transform rotate-180" />
                 </button>
@@ -612,7 +612,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                   className="bg-white/10 hover:bg-white/20 text-white border-none"
                 >
                   <ArrowDown className="mr-1.5 h-4 w-4" />
-                  <span className="hidden sm:inline">Entrée</span>
+                  <span className="hidden sm:inline">Nhập</span>
                 </Button>
                 <Button 
                   onClick={() => handleAddTransaction('out')}
@@ -620,7 +620,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                   className="bg-white/10 hover:bg-white/20 text-white border-none"
                 >
                   <ArrowUp className="mr-1.5 h-4 w-4" />
-                  <span className="hidden sm:inline">Sortie</span>
+                  <span className="hidden sm:inline">Xuất</span>
                 </Button>
                 <Button 
                   onClick={() => confirmDeleteItem(selectedItem.id)}
@@ -628,7 +628,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                   className="bg-white/10 hover:bg-white/20 text-white border-none"
                 >
                   <Trash2 className="mr-1.5 h-4 w-4" />
-                  <span className="hidden sm:inline">Supprimer</span>
+                  <span className="hidden sm:inline">Xóa</span>
                 </Button>
               </div>
             </div>
@@ -636,17 +636,17 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             <div className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div className="bg-white rounded-lg border p-4">
-                  <h3 className="font-medium mb-3">Détails de l'article</h3>
+                  <h3 className="font-medium mb-3">Chi tiết mặt hàng</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Catégorie:</span>
+                      <span className="text-muted-foreground">Danh mục:</span>
                       <EditableField
                         value={selectedItem.category}
                         onSave={(value) => handleUpdateItem(selectedItem.id, 'category', value)}
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Quantité:</span>
+                      <span className="text-muted-foreground">Số lượng:</span>
                       <div className="flex items-center">
                         <EditableField
                           value={selectedItem.quantity}
@@ -662,7 +662,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Seuil minimal:</span>
+                      <span className="text-muted-foreground">Ngưỡng tối thiểu:</span>
                       <div className="flex items-center">
                         <EditableField
                           value={selectedItem.minQuantity}
@@ -673,7 +673,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Prix unitaire:</span>
+                      <span className="text-muted-foreground">Giá đơn vị:</span>
                       <div className="flex items-center">
                         <EditableField
                           value={selectedItem.price}
@@ -684,31 +684,31 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Valeur totale:</span>
+                      <span className="text-muted-foreground">Giá trị tổng:</span>
                       <span className="font-medium">{(selectedItem.quantity * selectedItem.price).toFixed(2)} €</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Emplacement:</span>
+                      <span className="text-muted-foreground">Vị trí:</span>
                       <EditableField
                         value={selectedItem.location}
                         onSave={(value) => handleUpdateItem(selectedItem.id, 'location', value)}
                       />
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground">Dernière mise à jour:</span>
+                      <span className="text-muted-foreground">Cập nhật cuối:</span>
                       <span>{new Date(selectedItem.lastUpdated).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>
                 
                 <div className="bg-white rounded-lg border p-4">
-                  <h3 className="font-medium mb-3">Statistiques</h3>
+                  <h3 className="font-medium mb-3">Thống kê</h3>
                   <div className="h-[200px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart
                         data={[
-                          { name: 'Stock actuel', value: selectedItem.quantity },
-                          { name: 'Seuil minimal', value: selectedItem.minQuantity }
+                          { name: 'Tồn kho hiện tại', value: selectedItem.quantity },
+                          { name: 'Ngưỡng tối thiểu', value: selectedItem.minQuantity }
                         ]}
                         margin={{ top: 10, right: 30, left: 20, bottom: 40 }}
                       >
@@ -732,7 +732,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                 <div className="mb-6 p-4 border rounded-lg bg-muted/10">
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="font-medium">
-                      {showTransactionForm === 'in' ? 'Nouvelle entrée' : 'Nouvelle sortie'}
+                      {showTransactionForm === 'in' ? 'Nhập mới' : 'Xuất mới'}
                     </h3>
                     <Button 
                       variant="ghost" 
@@ -744,7 +744,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="quantity">Quantité</Label>
+                      <Label htmlFor="quantity">Số lượng</Label>
                       <div className="flex items-center mt-1">
                         <Input
                           id="quantity"
@@ -760,7 +760,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       </div>
                     </div>
                     <div>
-                      <Label htmlFor="date">Date</Label>
+                      <Label htmlFor="date">Ngày</Label>
                       <Input
                         id="date"
                         type="date"
@@ -773,7 +773,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       />
                     </div>
                     <div>
-                      <Label htmlFor="notes">Notes</Label>
+                      <Label htmlFor="notes">Ghi chú</Label>
                       <Input
                         id="notes"
                         value={newTransaction.notes}
@@ -781,7 +781,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                           ...newTransaction,
                           notes: e.target.value
                         })}
-                        placeholder="Commentaire..."
+                        placeholder="Bình luận..."
                         className="mt-1"
                       />
                     </div>
@@ -792,11 +792,11 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       onClick={() => setShowTransactionForm(null)}
                       className="mr-2"
                     >
-                      Annuler
+                      Hủy
                     </Button>
                     <Button onClick={handleSubmitTransaction}>
                       <Save className="mr-2 h-4 w-4" />
-                      Enregistrer
+                      Lưu
                     </Button>
                   </div>
                 </div>
@@ -804,18 +804,18 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
               
               <div className="mt-6">
                 <div className="flex justify-between items-center mb-3">
-                  <h3 className="font-medium">Historique des transactions</h3>
+                  <h3 className="font-medium">Lịch sử giao dịch</h3>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead className="text-xs uppercase bg-muted">
                       <tr>
-                        <th className="px-4 py-2 text-left">Date</th>
-                        <th className="px-4 py-2 text-left">Type</th>
-                        <th className="px-4 py-2 text-left">Quantité</th>
-                        <th className="px-4 py-2 text-left">Utilisateur</th>
-                        <th className="px-4 py-2 text-left">Notes</th>
-                        <th className="px-4 py-2 text-left">Actions</th>
+                        <th className="px-4 py-2 text-left">Ngày</th>
+                        <th className="px-4 py-2 text-left">Loại</th>
+                        <th className="px-4 py-2 text-left">Số lượng</th>
+                        <th className="px-4 py-2 text-left">Người dùng</th>
+                        <th className="px-4 py-2 text-left">Ghi chú</th>
+                        <th className="px-4 py-2 text-left">Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -831,12 +831,12 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                               {transaction.type === 'in' ? (
                                 <>
                                   <ArrowDown className="h-3 w-3 mr-1" />
-                                  Entrée
+                                  Nhập
                                 </>
                               ) : (
                                 <>
                                   <ArrowUp className="h-3 w-3 mr-1" />
-                                  Sortie
+                                  Xuất
                                 </>
                               )}
                             </span>
@@ -863,7 +863,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                             <button
                               onClick={() => confirmDeleteTransaction(transaction.id)}
                               className="p-1.5 hover:bg-agri-danger/10 text-agri-danger rounded"
-                              title="Supprimer la transaction"
+                              title="Xóa giao dịch"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
@@ -873,7 +873,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       {itemTransactions.length === 0 && (
                         <tr>
                           <td colSpan={6} className="px-4 py-4 text-center text-muted-foreground">
-                            Aucune transaction enregistrée
+                            Không có giao dịch nào được ghi nhận
                           </td>
                         </tr>
                       )}
@@ -907,7 +907,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
               actions={[
                 { 
                   icon: <ChevronRight className="h-4 w-4" />,
-                  label: "Voir détails",
+                  label: "Xem chi tiết",
                   onClick: (rowIndex) => setSelectedItem(filteredItems[rowIndex])
                 }
               ]}
@@ -918,7 +918,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
             {showAddForm && (
               <div className="border rounded-xl p-6 bg-muted/5 animate-enter">
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-medium">Ajouter un nouvel article</h3>
+                  <h3 className="text-lg font-medium">Thêm mặt hàng mới</h3>
                   <Button 
                     variant="ghost" 
                     size="sm" 
@@ -929,24 +929,24 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
-                    <Label htmlFor="name">Nom de l'article*</Label>
+                    <Label htmlFor="name">Tên mặt hàng*</Label>
                     <Input
                       id="name"
                       value={newItem.name}
                       onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
                       className="mt-1"
-                      placeholder="Ex: Semences de blé"
+                      placeholder="Vd: Hạt giống lúa mì"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="category">Catégorie*</Label>
+                    <Label htmlFor="category">Danh mục*</Label>
                     <Input
                       id="category"
                       value={newItem.category}
                       onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
                       className="mt-1"
                       list="categories-list"
-                      placeholder="Ex: Semences"
+                      placeholder="Vd: Hạt giống"
                     />
                     <datalist id="categories-list">
                       {categories
@@ -957,7 +957,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     </datalist>
                   </div>
                   <div>
-                    <Label htmlFor="quantity">Quantité initiale*</Label>
+                    <Label htmlFor="quantity">Số lượng ban đầu*</Label>
                     <div className="flex mt-1">
                       <Input
                         id="quantity"
@@ -968,14 +968,14 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                       />
                       <Input
                         className="w-24 ml-2"
-                        placeholder="Unité"
+                        placeholder="Đơn vị"
                         value={newItem.unit}
                         onChange={(e) => setNewItem({ ...newItem, unit: e.target.value })}
                       />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="minQuantity">Seuil minimal d'alerte</Label>
+                    <Label htmlFor="minQuantity">Ngưỡng cảnh báo tối thiểu</Label>
                     <Input
                       id="minQuantity"
                       type="number"
@@ -986,7 +986,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     />
                   </div>
                   <div>
-                    <Label htmlFor="price">Prix unitaire (€)</Label>
+                    <Label htmlFor="price">Giá đơn vị (€)</Label>
                     <Input
                       id="price"
                       type="number"
@@ -998,23 +998,23 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     />
                   </div>
                   <div>
-                    <Label htmlFor="location">Emplacement</Label>
+                    <Label htmlFor="location">Vị trí</Label>
                     <Input
                       id="location"
                       value={newItem.location}
                       onChange={(e) => setNewItem({ ...newItem, location: e.target.value })}
                       className="mt-1"
-                      placeholder="Ex: Hangar principal"
+                      placeholder="Vd: Nhà kho chính"
                     />
                   </div>
                   <div className="md:col-span-2 lg:col-span-3">
-                    <Label htmlFor="notes">Notes additionnelles</Label>
+                    <Label htmlFor="notes">Ghi chú bổ sung</Label>
                     <Textarea
                       id="notes"
                       value={newItem.notes || ''}
                       onChange={(e) => setNewItem({ ...newItem, notes: e.target.value })}
                       className="mt-1"
-                      placeholder="Informations complémentaires sur l'article..."
+                      placeholder="Thông tin bổ sung về mặt hàng..."
                     />
                   </div>
                 </div>
@@ -1024,11 +1024,11 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     onClick={() => setShowAddForm(false)} 
                     className="mr-2"
                   >
-                    Annuler
+                    Hủy
                   </Button>
                   <Button onClick={handleAddItem}>
                     <Plus className="mr-2 h-4 w-4" />
-                    Ajouter l'article
+                    Thêm mặt hàng
                   </Button>
                 </div>
               </div>
@@ -1044,20 +1044,20 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
 
       <ConfirmDialog 
         open={deleteConfirmOpen} 
-        title="Supprimer l'article" 
-        description="Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible."
-        confirmText="Supprimer"
-        cancelText="Annuler"
+        title="Xóa mặt hàng" 
+        description="Bạn có chắc chắn muốn xóa mặt hàng này? Hành động này không thể hoàn tác."
+        confirmText="Xóa"
+        cancelText="Hủy"
         onConfirm={handleDeleteItem}
         onOpenChange={() => setDeleteConfirmOpen(false)}
       />
 
       <ConfirmDialog 
         open={transactionDeleteConfirmOpen} 
-        title="Supprimer la transaction" 
-        description="Êtes-vous sûr de vouloir supprimer cette transaction ? Le stock sera ajusté en conséquence."
-        confirmText="Supprimer"
-        cancelText="Annuler"
+        title="Xóa giao dịch" 
+        description="Bạn có chắc chắn muốn xóa giao dịch này? Tồn kho sẽ được điều chỉnh tương ứng."
+        confirmText="Xóa"
+        cancelText="Hủy"
         onConfirm={handleDeleteTransaction}
         onOpenChange={() => setTransactionDeleteConfirmOpen(false)}
       />

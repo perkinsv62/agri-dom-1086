@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const [userName, setUserName] = useState('Exploitant');
+  const [userName, setUserName] = useState('Nông dân');
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
@@ -41,7 +41,7 @@ const Index = () => {
               onClick={syncDataAcrossCRM}
             >
               <RefreshCw className={`h-4 w-4 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Synchroniser
+              Đồng bộ
             </Button>
             <Button
               variant="outline"
@@ -49,7 +49,7 @@ const Index = () => {
               onClick={() => handleExportData('dashboard')}
             >
               <Download className="h-4 w-4 text-gray-600" />
-              Exporter
+              Xuất dữ liệu
             </Button>
             <Button
               variant="outline"
@@ -57,7 +57,7 @@ const Index = () => {
               onClick={() => handleImportData()}
             >
               <Upload className="h-4 w-4 text-gray-600" />
-              Importer
+              Nhập dữ liệu
             </Button>
             <Button
               variant="outline"
@@ -65,7 +65,7 @@ const Index = () => {
               onClick={() => handlePrintData('dashboard')}
             >
               <Printer className="h-4 w-4 text-gray-600" />
-              Imprimer
+              In
             </Button>
           </div>
         );
@@ -78,7 +78,7 @@ const Index = () => {
               onClick={() => handleExportData('harvest')}
             >
               <Download className="h-4 w-4 text-gray-600" />
-              Exporter
+              Xuất dữ liệu
             </Button>
             <Button
               variant="outline"
@@ -86,7 +86,7 @@ const Index = () => {
               onClick={() => handlePrintData('harvest')}
             >
               <Printer className="h-4 w-4 text-gray-600" />
-              Imprimer
+              In
             </Button>
           </div>
         );
@@ -99,14 +99,14 @@ const Index = () => {
               onClick={() => handleExportData('weather')}
             >
               <Download className="h-4 w-4 text-gray-600" />
-              Exporter
+              Xuất dữ liệu
             </Button>
             <Button 
               variant="outline" 
               className="flex items-center gap-2 bg-white border-gray-200 hover:bg-gray-50"
             >
               <Filter className="h-4 w-4 text-gray-600" />
-              Configurer
+              Cấu hình
             </Button>
           </div>
         );
@@ -117,7 +117,7 @@ const Index = () => {
               className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white"
             >
               <PlusCircle className="h-4 w-4" />
-              Ajouter
+              Thêm
             </Button>
             <Button
               variant="outline"
@@ -125,7 +125,7 @@ const Index = () => {
               onClick={() => handleExportData('tasks')}
             >
               <Download className="h-4 w-4 text-gray-600" />
-              Exporter
+              Xuất dữ liệu
             </Button>
             <Button
               variant="outline"
@@ -133,7 +133,7 @@ const Index = () => {
               onClick={() => handlePrintData('tasks')}
             >
               <Printer className="h-4 w-4 text-gray-600" />
-              Imprimer
+              In
             </Button>
           </div>
         );
@@ -218,22 +218,22 @@ const Index = () => {
   const tabs: TabItem[] = [
     {
       value: 'dashboard',
-      label: 'Tableau de Bord',
+      label: 'Bảng Điều Khiển',
       content: <Dashboard />
     },
     {
       value: 'harvest',
-      label: 'Suivi des Récoltes',
+      label: 'Theo Dõi Thu Hoạch',
       content: <GuadeloupeHarvestTracking />
     },
     {
       value: 'weather',
-      label: 'Alertes Météo',
+      label: 'Cảnh Báo Thời Tiết',
       content: <GuadeloupeWeatherAlerts />
     },
     {
       value: 'tasks',
-      label: 'Tâches',
+      label: 'Nhiệm Vụ',
       content: <TaskList />
     }
   ];
@@ -244,9 +244,9 @@ const Index = () => {
         <div className="p-6 animate-enter">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Tableau de Bord Agri Dom</h1>
+              <h1 className="text-3xl font-bold text-gray-800">Bảng Điều Khiển Agri Dom</h1>
               <p className="text-gray-500">
-                Bienvenue, {userName} | Dernière synchronisation: {lastSync.toLocaleTimeString()}
+                Chào mừng, {userName} | Đồng bộ lần cuối: {lastSync.toLocaleTimeString()}
               </p>
             </div>
             {getTabActions()}
@@ -261,11 +261,11 @@ const Index = () => {
           <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Importer des données</DialogTitle>
+                <DialogTitle>Nhập dữ liệu</DialogTitle>
               </DialogHeader>
               <div className="space-y-4 py-4">
                 <div className="space-y-2">
-                  <Label htmlFor="file">Fichier CSV</Label>
+                  <Label htmlFor="file">File CSV</Label>
                   <input 
                     type="file" 
                     id="file" 
@@ -275,13 +275,13 @@ const Index = () => {
                   />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Les données seront importées dans le module courant. 
-                  Assurez-vous que le fichier est au format CSV.
+                  Dữ liệu sẽ được nhập vào module hiện tại. 
+                  Đảm bảo file có định dạng CSV.
                 </p>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Annuler</Button>
-                <Button onClick={handleImportConfirm}>Importer</Button>
+                <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Hủy</Button>
+                <Button onClick={handleImportConfirm}>Nhập</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
