@@ -23,7 +23,7 @@ const InventoryAlerts: React.FC<InventoryAlertsProps> = ({ alerts, onQuantityCha
     <div className="mb-6 border border-agri-warning/30 bg-agri-warning/5 rounded-xl p-4 animate-enter">
       <div className="flex items-center mb-3">
         <AlertTriangle className="h-5 w-5 text-agri-warning mr-2" />
-        <h3 className="font-medium">Alertes de stock bas</h3>
+        <h3 className="font-medium">Cảnh báo tồn kho thấp</h3>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {alerts.map(alert => (
@@ -44,11 +44,11 @@ const InventoryAlerts: React.FC<InventoryAlertsProps> = ({ alerts, onQuantityCha
                     : 'bg-agri-warning/10 text-agri-warning'
                 }`}
               >
-                {alert.status === 'critical' ? 'Critique' : 'Attention'}
+                {alert.status === 'critical' ? 'Nguy cấp' : 'Cảnh báo'}
               </span>
             </div>
             <div className="mt-2 text-sm">
-              <span>Stock actuel: </span>
+              <span>Tồn kho hiện tại: </span>
               <EditableField
                 value={alert.current}
                 type="number"
@@ -56,7 +56,7 @@ const InventoryAlerts: React.FC<InventoryAlertsProps> = ({ alerts, onQuantityCha
                 className="inline-block"
               />
               <span className="mx-1">|</span>
-              <span>Minimum: </span>
+              <span>Tối thiểu: </span>
               <EditableField
                 value={alert.min}
                 type="number"

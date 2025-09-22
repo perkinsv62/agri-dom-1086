@@ -37,7 +37,7 @@ const PreviewContainer: React.FC<PreviewContainerProps> = ({
       <footer className={`preview-footer p-6 border-t ${
         settings.darkMode ? 'border-gray-800' : 'border-gray-200'
       } text-right text-sm text-muted-foreground`}>
-        <p>Date: {new Date().toLocaleDateString(settings.locale)}</p>
+        <p>Ngày: {new Date().toLocaleDateString(settings.locale)}</p>
       </footer>
     </div>
   );

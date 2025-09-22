@@ -32,8 +32,8 @@ const ConfirmDialog = ({
   title,
   description,
   onConfirm,
-  confirmText = 'Confirmer',
-  cancelText = 'Annuler',
+  confirmText = 'Xác nhận',
+  cancelText = 'Hủy',
   variant = 'default',
   icon = true,
   size = 'default'

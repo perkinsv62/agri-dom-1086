@@ -26,8 +26,8 @@ export const usePreviewActions = ({
 
   const handlePrint = async () => {
     if (!data || data.length === 0) {
-      toast.error("Aucune donnée à imprimer", {
-        description: "Veuillez vérifier vos filtres ou sélectionner une autre période."
+      toast.error("Không có dữ liệu để in", {
+        description: "Vui lòng kiểm tra bộ lọc hoặc chọn khoảng thời gian khác."
       });
       return;
     }
@@ -37,15 +37,15 @@ export const usePreviewActions = ({
     try {
       await printModuleData(moduleName, {
         columns: columns,
-        title: title || `Aperçu - ${moduleName}`
+        title: title || `Xem trước - ${moduleName}`
       });
-      toast.success("Document envoyé à l'impression", {
-        description: "Votre document a été envoyé à l'imprimante."
+      toast.success("Tài liệu đã gửi để in", {
+        description: "Tài liệu của bạn đã được gửi đến máy in."
       });
     } catch (error) {
-      console.error("Erreur lors de l'impression:", error);
-      toast.error("Erreur d'impression", {
-        description: "Une erreur s'est produite lors de l'impression du document."
+      console.error("Lỗi khi in:", error);
+      toast.error("Lỗi in ấn", {
+        description: "Đã xảy ra lỗi khi in tài liệu."
       });
     } finally {
       setIsActionInProgress(false);
@@ -54,8 +54,8 @@ export const usePreviewActions = ({
 
   const handleShowPreview = () => {
     if (!data || data.length === 0) {
-      toast.error("Aucune donnée à afficher", {
-        description: "Veuillez vérifier vos filtres ou sélectionner une autre période."
+      toast.error("Không có dữ liệu để hiển thị", {
+        description: "Vui lòng kiểm tra bộ lọc hoặc chọn khoảng thời gian khác."
       });
       return;
     }
@@ -67,8 +67,8 @@ export const usePreviewActions = ({
 
   const handleExportPDF = async () => {
     if (!data || data.length === 0) {
-      toast.error("Aucune donnée à exporter", {
-        description: "Veuillez vérifier vos filtres ou sélectionner une autre période."
+      toast.error("Không có dữ liệu để xuất", {
+        description: "Vui lòng kiểm tra bộ lọc hoặc chọn khoảng thời gian khác."
       });
       return;
     }
@@ -76,17 +76,14 @@ export const usePreviewActions = ({
     setIsActionInProgress(true);
     
     try {
-      await exportModuleData(moduleName, 'pdf', data, {
-        title: title || `Rapport - ${moduleName}`,
-        columns: columns
-      });
-      toast.success("PDF généré avec succès", {
-        description: "Le document a été téléchargé."
+      await exportModuleData(moduleName, 'pdf', data);
+      toast.success("PDF đã được tạo thành công", {
+        description: "Tài liệu đã được tải xuống."
       });
     } catch (error) {
-      console.error("Erreur lors de la génération du PDF:", error);
-      toast.error("Erreur d'exportation", {
-        description: "Une erreur s'est produite lors de la génération du PDF."
+      console.error("Lỗi khi tạo PDF:", error);
+      toast.error("Lỗi xuất dữ liệu", {
+        description: "Đã xảy ra lỗi khi tạo file PDF."
       });
     } finally {
       setIsActionInProgress(false);
