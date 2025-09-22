@@ -15,13 +15,13 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
     setCurrentChart(chart);
     
     const chartNames = {
-      yields: 'Rendements',
-      financial: 'Financier',
-      environmental: 'Environnement'
+      yields: 'Năng suất',
+      financial: 'Tài chính',
+      environmental: 'Môi trường'
     };
     
-    toast.info(`Affichage des données: ${chartNames[chart]}`, {
-      description: `Les graphiques ont été mis à jour avec les données ${chartNames[chart].toLowerCase()}`
+    toast.info(`Hiển thị dữ liệu: ${chartNames[chart]}`, {
+      description: `Biểu đồ đã được cập nhật với dữ liệu ${chartNames[chart].toLowerCase()}`
     });
   };
   
@@ -48,7 +48,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
   return (
     <div className="flex flex-col space-y-4 mb-6">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-sm font-medium text-gray-500">Sélectionner un graphique</h3>
+        <h3 className="text-sm font-medium text-gray-500">Chọn biểu đồ</h3>
         <div className="flex gap-2">
           <Button 
             variant="outline" 
@@ -57,7 +57,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
             className="h-8 w-8 p-0"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="sr-only">Graphique précédent</span>
+            <span className="sr-only">Biểu đồ trước</span>
           </Button>
           <Button 
             variant="outline" 
@@ -66,7 +66,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
             className="h-8 w-8 p-0"
           >
             <ArrowRight className="h-4 w-4" />
-            <span className="sr-only">Graphique suivant</span>
+            <span className="sr-only">Biểu đồ tiếp theo</span>
           </Button>
         </div>
       </div>
@@ -91,7 +91,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
           )}
           <div className="flex items-center justify-center">
             <BarChart3 className="h-5 w-5 mr-2" />
-            <span>Rendements</span>
+            <span>Năng suất</span>
           </div>
         </button>
         <button 
@@ -113,7 +113,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
           )}
           <div className="flex items-center justify-center">
             <TrendingUp className="h-5 w-5 mr-2" />
-            <span>Financier</span>
+            <span>Tài chính</span>
           </div>
         </button>
         <button 
@@ -135,7 +135,7 @@ const ChartSelector = ({ currentChart, setCurrentChart }: ChartSelectorProps) =>
           )}
           <div className="flex items-center justify-center">
             <PieChart className="h-5 w-5 mr-2" />
-            <span>Environnement</span>
+            <span>Môi trường</span>
           </div>
         </button>
       </div>

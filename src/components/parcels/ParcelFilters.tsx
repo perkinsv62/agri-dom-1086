@@ -69,7 +69,7 @@ const ParcelFilters = ({
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
           <Input
             type="search"
-            placeholder="Rechercher une parcelle..."
+            placeholder="Tìm kiếm thửa đất..."
             className="pl-9 w-full md:w-48"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -80,28 +80,28 @@ const ParcelFilters = ({
       <Select value={filterStatus} onValueChange={setFilterStatus}>
         <SelectTrigger className="w-[180px]">
           <Filter className="h-4 w-4 mr-2" />
-          <SelectValue placeholder="Statut" />
+          <SelectValue placeholder="Trạng thái" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Tous les statuts</SelectItem>
-          <SelectItem value="active">Parcelles actives</SelectItem>
-          <SelectItem value="fallow">En jachère</SelectItem>
-          <SelectItem value="planned">Planifiées</SelectItem>
-          <SelectItem value="rented">Louées</SelectItem>
+          <SelectItem value="all">Tất cả trạng thái</SelectItem>
+          <SelectItem value="active">Thửa đất hoạt động</SelectItem>
+          <SelectItem value="fallow">Bỏ hoang</SelectItem>
+          <SelectItem value="planned">Đã lên kế hoạch</SelectItem>
+          <SelectItem value="rented">Cho thuê</SelectItem>
         </SelectContent>
       </Select>
       
       <Select value={filterType} onValueChange={setFilterType}>
         <SelectTrigger className="w-[180px]">
           <Filter className="h-4 w-4 mr-2" />
-          <SelectValue placeholder="Type" />
+          <SelectValue placeholder="Loại" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Tous les types</SelectItem>
-          <SelectItem value="field">Champs</SelectItem>
-          <SelectItem value="greenhouse">Serres</SelectItem>
-          <SelectItem value="orchard">Vergers</SelectItem>
-          <SelectItem value="experimental">Expérimentales</SelectItem>
+          <SelectItem value="all">Tất cả loại</SelectItem>
+          <SelectItem value="field">Ruộng đồng</SelectItem>
+          <SelectItem value="greenhouse">Nhà kính</SelectItem>
+          <SelectItem value="orchard">Vườn cây ăn quả</SelectItem>
+          <SelectItem value="experimental">Thử nghiệm</SelectItem>
         </SelectContent>
       </Select>
 
@@ -119,7 +119,7 @@ const ParcelFilters = ({
                   format(dateRange.from, 'dd/MM/yyyy')
                 )
               ) : (
-                "Sélectionner des dates"
+                "Chọn ngày"
               )}
             </Button>
           </PopoverTrigger>
@@ -142,13 +142,13 @@ const ParcelFilters = ({
         <PopoverTrigger asChild>
           <Button variant="outline">
             <SlidersHorizontal className="h-4 w-4 mr-2" />
-            Filtres avancés
+            Bộ lọc nâng cao
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <div className="space-y-4">
             <div>
-              <h4 className="mb-2 font-medium">Superficie (hectares)</h4>
+              <h4 className="mb-2 font-medium">Diện tích (hecta)</h4>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm">{tempAreaRange[0]} ha</span>
                 <span className="text-sm">{tempAreaRange[1]} ha</span>
@@ -168,7 +168,7 @@ const ParcelFilters = ({
                 onClick={applyAdvancedFilters}
                 className="bg-agri-primary hover:bg-agri-primary-dark text-white"
               >
-                Appliquer les filtres
+                Áp dụng bộ lọc
               </Button>
             </div>
           </div>

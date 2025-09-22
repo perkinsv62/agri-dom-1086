@@ -37,9 +37,9 @@ const ChartFilters = ({
     setPeriod('year');
     setCropFilter('all');
     if (setSearchTerm) setSearchTerm('');
-    console.log("Filtres réinitialisés - Affichage de toutes les cultures sur une période annuelle");
-    toast.info("Filtres réinitialisés", {
-      description: "Affichage de toutes les cultures sur une période annuelle"
+    console.log("Bộ lọc đã được đặt lại - Hiển thị tất cả cây trồng theo thời gian hàng năm");
+    toast.info("Bộ lọc đã được đặt lại", {
+      description: "Hiển thị tất cả cây trồng theo thời gian hàng năm"
     });
   };
   
@@ -57,13 +57,13 @@ const ChartFilters = ({
       >
         <SelectTrigger className="w-[140px]">
           <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-          <SelectValue placeholder="Période" />
+          <SelectValue placeholder="Thời gian" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="year">Annuel</SelectItem>
-          <SelectItem value="month">Mensuel</SelectItem>
-          <SelectItem value="week">Hebdomadaire</SelectItem>
-          <SelectItem value="day">Journalier</SelectItem>
+          <SelectItem value="year">Hàng năm</SelectItem>
+          <SelectItem value="month">Hàng tháng</SelectItem>
+          <SelectItem value="week">Hàng tuần</SelectItem>
+          <SelectItem value="day">Hàng ngày</SelectItem>
         </SelectContent>
       </Select>
 
@@ -73,15 +73,15 @@ const ChartFilters = ({
       >
         <SelectTrigger className="w-[160px]">
           <Filter className="h-4 w-4 mr-2 text-muted-foreground" />
-          <SelectValue placeholder="Culture" />
+          <SelectValue placeholder="Cây trồng" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">Toutes cultures</SelectItem>
-          <SelectItem value="Canne à Sucre">Canne à Sucre</SelectItem>
-          <SelectItem value="Banane">Banane</SelectItem>
-          <SelectItem value="Ananas">Ananas</SelectItem>
-          <SelectItem value="Igname">Igname</SelectItem>
-          <SelectItem value="Madère">Madère</SelectItem>
+          <SelectItem value="all">Tất cả cây trồng</SelectItem>
+          <SelectItem value="Canne à Sucre">Mía đường</SelectItem>
+          <SelectItem value="Banane">Chuối</SelectItem>
+          <SelectItem value="Ananas">Dứa</SelectItem>
+          <SelectItem value="Igname">Khoai mỡ</SelectItem>
+          <SelectItem value="Madère">Khoai tây ngọt</SelectItem>
         </SelectContent>
       </Select>
 
@@ -89,7 +89,7 @@ const ChartFilters = ({
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Rechercher..."
+            placeholder="Tìm kiếm..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-8 w-[200px]"
@@ -99,7 +99,7 @@ const ChartFilters = ({
 
       {filterCount > 0 && (
         <Badge variant="outline" className="bg-muted">
-          {filterCount} filtre{filterCount > 1 ? 's' : ''} actif{filterCount > 1 ? 's' : ''}
+          {filterCount} bộ lọc đang hoạt động
         </Badge>
       )}
 
@@ -112,7 +112,7 @@ const ChartFilters = ({
             className="flex items-center gap-1"
           >
             <Download className="h-3.5 w-3.5" />
-            Exporter
+            Xuất dữ liệu
           </Button>
         )}
         
@@ -123,7 +123,7 @@ const ChartFilters = ({
           className="flex items-center gap-1"
         >
           <RefreshCcw className="h-3.5 w-3.5" />
-          Réinitialiser
+          Đặt lại
         </Button>
       </div>
     </div>

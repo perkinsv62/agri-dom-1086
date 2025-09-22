@@ -24,9 +24,9 @@ const StatisticsHeader = () => {
 
   const handleExport = async () => {
     try {
-      console.log("Exportation des statistiques au format CSV...");
+      console.log("Xuất thống kê định dạng CSV...");
       await exportModuleData('statistiques', 'csv');
-      console.log("Exportation réussie!");
+      console.log("Xuất thành công!");
     } catch (error) {
       console.error("Error exporting statistics:", error);
     }
@@ -34,9 +34,9 @@ const StatisticsHeader = () => {
 
   const handlePrint = async () => {
     try {
-      console.log("Préparation de l'impression des statistiques...");
+      console.log("Chuẩn bị in thống kê...");
       await printModuleData('statistiques');
-      console.log("Document envoyé à l'impression");
+      console.log("Tài liệu đã được gửi đến máy in");
     } catch (error) {
       console.error("Error printing statistics:", error);
     }
@@ -44,21 +44,21 @@ const StatisticsHeader = () => {
 
   const handleShare = () => {
     setShareDialogOpen(true);
-    console.log("Ouverture de la boîte de dialogue de partage");
+    console.log("Mở hộp thoại chia sẻ");
   };
   
   const handleShareByEmail = () => {
-    console.log("Préparation du partage par email...");
+    console.log("Chuẩn bị chia sẻ qua email...");
     setShareDialogOpen(false);
-    console.log("Email de partage préparé");
+    console.log("Email chia sẻ đã được chuẩn bị");
   };
   
   const handleShareByPDF = async () => {
     try {
-      console.log("Génération du PDF pour partage...");
+      console.log("Tạo PDF để chia sẻ...");
       await exportModuleData('statistiques', 'pdf');
       setShareDialogOpen(false);
-      console.log("PDF généré avec succès pour partage");
+      console.log("PDF đã được tạo thành công để chia sẻ");
     } catch (error) {
       console.error("Error generating PDF:", error);
       setShareDialogOpen(false);
@@ -68,8 +68,8 @@ const StatisticsHeader = () => {
   return (
     <header className="flex flex-col mb-6 gap-4">
       <div>
-        <h1 className="text-xl md:text-2xl font-bold mb-1 text-gray-800">Statistiques et Analyses</h1>
-        <p className="text-sm md:text-base text-gray-500">Visualisez et analysez les données de votre exploitation</p>
+        <h1 className="text-xl md:text-2xl font-bold mb-1 text-gray-800">Thống kê và Phân tích</h1>
+        <p className="text-sm md:text-base text-gray-500">Trực quan hóa và phân tích dữ liệu trang trại của bạn</p>
       </div>
       <div className="flex flex-wrap gap-2 md:gap-3 justify-start md:justify-end">
         <ReportGenerationButton 
@@ -102,7 +102,7 @@ const StatisticsHeader = () => {
               size={isMobile ? "sm" : "default"}
             >
               <Download className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1.5 md:mr-2 text-gray-600" />
-              {isMobile ? "CSV" : "Exporter CSV"}
+              {isMobile ? "CSV" : "Xuất CSV"}
             </Button>
           </>
         ) : null}
@@ -113,31 +113,31 @@ const StatisticsHeader = () => {
           size={isMobile ? "sm" : "default"}
         >
           <Share2 className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1.5 md:mr-2 text-gray-600" />
-          {isMobile ? "Partager" : "Partager"}
+          {isMobile ? "Chia sẻ" : "Chia sẻ"}
         </Button>
       </div>
       
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
         <DialogContent className="sm:max-w-md max-w-[90%]">
           <DialogHeader>
-            <DialogTitle>Partager les statistiques</DialogTitle>
+            <DialogTitle>Chia sẻ thống kê</DialogTitle>
             <DialogDescription>
-              Choisissez comment vous souhaitez partager ces statistiques
+              Chọn cách bạn muốn chia sẻ thống kê này
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <Button onClick={handleShareByEmail} variant="outline">
-                Envoyer par email
+                Gửi qua email
               </Button>
               <Button onClick={handleShareByPDF} className="bg-green-600 hover:bg-green-700">
-                Générer un PDF
+                Tạo PDF
               </Button>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
-              Annuler
+              Hủy
             </Button>
           </DialogFooter>
         </DialogContent>
