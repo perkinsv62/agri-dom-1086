@@ -1,7 +1,7 @@
 
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
 
 import DonatePage from "./pages/DonatePage";
@@ -47,12 +47,14 @@ const queryClient = new QueryClient({
 
 // Router change handler component
 const RouterChangeHandler = () => {
+  const location = useLocation();
+  
   useEffect(() => {
     // Scroll to top on route change
     window.scrollTo(0, 0);
 
     // Track page view for analytics
-    const currentPath = window.location.pathname;
+    const currentPath = location.pathname;
     const pageName = currentPath === '/' ? 'dashboard' : currentPath.replace(/^\//, '');
     trackPageView(pageName);
   }, [location.pathname]);
