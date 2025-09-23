@@ -29,7 +29,7 @@ const FinancePage = () => {
     handleDescriptionChange 
   } = usePageMetadata({
     defaultTitle: 'Quản Lý Tài Chính',
-    defaultDescription: 'Theo dõi doanh thu, chi phí và lợi nhuận của trang trại nông nghiệp của bạn'
+    defaultDescription: 'Theo dõi doanh thu, chi phí và lợi nhuận.'
   });
 
   const [timeFrame, setTimeFrame] = useState('year');
@@ -236,7 +236,7 @@ const FinancePage = () => {
             Quản Lý Doanh Thu
           </h2>
           <p className="text-muted-foreground mb-6">
-            Theo dõi, phân loại và phân tích tất cả nguồn doanh thu nông nghiệp của bạn
+            Theo dõi, phân loại và phân tích tất cả nguồn doanh thu
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -244,9 +244,9 @@ const FinancePage = () => {
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
                   <Badge className="mr-2 bg-green-100 text-green-800 hover:bg-green-200">Bán hàng</Badge> 
-                  Thu hoạch
+                  Bán vật phẩm
                 </CardTitle>
-                <CardDescription>Bán sản phẩm nông nghiệp</CardDescription>
+                <CardDescription>Bán sản phẩm</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">45 860 €</div>
@@ -271,10 +271,10 @@ const FinancePage = () => {
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('PAC')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-blue-100 text-blue-800 hover:bg-blue-200">Trợ cấp</Badge> 
-                  PAC
+                  <Badge className="mr-2 bg-blue-100 text-blue-800 hover:bg-blue-200">Quảng cáo</Badge> 
+                  Cho thuê quảng cáo
                 </CardTitle>
-                <CardDescription>Trợ giúp nông nghiệp và trợ cấp</CardDescription>
+                <CardDescription>Cho thuê đăng quảng cáo</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">18 500 €</div>
@@ -302,7 +302,7 @@ const FinancePage = () => {
                   <Badge className="mr-2 bg-purple-100 text-purple-800 hover:bg-purple-200">Khác</Badge> 
                   Doanh thu
                 </CardTitle>
-                <CardDescription>Cho thuê, thăm quan, dịch vụ</CardDescription>
+                <CardDescription>Các nguồn thu khác</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">7 250 €</div>
@@ -366,17 +366,17 @@ const FinancePage = () => {
             Quản Lý Chi Phí
           </h2>
           <p className="text-muted-foreground mb-6">
-            Phân loại và tối ưu hóa tất cả chi phí liên quan đến trang trại
+            Phân loại và tối ưu hóa tất cả chi phí liên quan
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <Card className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => handleCardDetailClick('Semences & Fertilisants')}>
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex items-center">
-                  <Badge className="mr-2 bg-amber-100 text-amber-800 hover:bg-amber-200">Đầu vào</Badge> 
-                  Hạt giống & Phân bón
+                  <Badge className="mr-2 bg-amber-100 text-amber-800 hover:bg-amber-200">Quảng Cáo</Badge> 
+                  Marketing
                 </CardTitle>
-                <CardDescription>Mua sắm cho sản xuất</CardDescription>
+                <CardDescription>Chi phí quảng cáo, Chi cho cộng tác viên</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12 750 €</div>
@@ -432,7 +432,7 @@ const FinancePage = () => {
                   <Badge className="mr-2 bg-teal-100 text-teal-800 hover:bg-teal-200">Dịch vụ</Badge> 
                   Lao động
                 </CardTitle>
-                <CardDescription>Lương, nhà thầu</CardDescription>
+                <CardDescription>Lương, chi hoa hồng</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">15 320 €</div>
@@ -522,7 +522,7 @@ const FinancePage = () => {
             Báo Cáo Tài Chính
           </h2>
           <p className="text-muted-foreground mb-6">
-            Tạo báo cáo chi tiết để phân tích hiệu suất tài chính của trang trại
+            Tạo báo cáo chi tiết để phân tích hiệu suất tài chính
           </p>
           
           <div className="mb-6">

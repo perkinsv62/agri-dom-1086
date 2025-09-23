@@ -19,7 +19,6 @@ import {
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
 
   // Close mobile menu when route changes
@@ -27,29 +26,10 @@ const Navbar = () => {
     setIsOpen(false);
   }, [location.pathname]);
 
-  // Handle theme toggle
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setIsDarkMode(true);
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-    if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-  };
 
   const navItems = [
     { title: 'Bảng điều khiển', path: '/', icon: Home },
@@ -91,13 +71,6 @@ const Navbar = () => {
             <Sprout className="h-6 w-6 text-agri-primary" />
             <span className="text-lg font-bold text-foreground">Agri Dom</span>
           </Link>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Chuyển giao diện"
-          >
-            {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
         </div>
 
         <nav className="flex-1 py-4 px-3 space-y-1 overflow-y-auto">

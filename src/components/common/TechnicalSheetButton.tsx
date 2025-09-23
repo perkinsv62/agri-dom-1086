@@ -23,7 +23,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-// PreviewContainer is not used in this component (kept intentionally removed)
+
 
 interface TechnicalSheetData {
   name?: string;
@@ -74,29 +74,30 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewHTML, setPreviewHTML] = useState<string>('');
+
   
   // Format data for the technical sheet
   const formatTechSheetData = () => {
     if (!data || Object.keys(data).length === 0) {
-      console.error("Données insuffisantes pour générer la fiche technique");
+        console.error("Dữ liệu không đủ để tạo phiếu kỹ thuật");
       return null;
     }
     
     return [{
-      nom: data.name || data.nom || "Non spécifié",
-      nomScientifique: data.scientificName || data.nomScientifique || "Non spécifié",
-      famille: data.family || data.famille || "Non spécifiée",
-      origine: data.origin || data.origine || "Non spécifiée",
-      saisonCulture: data.growingSeason || data.saisonCulture || "Non spécifiée",
-      typeSol: data.soilType || data.typeSol || "Non spécifié",
-      besoinEau: data.waterNeeds || data.besoinEau || "Non spécifié",
-  fertilisation: data.fertilization || "Non spécifiée",
-      ravageurs: data.pests || data.ravageurs || "Non spécifiés",
-      maladies: data.diseases || data.maladies || "Non spécifiées",
-      notes: data.notes || "Aucune note",
-      type: data.type || "Non spécifié",
-      periodeRecolte: data.harvestPeriod || data.periodeRecolte || "Non spécifiée",
-      rendementHectare: data.yieldPerHectare || data.rendementHectare || data.currentYield || "Non spécifié"
+    nom: data.name || data.nom || "Không xác định",
+    nomScientifique: data.scientificName || data.nomScientifique || "Không xác định",
+    famille: data.family || data.famille || "Không xác định",
+    origine: data.origin || data.origine || "Không xác định",
+    saisonCulture: data.growingSeason || data.saisonCulture || "Không xác định",
+    typeSol: data.soilType || data.typeSol || "Không xác định",
+    besoinEau: data.waterNeeds || data.besoinEau || "Không xác định",
+  fertilisation: data.fertilization || "Không xác định",
+    ravageurs: data.pests || data.ravageurs || "Không xác định",
+    maladies: data.diseases || data.maladies || "Không xác định",
+    notes: data.notes || "Không có ghi chú",
+    type: data.type || "Không xác định",
+    periodeRecolte: data.harvestPeriod || data.periodeRecolte || "Không xác định",
+    rendementHectare: data.yieldPerHectare || data.rendementHectare || data.currentYield || "Không xác định"
     }];
   };
   
@@ -107,8 +108,12 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
     setIsGenerating(true);
     
     try {
+    if (typeof exportModuleData === 'function') {
       await exportModuleData('fiche_technique', 'pdf', techSheetData);
-      console.log("Fiche technique générée avec succès");
+    } else {
+      console.warn('exportModuleData is not available');
+    }
+  console.log("Phiếu kỹ thuật đã được tạo thành công");
     } catch (error) {
       console.error("Error generating technical sheet:", error);
     } finally {
@@ -120,18 +125,17 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
     const techSheetData = formatTechSheetData();
     if (!techSheetData) return '';
     
-    const item = techSheetData[0];
-    const isDarkMode = settings.darkMode;
+  const item = techSheetData[0];
     
     return `
       <div class="technical-sheet">
         <div class="technical-sheet-header text-center mb-8">
-          <h1 class="text-2xl font-bold ${isDarkMode ? 'text-green-400' : 'text-green-700'}">${item.nom}</h1>
+          <h1 class="text-2xl font-bold text-green-700">${item.nom}</h1>
           <p class="italic">${item.nomScientifique}</p>
         </div>
         
         <div class="section mb-6">
-          <h2 class="text-lg font-semibold ${isDarkMode ? 'text-blue-400' : 'text-blue-800'} border-b pb-2 mb-4">Informations générales</h2>
+          <h2 class="text-lg font-semibold text-blue-800 border-b pb-2 mb-4">Thông tin chung</h2>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <span class="font-medium">Famille:</span>
@@ -153,7 +157,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
         </div>
         
         <div class="section mb-6">
-          <h2 class="text-lg font-semibold ${isDarkMode ? 'text-blue-400' : 'text-blue-800'} border-b pb-2 mb-4">Conditions de culture</h2>
+          <h2 class="text-lg font-semibold text-blue-800 border-b pb-2 mb-4">Điều kiện canh tác</h2>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <span class="font-medium">Type de sol:</span>
@@ -179,7 +183,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
         </div>
         
         <div class="section mb-6">
-          <h2 class="text-lg font-semibold ${isDarkMode ? 'text-blue-400' : 'text-blue-800'} border-b pb-2 mb-4">Problèmes phytosanitaires</h2>
+          <h2 class="text-lg font-semibold text-blue-800 border-b pb-2 mb-4">Vấn đề sâu bệnh</h2>
           <div class="grid grid-cols-2 gap-4">
             <div>
               <span class="font-medium">Ravageurs:</span>
@@ -193,8 +197,8 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
         </div>
         
         <div class="section mb-6">
-          <h2 class="text-lg font-semibold ${isDarkMode ? 'text-blue-400' : 'text-blue-800'} border-b pb-2 mb-4">Notes</h2>
-          <div class="${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'} p-4 rounded-md">
+          <h2 class="text-lg font-semibold text-blue-800 border-b pb-2 mb-4">Ghi chú</h2>
+          <div class="bg-gray-50 p-4 rounded-md">
             ${item.notes}
           </div>
         </div>
@@ -208,26 +212,25 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
   };
   
   const handlePrint = () => {
-    const printWindow = window.open('', '_blank');
+    const printWindow = typeof window !== 'undefined' ? window.open('', '_blank') : null;
     if (printWindow) {
-      const isDarkMode = settings.darkMode;
-      
-      printWindow.document.write(`
+  // use component-level false (forced false)
+  printWindow.document.write(`
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Fiche Technique - ${data.name || data.nom || 'Culture'}</title>
+            <title>Phiếu kỹ thuật - ${data.name || data.nom || 'Cây trồng'}</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
               :root {
                 --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                --primary-color: ${isDarkMode ? '#8BADE3' : '#4CAF50'};
-                --border-color: ${isDarkMode ? '#3A3A3A' : '#e5e7eb'};
-                --bg-color: ${isDarkMode ? '#1F1F1F' : '#ffffff'};
-                --text-color: ${isDarkMode ? '#E1E1E1' : '#333333'};
-                --muted-color: ${isDarkMode ? '#A0A0A0' : '#6B7280'};
-                --header-bg: ${isDarkMode ? '#2D2D2D' : '#F9FAFB'};
+                --primary-color: #4CAF50;
+                --border-color: #e5e7eb;
+                --bg-color: #ffffff;
+                --text-color: #333333;
+                --muted-color: #6B7280;
+                --header-bg: #F9FAFB;
               }
               
               body { 
@@ -250,7 +253,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
               h1 { color: var(--primary-color); margin-top: 0; }
               
               h2 { 
-                color: ${isDarkMode ? '#4B96E6' : '#1565c0'}; 
+                color: #1565c0; 
                 border-bottom: 1px solid var(--border-color); 
                 padding-bottom: 5px;
               }
@@ -266,7 +269,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
               .font-medium { font-weight: bold; }
               
               .bg-gray-50 { 
-                background-color: ${isDarkMode ? '#2A2A2A' : '#f9f9f9'}; 
+                background-color: #f9f9f9; 
                 padding: 15px; 
                 border-radius: 5px;
               }
@@ -282,7 +285,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
               ${generatePreviewHTML()}
               
               <div class="footer text-center text-sm text-muted-color mt-8">
-                <p>Fiche technique générée le ${new Date().toLocaleDateString(settings.locale)}</p>
+                <p>Phiếu kỹ thuật được tạo ngày ${new Date().toLocaleDateString(settings?.locale ?? 'en-US')}</p>
               </div>
             </div>
           </body>
@@ -351,7 +354,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
             </DialogDescription>
           </DialogHeader>
           <div className="flex-grow overflow-auto border rounded-md mt-4 bg-white">
-            <iframe
+              <iframe
               srcDoc={`
                 <!DOCTYPE html>
                 <html>
@@ -361,13 +364,13 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
                     <style>
                       :root {
                         --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                        --primary-color: ${settings.darkMode ? '#8BADE3' : '#4CAF50'};
-                        --border-color: ${settings.darkMode ? '#3A3A3A' : '#e5e7eb'};
-                        --bg-color: ${settings.darkMode ? '#1F1F1F' : '#ffffff'};
-                        --text-color: ${settings.darkMode ? '#E1E1E1' : '#333333'};
-                        --muted-color: ${settings.darkMode ? '#A0A0A0' : '#6B7280'};
-                        --header-bg: ${settings.darkMode ? '#2D2D2D' : '#F9FAFB'};
-                        --card-bg: ${settings.darkMode ? '#2A2A2A' : '#f9fafb'};
+                        --primary-color: #4CAF50;
+                        --border-color: #e5e7eb;
+                        --bg-color: #ffffff;
+                        --text-color: #333333;
+                        --muted-color: #6B7280;
+                        --header-bg: #F9FAFB;
+                        --card-bg: #f9fafb;
                       }
                       
                       body {
@@ -401,7 +404,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
                       }
                       
                       .section h2 {
-                        color: ${settings.darkMode ? '#4B96E6' : '#1565c0'};
+                        color: #1565c0;
                         padding-bottom: 8px;
                         margin-top: 0;
                         border-bottom: 1px solid var(--border-color);
@@ -421,7 +424,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
                       
                       .font-medium {
                         font-weight: 600;
-                        color: ${settings.darkMode ? '#A4C2F4' : '#2E7D32'};
+                        color: #2E7D32;
                         margin-right: 6px;
                       }
                       
@@ -445,14 +448,14 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
                       ${previewHTML}
                       
                       <div class="footer">
-                        <p>Fiche technique générée le ${new Date().toLocaleDateString(settings.locale)}</p>
+                        <p>Phiếu kỹ thuật được tạo ngày ${new Date().toLocaleDateString(settings?.locale ?? 'en-US')}</p>
                       </div>
                     </div>
                   </body>
                 </html>
               `}
               className="w-full h-full border-none"
-              title="Technical Sheet Preview"
+              title="Xem trước phiếu kỹ thuật"
             />
           </div>
           <div className="flex justify-end gap-2 mt-4">

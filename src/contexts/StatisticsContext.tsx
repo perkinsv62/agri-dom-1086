@@ -1,20 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Kiểu dữ liệu cho các thông số thống kê
-export interface YieldData {
-  name: string;
-  current: number;
-  previous: number;
-  unit: string;
-}
 
-export interface FinancialData {
-  name: string;
-  profitability: number;
-  size: number;
-  crop: string;
-}
 
 export interface CostData {
   name: string;
@@ -29,57 +16,11 @@ export interface RevenueData {
   profit: number;
 }
 
-export interface EnvironmentalData {
-  indicator: string;
-  current: number;
-  target: number;
-  trend: string;
-  status: 'Đạt' | 'Đang tiến triển' | 'Chậm tiến độ';
-}
 
 interface StatisticsContextType {
-  // Dữ liệu về sản lượng
-  yieldData: YieldData[];
-  setYieldData: React.Dispatch<React.SetStateAction<YieldData[]>>;
-  
-  // Dữ liệu tài chính
-  financialData: {
-    profitabilityByParcel: FinancialData[];
-    costAnalysis: CostData[];
-    revenueByMonth: RevenueData[];
-  };
-  setFinancialData: React.Dispatch<React.SetStateAction<{
-    profitabilityByParcel: FinancialData[];
-    costAnalysis: CostData[];
-    revenueByMonth: RevenueData[];
-  }>>;
-  
-  // Dữ liệu môi trường
-  environmentalData: {
-    indicators: EnvironmentalData[];
-    carbonFootprint: number;
-    waterUsage: number;
-    biodiversity: number;
-  };
-  setEnvironmentalData: React.Dispatch<React.SetStateAction<{
-    indicators: EnvironmentalData[];
-    carbonFootprint: number;
-    waterUsage: number;
-    biodiversity: number;
-  }>>;
-  
-  // Dữ liệu dự báo
-  forecastData: unknown[];
-  setForecastData: React.Dispatch<React.SetStateAction<unknown[]>>;
-  
-  // Khoảng thời gian và bộ lọc
-  period: 'day' | 'week' | 'month' | 'year';
-  setPeriod: React.Dispatch<React.SetStateAction<'day' | 'week' | 'month' | 'year'>>;
-  cropFilter: string;
-  setCropFilter: React.Dispatch<React.SetStateAction<string>>;
-  
-  // Hàm cập nhật dữ liệu theo bộ lọc
-  updateDataWithFilters: (period: string, crop: string) => void;
+  revenueData: RevenueData[];
+  setRevenueData: React.Dispatch<React.SetStateAction<RevenueData[]>>;
+  costData?: CostData[];
 }
 
 const StatisticsContext = createContext<StatisticsContextType | undefined>(undefined);
@@ -92,32 +33,6 @@ export const useStatistics = () => {
   return context;
 };
 
-// Données initiales
-const initialYieldData: YieldData[] = [
-  { name: 'Mía', current: 85, previous: 75, unit: 't/ha' },
-  { name: 'Chuối', current: 32, previous: 30, unit: 't/ha' },
-  { name: 'Dứa', current: 45, previous: 48, unit: 't/ha' },
-  { name: 'Khoai môn', current: 18, previous: 15, unit: 't/ha' },
-  { name: 'Gỗ', current: 22, previous: 20, unit: 't/ha' }
-];
-
-const initialProfitabilityData: FinancialData[] = [
-  { name: 'Thửa Bắc', profitability: 1250, size: 12.5, crop: 'Mía' },
-  { name: 'Thửa Đông', profitability: 980, size: 8.3, crop: 'Chuối' },
-  { name: 'Thửa Nam', profitability: 1580, size: 15.7, crop: 'Dứa' },
-  { name: 'Thửa Tây', profitability: 850, size: 10.2, crop: 'Khoai môn' },
-  { name: 'Thửa Trung tâm', profitability: 920, size: 6.8, crop: 'Gỗ' }
-];
-
-const initialCostData: CostData[] = [
-  { name: 'Hạt giống', value: 1800, color: '#4CAF50' },
-  { name: 'Phân bón', value: 2200, color: '#8D6E63' },
-  { name: 'Thuốc BVTV', value: 1500, color: '#FFC107' },
-  { name: 'Nhiên liệu', value: 1200, color: '#2196F3' },
-  { name: 'Nhân công', value: 3500, color: '#673AB7' },
-  { name: 'Cơ giới hóa', value: 2800, color: '#E91E63' },
-  { name: 'Khác', value: 900, color: '#9E9E9E' }
-];
 
 const initialRevenueData = [
   { month: 'Thg 1', revenue: 28500, expenses: 20100, profit: 8400 },
@@ -134,76 +49,18 @@ const initialRevenueData = [
   { month: 'Thg 12', revenue: 41200, expenses: 25800, profit: 15400 }
 ];
 
-const initialEnvironmentalIndicators: EnvironmentalData[] = [
-  { indicator: 'Phát thải CO2 (t/ha)', current: 2.8, target: 2.5, trend: '-5%', status: 'Đang tiến triển' },
-  { indicator: 'Tiêu thụ nước (m³/ha)', current: 350, target: 320, trend: '-8%', status: 'Đạt' },
-  { indicator: 'Sử dụng đầu vào (kg/ha)', current: 180, target: 150, trend: '-12%', status: 'Đang tiến triển' },
-  { indicator: 'Diện tích canh tác hữu cơ (%)', current: 15, target: 25, trend: '+5%', status: 'Đang tiến triển' },
-  { indicator: 'Đa dạng sinh học (loài/ha)', current: 12, target: 15, trend: '+12%', status: 'Đạt' }
-];
-
 export const StatisticsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [yieldData, setYieldData] = useState<YieldData[]>(initialYieldData);
-  const [financialData, setFinancialData] = useState({
-    profitabilityByParcel: initialProfitabilityData,
-    costAnalysis: initialCostData,
-    revenueByMonth: initialRevenueData
-  });
-  const [environmentalData, setEnvironmentalData] = useState({
-    indicators: initialEnvironmentalIndicators,
-    carbonFootprint: -15,
-    waterUsage: -8,
-    biodiversity: 12
-  });
-  const [forecastData, setForecastData] = useState(initialRevenueData);
-  const [period, setPeriod] = useState<'day' | 'week' | 'month' | 'year'>('year');
-  const [cropFilter, setCropFilter] = useState('all');
   
-  // Fonction pour mettre à jour les données en fonction des filtres
-  const updateDataWithFilters = (period: string, crop: string) => {
-    // Filtrer les données de rendement par culture si nécessaire
-    if (crop !== 'all') {
-      const filteredYieldData = initialYieldData.filter(item => item.name === crop);
-      setYieldData(filteredYieldData);
-      
-      // Filtrer également les données financières par culture
-      const filteredProfitabilityData = initialProfitabilityData.filter(item => item.crop === crop);
-      setFinancialData(prev => ({
-        ...prev,
-        profitabilityByParcel: filteredProfitabilityData
-      }));
-    } else {
-      setYieldData(initialYieldData);
-      setFinancialData(prev => ({
-        ...prev,
-        profitabilityByParcel: initialProfitabilityData
-      }));
-    }
-    
-    // Vous pourriez également ajuster les autres données en fonction de la période
-  };
   
-  // Mettre à jour les données lorsque les filtres changent
-  useEffect(() => {
-    updateDataWithFilters(period, cropFilter);
-  }, [period, cropFilter]);
-  
+  const [revenueDataState, setRevenueDataState] = useState<RevenueData[]>(initialRevenueData);
+  const [costDataState] = useState<CostData[] | undefined>(undefined);
+
   return (
-    <StatisticsContext.Provider 
-      value={{ 
-        yieldData, 
-        setYieldData,
-        financialData,
-        setFinancialData,
-        environmentalData,
-        setEnvironmentalData,
-        forecastData,
-        setForecastData,
-        period,
-        setPeriod,
-        cropFilter,
-        setCropFilter,
-        updateDataWithFilters
+    <StatisticsContext.Provider
+      value={{
+        revenueData: revenueDataState,
+        setRevenueData: setRevenueDataState,
+        costData: costDataState,
       }}
     >
       {children}

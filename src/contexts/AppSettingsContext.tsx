@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AppSettings {
-  darkMode: boolean;
+
   locale: string;
   // Add other settings here
 }
@@ -13,7 +13,6 @@ interface AppSettingsContextType {
 }
 
 const defaultSettings: AppSettings = {
-  darkMode: false,
   locale: 'vi-VN',
   // Default values for other settings
 };

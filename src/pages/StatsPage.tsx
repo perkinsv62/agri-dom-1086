@@ -89,18 +89,6 @@ const StatsPage = () => {
                 </button>
                 
                 <button 
-                  onClick={() => handleViewChange('harvest')}
-                  className={`px-3 py-1.5 rounded-md flex items-center text-sm transition-colors ${
-                    activeView === 'harvest' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted hover:bg-muted/80'
-                  }`}
-                >
-                  <BarChart className="h-4 w-4 mr-1.5" />
-                  Thu hoạch
-                </button>
-                
-                <button 
                   onClick={() => handleViewChange('detailed')}
                   className={`px-3 py-1.5 rounded-md flex items-center text-sm transition-colors ${
                     activeView === 'detailed' 

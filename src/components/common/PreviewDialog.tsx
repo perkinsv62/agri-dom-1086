@@ -30,6 +30,7 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
   onPrint
 }) => {
   const { settings } = useAppSettings();
+  const locale = settings?.locale ?? 'vi-VN';
   
   return (
     <Dialog open={openProp} onOpenChange={onOpenChange}>
@@ -44,7 +45,7 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
           <iframe
             srcDoc={`
               <!DOCTYPE html>
-              <html lang="${settings.locale || 'vi-VN'}">
+              <html lang="${locale}">
                 <head>
                   <meta charset="UTF-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -52,12 +53,12 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
                   <style>
                     :root {
                       --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                      --primary-color: ${settings.darkMode ? '#8BADE3' : '#4CAF50'};
-                      --border-color: ${settings.darkMode ? '#3A3A3A' : '#e5e7eb'};
-                      --bg-color: ${settings.darkMode ? '#1F1F1F' : '#ffffff'};
-                      --text-color: ${settings.darkMode ? '#E1E1E1' : '#333333'};
-                      --muted-color: ${settings.darkMode ? '#A0A0A0' : '#6B7280'};
-                      --header-bg: ${settings.darkMode ? '#2D2D2D' : '#F9FAFB'};
+                      --primary-color: #4CAF50;
+                      --border-color: #e5e7eb;
+                      --bg-color: #ffffff;
+                      --text-color: #333333;
+                      --muted-color: #6B7280;
+                      --header-bg: #F9FAFB;
                     }
                     
                     body {
@@ -115,11 +116,11 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
                     }
                     
                     tr:nth-child(even) {
-                      background-color: ${settings.darkMode ? '#2A2A2A' : '#f9fafb'};
+                      background-color: #f9fafb;
                     }
-                    
+
                     tr:hover {
-                      background-color: ${settings.darkMode ? '#333333' : '#f3f4f6'};
+                      background-color: #f3f4f6;
                     }
                     
                     .footer {

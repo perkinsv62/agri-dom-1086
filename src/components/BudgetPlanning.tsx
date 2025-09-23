@@ -24,15 +24,20 @@ interface BudgetItem {
   actual: number;
   color: string;
 }
+// Currency formatter (Vietnamese locale, Euro)
+const formatCurrency = (value: number | string) => new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0
+}).format(Number(value));
 
 const INITIAL_BUDGET_DATA: BudgetItem[] = [
-  { id: 1, category: 'Intrants', planned: 25000, actual: 22500, color: '#4CAF50' },
-  { id: 2, category: 'Équipement', planned: 30000, actual: 32000, color: '#2196F3' },
-  { id: 3, category: 'Main d\'oeuvre', planned: 40000, actual: 39000, color: '#FFC107' },
-  { id: 4, category: 'Carburant', planned: 12000, actual: 13500, color: '#F44336' },
-  { id: 5, category: 'Maintenance', planned: 8000, actual: 7200, color: '#9C27B0' },
-  { id: 6, category: 'Services', planned: 15000, actual: 14000, color: '#00BCD4' },
-  { id: 7, category: 'Administratif', planned: 10000, actual: 9800, color: '#FF9800' },
+  { id: 2, category: 'Thiết bị', planned: 30000, actual: 32000, color: '#2196F3' },
+  { id: 3, category: 'Nhân công', planned: 40000, actual: 39000, color: '#FFC107' },
+  { id: 5, category: 'Bảo trì', planned: 8000, actual: 7200, color: '#9C27B0' },
+  { id: 6, category: 'Hoa hồng', planned: 15000, actual: 14000, color: '#00BCD4' },
+  { id: 7, category: 'Quảng cáo', planned: 10000, actual: 9800, color: '#FF9800' },
 ];
 
 const BudgetPlanning = () => {
@@ -202,20 +207,20 @@ const BudgetPlanning = () => {
               <div className="pt-4 space-y-2">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Ngân sách dự kiến:</span>
-                  <span className="font-medium">{totalPlanned.toLocaleString()} €</span>
+                  <span className="font-medium">{formatCurrency(totalPlanned)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Đã chi:</span>
-                  <span className="font-medium">{totalActual.toLocaleString()} €</span>
+                  <span className="font-medium">{formatCurrency(totalActual)}</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t">
-                  <span className="font-medium text-muted-foreground">Solde:</span>
+                  <span className="font-medium text-muted-foreground">Số dư:</span>
                   <span 
                     className={`font-medium ${
                       totalPlanned - totalActual >= 0 ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {(totalPlanned - totalActual).toLocaleString()} €
+                    {formatCurrency(totalPlanned - totalActual)}
                   </span>
                 </div>
               </div>
@@ -251,7 +256,7 @@ const BudgetPlanning = () => {
                   </Pie>
                   <Legend />
                   <Tooltip 
-                    formatter={(value) => `${Number(value).toLocaleString()} €`}
+                    formatter={(value) => formatCurrency(Number(value))}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -301,14 +306,14 @@ const BudgetPlanning = () => {
                           {item.category}
                         </div>
                       </td>
-                      <td className="text-right py-3 px-4">{item.planned.toLocaleString()} €</td>
+                      <td className="text-right py-3 px-4">{formatCurrency(item.planned)}</td>
                       <td className="text-right py-3 px-4">
                         <Input
                           className="w-28 text-right py-1 px-2 h-auto inline-block"
                           value={item.actual}
                           onChange={(e) => handleUpdateActual(item.id, e.target.value)}
                         />
-                        €
+                        <span className="ml-1">€</span>
                       </td>
                       <td className="text-right py-3 px-4">
                         <div className="flex items-center justify-end">
@@ -322,7 +327,7 @@ const BudgetPlanning = () => {
                         </div>
                       </td>
                       <td className={`text-right py-3 px-4 ${status === 'under' ? 'text-green-600' : 'text-red-600'}`}>
-                        {balance.toLocaleString()} €
+                        {formatCurrency(balance)}
                       </td>
                       <td className="text-right py-3 px-4">
                         {status === 'under' ? (
@@ -362,44 +367,44 @@ const BudgetPlanning = () => {
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Ajouter une catégorie budgétaire</DialogTitle>
+            <DialogTitle>Thêm danh mục ngân sách</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="category">Nom de la catégorie</Label>
+              <Label htmlFor="category">Tên danh mục</Label>
               <Input 
                 id="category" 
                 value={newCategory} 
                 onChange={(e) => setNewCategory(e.target.value)} 
-                placeholder="Ex: Équipement"
+                placeholder="Ví dụ: Thiết bị"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="planned">Budget prévu (€)</Label>
+              <Label htmlFor="planned">Ngân sách dự kiến (€)</Label>
               <Input 
                 id="planned" 
                 type="number" 
                 value={newPlanned} 
                 onChange={(e) => setNewPlanned(e.target.value)} 
-                placeholder="Ex: 10000"
+                placeholder="Ví dụ: 10000"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="actual">Dépensé à ce jour (€) (optionnel)</Label>
+              <Label htmlFor="actual">Đã chi đến nay (€) (tùy chọn)</Label>
               <Input 
                 id="actual" 
                 type="number" 
                 value={newActual} 
                 onChange={(e) => setNewActual(e.target.value)} 
-                placeholder="Ex: 5000"
+                placeholder="Ví dụ: 5000"
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="ghost" onClick={() => setShowAddDialog(false)}>Annuler</Button>
-            <Button onClick={handleAddBudgetItem}>Ajouter</Button>
+            <Button variant="ghost" onClick={() => setShowAddDialog(false)}>Hủy</Button>
+            <Button onClick={handleAddBudgetItem}>Thêm</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

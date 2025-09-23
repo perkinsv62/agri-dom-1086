@@ -34,6 +34,14 @@ const transactionSchema = z.object({
   type: z.enum(["income", "expense"]),
 });
 
+// Currency formatter (Vietnamese locale, Euro)
+const formatCurrency = (value: number | string) => new Intl.NumberFormat('vi-VN', {
+  style: 'currency',
+  currency: 'EUR',
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+}).format(Number(value));
+
 const FinancialTracking = () => {
   // State for editable content (Vietnamese)
   const [title, setTitle] = useState('Theo dõi tài chính');
@@ -41,12 +49,12 @@ const FinancialTracking = () => {
   
   // State for transactions
   const [transactions, setTransactions] = useState([
-    { id: 1, date: '2023-07-05', description: 'Bán thu hoạch', amount: 3200, category: 'Bán hàng', type: 'income' },
-    { id: 2, date: '2023-07-10', description: 'Mua phân bón', amount: 850, category: 'Vật tư', type: 'expense' },
+    { id: 1, date: '2023-07-05', description: 'Bán vật phẩm', amount: 3200, category: 'Bán hàng', type: 'income' },
+    { id: 2, date: '2023-07-10', description: 'Mua máy tính', amount: 850, category: 'Vật tư', type: 'expense' },
   { id: 3, date: '2023-07-12', description: 'Hóa đơn điện', amount: 320, category: 'Tiện ích', type: 'expense' },
-    { id: 4, date: '2023-07-15', description: 'Bán chuối', amount: 1500, category: 'Bán hàng', type: 'income' },
-    { id: 5, date: '2023-07-20', description: 'Sửa chữa máy kéo', amount: 750, category: 'Bảo trì', type: 'expense' },
-    { id: 6, date: '2023-07-25', description: 'Trợ cấp nông nghiệp', amount: 4200, category: 'Trợ cấp', type: 'income' },
+    { id: 4, date: '2023-07-15', description: 'Bán vật phẩm', amount: 1500, category: 'Bán hàng', type: 'income' },
+    { id: 5, date: '2023-07-20', description: 'Sửa chữa ', amount: 750, category: 'Bảo trì', type: 'expense' },
+    { id: 6, date: '2023-07-25', description: 'Trợ cấp ', amount: 4200, category: 'Trợ cấp', type: 'income' },
     { id: 7, date: '2023-07-28', description: 'Lương nhân công', amount: 2800, category: 'Lương', type: 'expense' },
   ]);
   
@@ -158,22 +166,22 @@ const FinancialTracking = () => {
     link.click();
     document.body.removeChild(link);
     
-    toast.success('Données exportées en CSV');
+    toast.success('Dữ liệu đã được xuất CSV');
   };
   
   // Print transactions
   const printTransactions = () => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
-      toast.error('Impossible d\'ouvrir la fenêtre d\'impression');
+      toast.error('Không thể mở cửa sổ in');
       return;
     }
     
-    const htmlContent = `
+      const htmlContent = `
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Transactions Financières</title>
+          <title>Giao dịch tài chính</title>
           <style>
             body { font-family: Arial, sans-serif; }
             table { width: 100%; border-collapse: collapse; }
@@ -187,19 +195,19 @@ const FinancialTracking = () => {
         </head>
         <body>
           <h1>Giao dịch tài chính</h1>
-          <div class="summary">
-            <p>Tổng doanh thu: <b>${totalIncome.toFixed(2)} €</b></p>
-            <p>Tổng chi phí: <b>${totalExpenses.toFixed(2)} €</b></p>
-            <p>Số dư: <b class="${balance >= 0 ? 'income' : 'expense'}">${balance.toFixed(2)} €</b></p>
+            <div class="summary">
+            <p>Tổng doanh thu: <b>${formatCurrency(totalIncome)}</b></p>
+            <p>Tổng chi phí: <b>${formatCurrency(totalExpenses)}</b></p>
+            <p>Số dư: <b class="${balance >= 0 ? 'income' : 'expense'}">${formatCurrency(balance)}</b></p>
           </div>
           <table>
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Montant</th>
-                <th>Catégorie</th>
-                <th>Type</th>
+                <th>Ngày</th>
+                <th>Mô tả</th>
+                <th>Số tiền</th>
+                <th>Danh mục</th>
+                <th>Loại</th>
               </tr>
             </thead>
             <tbody>
@@ -207,9 +215,9 @@ const FinancialTracking = () => {
                 <tr>
                   <td>${new Date(t.date).toLocaleDateString()}</td>
                   <td>${t.description}</td>
-                  <td class="${t.type === 'income' ? 'income' : 'expense'}">${t.amount.toFixed(2)} €</td>
+                  <td class="${t.type === 'income' ? 'income' : 'expense'}">${formatCurrency(t.amount)}</td>
                   <td>${t.category}</td>
-                  <td>${t.type === 'income' ? 'Revenu' : 'Dépense'}</td>
+                  <td>${t.type === 'income' ? 'Doanh thu' : 'Chi phí'}</td>
                 </tr>
               `).join('')}
             </tbody>
@@ -225,7 +233,7 @@ const FinancialTracking = () => {
     printWindow.document.write(htmlContent);
     printWindow.document.close();
     
-    toast.success('Impression préparée');
+    toast.success('Chuẩn bị in xong');
   };
   
   return (
@@ -233,45 +241,45 @@ const FinancialTracking = () => {
       <PageHeader 
         title={title}
         description={description}
-        onTitleChange={(value) => {
+          onTitleChange={(value) => {
           setTitle(String(value));
-          toast.success('Titre mis à jour');
+          toast.success('Tiêu đề đã được cập nhật');
         }}
         onDescriptionChange={(value) => {
           setDescription(String(value));
-          toast.success('Description mise à jour');
+          toast.success('Mô tả đã được cập nhật');
         }}
       />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="bg-white">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Revenus</CardTitle>
-            <CardDescription>Total des entrées</CardDescription>
+            <CardTitle className="text-lg">Doanh thu</CardTitle>
+            <CardDescription>Tổng thu</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-green-600">{totalIncome.toFixed(2)} €</p>
+            <p className="text-2xl font-bold text-green-600">{formatCurrency(totalIncome)}</p>
           </CardContent>
         </Card>
         
         <Card className="bg-white">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Dépenses</CardTitle>
-            <CardDescription>Total des sorties</CardDescription>
+            <CardTitle className="text-lg">Chi phí</CardTitle>
+            <CardDescription>Tổng chi</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-red-600">{totalExpenses.toFixed(2)} €</p>
+            <p className="text-2xl font-bold text-red-600">{formatCurrency(totalExpenses)}</p>
           </CardContent>
         </Card>
         
         <Card className="bg-white">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Solde</CardTitle>
-            <CardDescription>Revenus - Dépenses</CardDescription>
+            <CardTitle className="text-lg">Số dư</CardTitle>
+            <CardDescription>Doanh thu - Chi phí</CardDescription>
           </CardHeader>
           <CardContent>
             <p className={`text-2xl font-bold ${balance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              {balance.toFixed(2)} €
+              {formatCurrency(balance)}
             </p>
           </CardContent>
         </Card>
@@ -280,7 +288,7 @@ const FinancialTracking = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="bg-white">
           <CardHeader>
-            <CardTitle>Aperçu Mensuel</CardTitle>
+            <CardTitle>Tổng quan hàng tháng</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="h-80">
@@ -293,8 +301,8 @@ const FinancialTracking = () => {
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip 
-                    formatter={(value) => [`${value} €`, '']} 
-                    labelFormatter={(label) => `Tháng: ${label}`}
+                    formatter={(value) => [formatCurrency(Number(value))]} 
+                    labelFormatter={(label) => `${label}`}
                   />
                   <Bar name="Doanh thu" dataKey="income" fill="#4ade80" radius={[4, 4, 0, 0]} />
                   <Bar name="Chi phí" dataKey="expenses" fill="#f87171" radius={[4, 4, 0, 0]} />
@@ -396,17 +404,10 @@ const FinancialTracking = () => {
                     
                     <div className="flex items-center gap-3">
                      
-					   <span className={`font-semibold ${
+                      <span className={`font-semibold ${
                           transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                        }`}>{transaction.amount}</span>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-600 hover:text-red-800 hover:bg-red-50 p-1"
-                        onClick={() => handleDeleteTransaction(transaction.id)}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+                        }`}>{formatCurrency(transaction.amount)}</span>
+                      
                     </div>
                   </div>
                 ))
@@ -501,7 +502,7 @@ const FinancialTracking = () => {
                   name="category"
                   render={({ field }) => (
                     <FormItem className="col-span-2">
-                      <FormLabel>Catégorie</FormLabel>
+                      <FormLabel>Danh mục</FormLabel>
                       <FormControl>
                         <Input placeholder="Ví dụ: Bán hàng, Vật tư..." {...field} />
                       </FormControl>
