@@ -16,7 +16,7 @@ export type InventoryItem = {
   sku?: string;
   expiryDate?: string;
   notes?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 export type ExportOptions = {
@@ -38,7 +38,7 @@ export const exportInventoryToCSV = (
     // Filter fields if specified
     if (options.includeFields?.length) {
       dataToExport = dataToExport.map(item => {
-        const filteredItem: Record<string, any> = {};
+        const filteredItem: Record<string, unknown> = {};
         options.includeFields?.forEach(field => {
           if (field in item) {
             filteredItem[field] = item[field];
@@ -48,7 +48,7 @@ export const exportInventoryToCSV = (
       });
     } else if (options.excludeFields?.length) {
       dataToExport = dataToExport.map(item => {
-        const filteredItem: Record<string, any> = {};
+        const filteredItem: Record<string, unknown> = {};
         Object.keys(item).forEach(key => {
           if (!options.excludeFields?.includes(key)) {
             filteredItem[key] = item[key];
@@ -58,7 +58,7 @@ export const exportInventoryToCSV = (
       });
     }
 
-    const csv = Papa.unparse(dataToExport as any[]);
+    const csv = Papa.unparse(dataToExport);
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -106,7 +106,7 @@ export const importInventoryFromCSV = (
     Papa.parse(file, {
       header: true,
       complete: (results) => {
-        const parsedData = results.data as any[];
+        const parsedData = results.data as Record<string, unknown>[];
         
         // Check if there's data to process
         if (!parsedData || parsedData.length === 0 || !parsedData[0]) {

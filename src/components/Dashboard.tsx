@@ -61,9 +61,9 @@ const axisTickStyle = { fontSize: 12, fill: '#6b7280' };
 const tooltipContentStyle = { fontSize: 12, padding: '6px 8px', background: '#ffffff', border: '1px solid #e5e7eb' };
 const tooltipItemStyle = { fontSize: 12 };
 const tooltipLabelStyle = { fontSize: 11, color: '#6b7280' };
-const formatCurrency = (value: any, opts?: Intl.NumberFormatOptions) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'EUR', ...(opts || {}) }).format(Number(value));
-const formatNumber = (value: any) => new Intl.NumberFormat('vi-VN').format(Number(value));
-const formatVND = (value: any) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(value));
+const formatCurrency = (value: number | string, opts?: Intl.NumberFormatOptions) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'EUR', ...(opts || {}) }).format(Number(value));
+const formatNumber = (value: number | string) => new Intl.NumberFormat('vi-VN').format(Number(value));
+const formatVND = (value: number | string) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(value));
 
 // (weather/alerts removed — not used in this Dashboard)
 

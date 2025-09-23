@@ -13,11 +13,11 @@ export interface Column {
 }
 
 interface EditableTableProps {
-  data: Record<string, any>[];
+  data: Record<string, unknown>[];
   columns: Column[];
-  onUpdate: (rowIndex: number, columnId: string, value: any) => void;
+  onUpdate: (rowIndex: number, columnId: string, value: unknown) => void;
   onDelete?: (rowIndex: number) => void;
-  onAdd?: (newRow: Record<string, any>) => void;
+  onAdd?: (newRow: Record<string, unknown>) => void;
   className?: string;
   sortable?: boolean;
   actions?: { icon: React.ReactNode, label: string, onClick: (rowIndex: number) => void }[];
@@ -69,13 +69,13 @@ export const EditableTable = ({
       const newRow = columns.reduce((acc, column) => {
         acc[column.accessorKey] = '';
         return acc;
-      }, {} as Record<string, any>);
+      }, {} as Record<string, unknown>);
       
       onAdd(newRow);
     }
   };
 
-  const getRowClass = (row: Record<string, any>) => {
+  const getRowClass = (row: Record<string, unknown>) => {
     if (row.status === 'critical') return 'bg-red-50';
     if (row.status === 'warning') return 'bg-yellow-50';
     return '';

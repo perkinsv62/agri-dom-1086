@@ -44,14 +44,14 @@ const GuadeloupeHarvestTracking = () => {
     { id: 'quality', header: 'Chất lượng', accessorKey: 'quality', isEditable: true }
   ];
   
-  const handleTableUpdate = (rowIndex: number, columnId: string, value: any) => {
+  const handleTableUpdate = (rowIndex: number, columnId: string, value: unknown) => {
     const newData = [...harvestData];
     const updatedRow = { ...newData[rowIndex] };
     
     if (columnId === 'currentYield' || columnId === 'previousYield' || columnId === 'harvestArea') {
-      (updatedRow as any)[columnId] = Number(value);
+      updatedRow[columnId] = Number(value);
     } else if (columnId === 'crop' || columnId === 'unit' || columnId === 'quality') {
-      (updatedRow as any)[columnId] = String(value);
+      updatedRow[columnId] = String(value) as HarvestData[keyof HarvestData];
     }
     
     newData[rowIndex] = updatedRow as HarvestData;
@@ -66,7 +66,7 @@ const GuadeloupeHarvestTracking = () => {
     console.log('Cây trồng đã được xóa khỏi theo dõi');
   };
   
-  const handleAddRow = (newRow: Record<string, any>) => {
+  const handleAddRow = (newRow: Record<string, unknown>) => {
     const typedRow: HarvestData = {
       crop: String(newRow.crop || ''),
       currentYield: Number(newRow.currentYield || 0),

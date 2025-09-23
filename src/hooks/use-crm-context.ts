@@ -115,7 +115,7 @@ export const useCRMContext = (): CRMContextState => {
   }, []);
 
   // Mettre à jour les données d'un module spécifique
-  const updateModuleData = useCallback((moduleName: string, data: any) => {
+  const updateModuleData = useCallback((moduleName: string, data: unknown) => {
     setModuleData(prevData => ({
       ...prevData,
       [moduleName]: {
@@ -137,7 +137,7 @@ export const useCRMContext = (): CRMContextState => {
   const exportModuleData = useCallback(async (
     moduleName: string, 
     format: 'csv' | 'excel' | 'pdf',
-    customData?: any[]
+    customData?: unknown[]
   ): Promise<boolean> => {
     // Use custom data if provided, otherwise get from module
     const data = customData || getModuleData(moduleName)?.items;
@@ -203,7 +203,7 @@ export const useCRMContext = (): CRMContextState => {
   }, [updateModuleData]);
 
   // Print module data
-  const printModuleData = useCallback(async (moduleName: string, options?: any): Promise<boolean> => {
+  const printModuleData = useCallback(async (moduleName: string, options?: Record<string, unknown>): Promise<boolean> => {
     const data = getModuleData(moduleName);
     
     if (!data || !data.items || !Array.isArray(data.items) || data.items.length === 0) {
