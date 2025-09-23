@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Layers, Eye, EyeOff, Info } from 'lucide-react';
+import { Layers, Info } from 'lucide-react';
 import { 
   Tooltip,
   TooltipContent,
@@ -11,11 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from 'sonner';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+// Popover intentionally removed — not used in this component
 
 interface Layer {
   id: string;
@@ -28,10 +24,10 @@ interface Layer {
 
 interface ParcelLayersManagerProps {
   isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
+  onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ParcelLayersManager = ({ isOpen, onOpenChange }: ParcelLayersManagerProps) => {
+const ParcelLayersManager = ({ isOpen: isOpenProp, onOpenChange }: ParcelLayersManagerProps) => {
   const [layers, setLayers] = useState<Layer[]>([
     { 
       id: 'satellite', 
@@ -138,7 +134,7 @@ const ParcelLayersManager = ({ isOpen, onOpenChange }: ParcelLayersManagerProps)
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isOpenProp} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center">

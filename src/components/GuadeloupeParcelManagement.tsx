@@ -10,14 +10,9 @@ import {
   Edit,
   Trash2,
   AlertCircle,
-  CloudRain,
-  Sun,
-  Wind,
-  Droplet,
-  ArrowRight,
   Save
 } from 'lucide-react';
-import { EditableField } from './ui/editable-field';
+// EditableField previously removed from top-level components; keep internal editors in UI primitives
 import { toast } from 'sonner';
 
 // Types pour les parcelles adaptées à la Guadeloupe
@@ -119,7 +114,9 @@ const ParcelCard = ({
   onEdit 
 }: { 
   parcel: ParcelData, 
+  // eslint-disable-next-line no-unused-vars
   onSelect: (parcel: ParcelData) => void,
+  // eslint-disable-next-line no-unused-vars
   onEdit: (parcel: ParcelData) => void
 }) => {
   const getStatusColor = (status: string) => {
@@ -133,10 +130,10 @@ const ParcelCard = ({
 
   const getStatusLabel = (status: string) => {
     switch (status) {
-      case 'active': return 'Active';
-      case 'inactive': return 'Inactive';
-      case 'planned': return 'Planifiée';
-      default: return 'Inconnu';
+      case 'active': return 'Hoạt động';
+      case 'inactive': return 'Không hoạt động';
+      case 'planned': return 'Đã lên kế hoạch';
+      default: return 'Không xác định';
     }
   };
 
@@ -290,15 +287,15 @@ const GuadeloupeParcelManagement = () => {
     <div className="p-6 animate-enter">
       <header className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
         <div>
-          <h1 className="text-2xl font-bold mb-1">Gestion des Parcelles en Guadeloupe</h1>
-          <p className="text-muted-foreground">Gérez et surveillez toutes vos parcelles agricoles sur l'archipel</p>
+          <h1 className="text-2xl font-bold mb-1">Quản lý thửa đất - Guadeloupe</h1>
+          <p className="text-muted-foreground">Quản lý và theo dõi tất cả thửa đất nông nghiệp trên quần đảo</p>
         </div>
         <button 
           className="inline-flex items-center justify-center px-4 py-2 bg-agri-primary text-white rounded-lg hover:bg-agri-primary-dark transition-colors whitespace-nowrap"
           onClick={handleAddParcel}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Ajouter une parcelle
+          Thêm thửa đất
         </button>
       </header>
 
@@ -310,7 +307,7 @@ const GuadeloupeParcelManagement = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input 
                 type="text" 
-                placeholder="Rechercher..." 
+                placeholder="Tìm kiếm..." 
                 className="pl-10 pr-4 py-2 w-full border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -322,10 +319,10 @@ const GuadeloupeParcelManagement = () => {
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
               >
-                <option value="all">Tous</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-                <option value="planned">Planifiée</option>
+                <option value="all">Tất cả</option>
+                <option value="active">Hoạt động</option>
+                <option value="inactive">Không hoạt động</option>
+                <option value="planned">Đã lên kế hoạch</option>
               </select>
               <Filter className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             </div>
@@ -344,7 +341,7 @@ const GuadeloupeParcelManagement = () => {
             ) : (
               <div className="text-center py-8 px-4 border border-dashed rounded-lg">
                 <AlertCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-                <p className="text-muted-foreground">Aucune parcelle trouvée avec ces critères</p>
+                <p className="text-muted-foreground">Không tìm thấy thửa đất nào phù hợp</p>
               </div>
             )}
           </div>
@@ -393,21 +390,21 @@ const GuadeloupeParcelManagement = () => {
               
               <div className="p-4">
                 <div className="bg-muted h-[300px] rounded-lg flex items-center justify-center mb-4">
-                  <p className="text-muted-foreground">Carte de la parcelle</p>
-                  {/* Ici vous pourriez intégrer une vraie carte comme Google Maps, Leaflet, etc. */}
+                  <p className="text-muted-foreground">Bản đồ thửa đất</p>
+                  {/* Tại đây có thể tích hợp bản đồ thực (Google Maps, Leaflet, v.v.) */}
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
                   <div className="border rounded-lg p-4">
                     <h3 className="font-medium mb-3 flex items-center">
                       <Calendar className="h-4 w-4 mr-2" />
-                      Culture actuelle
+                              Cây trồng hiện tại
                     </h3>
                     
                     {isEditMode ? (
                       <div className="space-y-3">
                         <div>
-                          <label className="text-sm text-muted-foreground">Culture</label>
+                          <label className="text-sm text-muted-foreground">Cây trồng</label>
                           <input 
                             type="text" 
                             value={editedParcel?.crop || ''} 
@@ -417,7 +414,7 @@ const GuadeloupeParcelManagement = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           <div>
-                            <label className="text-sm text-muted-foreground">Date de plantation</label>
+                            <label className="text-sm text-muted-foreground">Ngày trồng</label>
                             <input 
                               type="date" 
                               value={editedParcel?.plantingDate || ''} 
@@ -426,7 +423,7 @@ const GuadeloupeParcelManagement = () => {
                             />
                           </div>
                           <div>
-                            <label className="text-sm text-muted-foreground">Date de récolte</label>
+                            <label className="text-sm text-muted-foreground">Ngày thu hoạch</label>
                             <input 
                               type="date" 
                               value={editedParcel?.harvestDate || ''} 
@@ -436,25 +433,25 @@ const GuadeloupeParcelManagement = () => {
                           </div>
                         </div>
                         <div>
-                          <label className="text-sm text-muted-foreground">Statut</label>
+                          <label className="text-sm text-muted-foreground">Trạng thái</label>
                           <div className="flex space-x-2 mt-1">
                             <button 
                               className={`px-3 py-1.5 text-xs rounded-md ${editedParcel?.status === 'active' ? 'bg-agri-success text-white' : 'bg-muted'}`}
                               onClick={() => handleStatusChange('active')}
                             >
-                              Active
+                              Hoạt động
                             </button>
                             <button 
                               className={`px-3 py-1.5 text-xs rounded-md ${editedParcel?.status === 'planned' ? 'bg-agri-warning text-white' : 'bg-muted'}`}
                               onClick={() => handleStatusChange('planned')}
                             >
-                              Planifiée
+                              Đã lên kế hoạch
                             </button>
                             <button 
                               className={`px-3 py-1.5 text-xs rounded-md ${editedParcel?.status === 'inactive' ? 'bg-agri-danger text-white' : 'bg-muted'}`}
                               onClick={() => handleStatusChange('inactive')}
                             >
-                              Inactive
+                              Không hoạt động
                             </button>
                           </div>
                         </div>
@@ -463,10 +460,10 @@ const GuadeloupeParcelManagement = () => {
                       <div className="bg-agri-primary/10 rounded-lg p-3 text-center">
                         <span className="font-semibold text-agri-primary">{selectedParcel.crop}</span>
                         {selectedParcel.plantingDate && (
-                          <p className="text-sm mt-1">Planté le: {new Date(selectedParcel.plantingDate).toLocaleDateString()}</p>
+                          <p className="text-sm mt-1">Ngày trồng: {new Date(selectedParcel.plantingDate).toLocaleDateString()}</p>
                         )}
                         {selectedParcel.harvestDate && (
-                          <p className="text-sm">Récolte prévue: {new Date(selectedParcel.harvestDate).toLocaleDateString()}</p>
+                          <p className="text-sm">Dự kiến thu hoạch: {new Date(selectedParcel.harvestDate).toLocaleDateString()}</p>
                         )}
                       </div>
                     )}
@@ -475,13 +472,13 @@ const GuadeloupeParcelManagement = () => {
                   <div className="border rounded-lg p-4">
                     <h3 className="font-medium mb-3 flex items-center">
                       <Layers className="h-4 w-4 mr-2" />
-                      Caractéristiques du sol
+                      Đặc tính đất
                     </h3>
                     
                     {isEditMode ? (
                       <div className="space-y-3">
                         <div>
-                          <label className="text-sm text-muted-foreground">Type de sol</label>
+                          <label className="text-sm text-muted-foreground">Loại đất</label>
                           <input 
                             type="text" 
                             value={editedParcel?.soilType || ''} 
@@ -490,7 +487,7 @@ const GuadeloupeParcelManagement = () => {
                           />
                         </div>
                         <div>
-                          <label className="text-sm text-muted-foreground">Irrigation</label>
+                          <label className="text-sm text-muted-foreground">Tưới</label>
                           <input 
                             type="text" 
                             value={editedParcel?.irrigation || ''} 
@@ -499,7 +496,7 @@ const GuadeloupeParcelManagement = () => {
                           />
                         </div>
                         <div>
-                          <label className="text-sm text-muted-foreground">Pluviométrie annuelle (mm)</label>
+                          <label className="text-sm text-muted-foreground">Lượng mưa hàng năm (mm)</label>
                           <input 
                             type="number" 
                             value={editedParcel?.rainfall || ''} 
@@ -511,19 +508,19 @@ const GuadeloupeParcelManagement = () => {
                     ) : (
                       <div className="space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm">Type:</span>
+                          <span className="text-sm">Loại:</span>
                           <span className="text-sm font-medium">{selectedParcel.soilType}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Irrigation:</span>
+                          <span className="text-sm">Tưới:</span>
                           <span className="text-sm font-medium">{selectedParcel.irrigation}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Pluviométrie:</span>
-                          <span className="text-sm font-medium">{selectedParcel.rainfall ? `${selectedParcel.rainfall} mm/an` : 'Non spécifié'}</span>
+                          <span className="text-sm">Lượng mưa:</span>
+                          <span className="text-sm font-medium">{selectedParcel.rainfall ? `${selectedParcel.rainfall} mm/năm` : 'Chưa xác định'}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm">Superficie:</span>
+                          <span className="text-sm">Diện tích:</span>
                           <span className="text-sm font-medium">{selectedParcel.area} ha</span>
                         </div>
                       </div>
@@ -531,18 +528,18 @@ const GuadeloupeParcelManagement = () => {
                   </div>
                   
                   <div className="border rounded-lg p-4 md:col-span-2">
-                    <h3 className="font-medium mb-3">Notes</h3>
+                    <h3 className="font-medium mb-3">Ghi chú</h3>
                     
                     {isEditMode ? (
-                      <textarea 
+                        <textarea 
                         value={editedParcel?.notes || ''}
                         onChange={(e) => handleInputChange('notes', e.target.value)}
-                        placeholder="Ajoutez vos notes ici..."
+                        placeholder="Thêm ghi chú của bạn ở đây..."
                         className="w-full px-3 py-2 border border-input rounded-md h-24 resize-none"
                       />
                     ) : (
                       <div className="p-3 bg-muted/30 rounded-lg min-h-[80px]">
-                        {selectedParcel.notes || <span className="text-muted-foreground italic">Aucune note pour cette parcelle</span>}
+                        {selectedParcel.notes || <span className="text-muted-foreground italic">Chưa có ghi chú cho thửa này</span>}
                       </div>
                     )}
                   </div>
@@ -552,9 +549,9 @@ const GuadeloupeParcelManagement = () => {
           ) : (
             <div className="border rounded-xl bg-muted h-full flex flex-col items-center justify-center p-6">
               <MapPin className="h-12 w-12 text-muted-foreground opacity-50 mb-4" />
-              <h3 className="text-xl font-medium text-foreground mb-2">Sélectionnez une parcelle</h3>
+              <h3 className="text-xl font-medium text-foreground mb-2">Chọn một thửa đất</h3>
               <p className="text-muted-foreground text-center max-w-md">
-                Cliquez sur une parcelle dans la liste à gauche pour afficher ses détails et accéder à la carte
+                Nhấp vào một thửa ở danh sách bên trái để xem chi tiết và bản đồ
               </p>
             </div>
           )}

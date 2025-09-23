@@ -1,49 +1,45 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { 
-  Home, 
-  MapPin, 
-  Sprout, 
-  Package, 
-  Wallet, 
-  BarChart2, 
-  Menu, 
+import {
+  Home,
+  Sprout,
+  Wallet,
+  BarChart2,
+  Menu,
   X,
   Sun,
   Moon,
   ChevronRight,
   Settings,
-  Users,
-  FileText,
-  Shield
+  Heart,
+  Shield,
+  Newspaper
 } from 'lucide-react';
-import { useUser } from '../contexts/UserContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
-  const { isAdmin } = useUser();
-  
+
   // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
-  
+
   // Handle theme toggle
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
+
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
       setIsDarkMode(true);
       document.documentElement.classList.add('dark');
     }
   }, []);
-  
+
   const toggleSidebar = () => setIsOpen(!isOpen);
-  
+
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
@@ -57,14 +53,13 @@ const Navbar = () => {
 
   const navItems = [
     { title: 'Bảng điều khiển', path: '/', icon: Home },
-    { title: 'Lô đất', path: '/parcelles', icon: MapPin },
-    { title: 'Cây trồng', path: '/cultures', icon: Sprout },
-    { title: 'Kho hàng', path: '/inventaire', icon: Package },
+    { title: 'Tin tức', path: '/news', icon: Newspaper },
     { title: 'Tài chính', path: '/finances', icon: Wallet },
+    { title: 'Donations', path: '/donations', icon: Heart },
     { title: 'Thống kê', path: '/statistiques', icon: BarChart2 },
-    { title: 'Báo cáo', path: '/rapports', icon: FileText },
+
     { title: 'Cài đặt', path: '/parametres', icon: Settings },
-    ...(isAdmin ? [{ title: 'Quản lý Admin', path: '/admin', icon: Shield }] : [])
+    { title: 'Quản lý Admin', path: '/admin', icon: Shield }
   ];
 
   const isActive = (path: string) => {
@@ -77,30 +72,29 @@ const Navbar = () => {
     <>
       {/* Mobile Navigation Toggle with improved animation */}
       <div className="fixed top-4 left-4 z-50 md:hidden">
-        <button 
-          onClick={toggleSidebar} 
+        <button
+          onClick={toggleSidebar}
           className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-all active:scale-95 dark:bg-gray-800 dark:hover:bg-gray-700"
-          aria-label="Toggle navigation"
+          aria-label="Chuyển đổi điều hướng"
         >
           {isOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {/* Sidebar Navigation with improved animation and transitions */}
-      <aside 
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-border shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        } md:relative md:translate-x-0 flex flex-col h-full overflow-y-auto`}
+      <aside
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-white dark:bg-gray-900 border-r border-border shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+          } md:relative md:translate-x-0 flex flex-col h-full overflow-y-auto`}
       >
         <div className="p-4 border-b border-border flex items-center justify-between">
           <Link to="/" className="flex items-center space-x-2">
             <Sprout className="h-6 w-6 text-agri-primary" />
             <span className="text-lg font-bold text-foreground">Agri Dom</span>
           </Link>
-          <button 
-            onClick={toggleTheme} 
+          <button
+            onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Toggle theme"
+            aria-label="Chuyển giao diện"
           >
             {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
           </button>
@@ -111,16 +105,15 @@ const Navbar = () => {
             <Link
               key={item.path}
               to={item.path}
-              className={`nav-link flex items-center space-x-3 py-3 px-4 rounded-lg transition-colors ${
-                isActive(item.path) 
-                  ? 'bg-agri-primary/10 text-agri-primary font-medium' 
+              className={`nav-link flex items-center space-x-3 py-3 px-4 rounded-lg transition-colors ${isActive(item.path)
+                  ? 'bg-agri-primary/10 text-agri-primary font-medium'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800 text-foreground'
-              }`}
+                }`}
               onClick={() => setIsOpen(false)}
             >
               <item.icon className={`h-5 w-5 ${isActive(item.path) ? 'text-agri-primary' : ''}`} />
               <span>{item.title}</span>
-              
+
               {isActive(item.path) && (
                 <div className="ml-auto flex items-center">
                   <span className="h-2 w-2 rounded-full bg-agri-primary animate-pulse-slow"></span>
@@ -146,7 +139,7 @@ const Navbar = () => {
 
       {/* Overlay for mobile with improved transition */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setIsOpen(false)}
         ></div>

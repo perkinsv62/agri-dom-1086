@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { EditableField } from '../ui/editable-field';
+// Removed EditableField: static rendering of title/description instead
 import { Button } from '../ui/button';
 import { motion } from 'framer-motion';
 
@@ -21,8 +21,8 @@ interface PageHeaderProps {
 const PageHeader = ({ 
   title, 
   description, 
-  onTitleChange, 
-  onDescriptionChange,
+  onTitleChange: _onTitleChange,
+  onDescriptionChange: _onDescriptionChange,
   actions,
   className = '',
   icon,
@@ -66,23 +66,13 @@ const PageHeader = ({
               
               <div>
                 <motion.h1 variants={itemVariants} className={`text-2xl font-bold ${variant === 'compact' ? 'mb-0' : 'mb-1'}`}>
-                  <EditableField
-                    value={title}
-                    onSave={onTitleChange}
-                    className="inline-block"
-                    showEditIcon
-                  />
+                  {title}
                   {badge && <span className="ml-2">{badge}</span>}
                 </motion.h1>
                 
                 {variant === 'compact' && (
                   <motion.p variants={itemVariants} className="text-muted-foreground">
-                    <EditableField
-                      value={description}
-                      onSave={onDescriptionChange}
-                      className="inline-block"
-                      showEditIcon
-                    />
+                    {description}
                   </motion.p>
                 )}
               </div>
@@ -91,25 +81,10 @@ const PageHeader = ({
             <>
               <motion.div variants={itemVariants} className="flex items-center gap-2">
                 {icon && <span className="text-primary">{icon}</span>}
-                <h1 className="text-2xl font-bold mb-1">
-                  <EditableField
-                    value={title}
-                    onSave={onTitleChange}
-                    className="inline-block"
-                    showEditIcon
-                  />
-                  {badge && <span className="ml-2">{badge}</span>}
-                </h1>
+                <h1 className="text-2xl font-bold mb-1">{title}{badge && <span className="ml-2">{badge}</span>}</h1>
               </motion.div>
               
-              <motion.p variants={itemVariants} className="text-muted-foreground">
-                <EditableField
-                  value={description}
-                  onSave={onDescriptionChange}
-                  className="inline-block"
-                  showEditIcon
-                />
-              </motion.p>
+              <motion.p variants={itemVariants} className="text-muted-foreground">{description}</motion.p>
             </>
           )}
         </div>

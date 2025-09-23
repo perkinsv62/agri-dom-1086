@@ -6,7 +6,6 @@ import {
   Download, 
   Upload, 
   AlertTriangle, 
-  FileText,
   Plus,
   FileBarChart,
   Layers 
@@ -20,7 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
+// useToast intentionally removed — not used in this component
 
 interface ParcelAlert {
   id: number;
@@ -38,8 +37,8 @@ interface ParcelActionButtonsProps {
   onOpenLayerManager?: () => void;
   activeParcelAlerts: ParcelAlert[];
   weatherAlertsOpen: boolean;
-  setWeatherAlertsOpen: (isOpen: boolean) => void;
-  getSeverityColor: (severity: string) => string;
+  setWeatherAlertsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  getSeverityColor: (_severity: string) => string; // eslint-disable-line no-unused-vars
 }
 
 const ParcelActionButtons = ({
@@ -54,7 +53,7 @@ const ParcelActionButtons = ({
   setWeatherAlertsOpen,
   getSeverityColor
 }: ParcelActionButtonsProps) => {
-  const { toast } = useToast();
+  // toast not used here; omit destructure
 
   return (
     <div className="flex flex-wrap gap-3">

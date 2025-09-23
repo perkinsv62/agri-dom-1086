@@ -1,7 +1,7 @@
 
 import React from 'react';
-import { TrendingUp, AlertTriangle } from 'lucide-react';
-import { EditableField } from '../ui/editable-field';
+import { TrendingUp } from 'lucide-react';
+// EditableField removed; using plain inputs/spans
 
 interface StatCardsProps {
   monthlyRevenue: number;
@@ -10,13 +10,13 @@ interface StatCardsProps {
   parcelsCount: number;
   averageYield: number;
   yieldGrowth: number;
-  alertsCount: number;
-  handleRevenueChange: (value: string | number) => void;
-  handleRevenueGrowthChange: (value: string | number) => void;
-  handleAreaChange: (value: string | number) => void;
-  handleParcelsCountChange: (value: string | number) => void;
-  handleYieldChange: (value: string | number) => void;
-  handleYieldGrowthChange: (value: string | number) => void;
+  // alertsCount intentionally omitted (not used in this component)
+  handleRevenueChange: (_value: string | number) => void;
+  handleRevenueGrowthChange: (_value: string | number) => void;
+  handleAreaChange: (_value: string | number) => void;
+  handleParcelsCountChange: (_value: string | number) => void;
+  handleYieldChange: (_value: string | number) => void;
+  handleYieldGrowthChange: (_value: string | number) => void;
 }
 
 const StatCards: React.FC<StatCardsProps> = ({
@@ -26,7 +26,6 @@ const StatCards: React.FC<StatCardsProps> = ({
   parcelsCount,
   averageYield,
   yieldGrowth,
-  alertsCount,
   handleRevenueChange,
   handleRevenueGrowthChange,
   handleAreaChange,
@@ -41,21 +40,21 @@ const StatCards: React.FC<StatCardsProps> = ({
           <div>
             <p className="text-gray-500 font-medium text-sm mb-1">Revenu mensuel</p>
             <div className="flex items-baseline">
-              <p className="text-3xl font-bold text-gray-800">
-                <EditableField
-                  value={monthlyRevenue}
+                <p className="text-3xl font-bold text-gray-800">
+                <input
                   type="number"
-                  onSave={handleRevenueChange}
-                  className="inline-block"
+                  className="inline-block border rounded px-2 py-1 w-32 text-3xl font-bold"
+                  defaultValue={String(monthlyRevenue)}
+                  onBlur={(e) => handleRevenueChange(Number(e.target.value))}
                 /> €
               </p>
               <span className="text-green-600 text-sm font-medium flex items-center ml-3">
                 <TrendingUp className="h-4 w-4 mr-1" /> +
-                <EditableField
-                  value={revenueGrowth}
+                <input
                   type="number"
-                  onSave={handleRevenueGrowthChange}
-                  className="inline-block"
+                  className="inline-block w-16 border rounded px-1 py-0.5"
+                  defaultValue={String(revenueGrowth)}
+                  onBlur={(e) => handleRevenueGrowthChange(Number(e.target.value))}
                 />%
               </span>
             </div>
@@ -68,20 +67,20 @@ const StatCards: React.FC<StatCardsProps> = ({
           <div>
             <p className="text-gray-500 font-medium text-sm mb-1">Superficie cultivée</p>
             <div className="flex items-baseline">
-              <p className="text-3xl font-bold text-gray-800">
-                <EditableField
-                  value={cultivatedArea}
+                <p className="text-3xl font-bold text-gray-800">
+                <input
                   type="number"
-                  onSave={handleAreaChange}
-                  className="inline-block"
+                  className="inline-block border rounded px-2 py-1 w-24 text-3xl font-bold"
+                  defaultValue={String(cultivatedArea)}
+                  onBlur={(e) => handleAreaChange(Number(e.target.value))}
                 /> ha
               </p>
               <span className="text-agri-primary text-sm font-medium ml-3">
-                <EditableField
-                  value={parcelsCount}
+                <input
                   type="number"
-                  onSave={handleParcelsCountChange}
-                  className="inline-block"
+                  className="inline-block w-16 border rounded px-1 py-0.5"
+                  defaultValue={String(parcelsCount)}
+                  onBlur={(e) => handleParcelsCountChange(Number(e.target.value))}
                 /> parcelles
               </span>
             </div>
@@ -94,21 +93,21 @@ const StatCards: React.FC<StatCardsProps> = ({
           <div>
             <p className="text-gray-500 font-medium text-sm mb-1">Rendement moyen</p>
             <div className="flex items-baseline">
-              <p className="text-3xl font-bold text-gray-800">
-                <EditableField
-                  value={averageYield}
+                <p className="text-3xl font-bold text-gray-800">
+                <input
                   type="number"
-                  onSave={handleYieldChange}
-                  className="inline-block"
+                  className="inline-block border rounded px-2 py-1 w-24 text-3xl font-bold"
+                  defaultValue={String(averageYield)}
+                  onBlur={(e) => handleYieldChange(Number(e.target.value))}
                 /> t/ha
               </p>
               <span className="text-green-600 text-sm font-medium flex items-center ml-3">
                 <TrendingUp className="h-4 w-4 mr-1" /> +
-                <EditableField
-                  value={yieldGrowth}
+                <input
                   type="number"
-                  onSave={handleYieldGrowthChange}
-                  className="inline-block"
+                  className="inline-block w-16 border rounded px-1 py-0.5"
+                  defaultValue={String(yieldGrowth)}
+                  onBlur={(e) => handleYieldGrowthChange(Number(e.target.value))}
                 />%
               </span>
             </div>

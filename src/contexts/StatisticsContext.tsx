@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Types pour les différentes données statistiques
+// Kiểu dữ liệu cho các thông số thống kê
 export interface YieldData {
   name: string;
   current: number;
@@ -27,19 +27,19 @@ export interface EnvironmentalData {
   current: number;
   target: number;
   trend: string;
-  status: 'Atteint' | 'En progrès' | 'En retard';
+  status: 'Đạt' | 'Đang tiến triển' | 'Chậm tiến độ';
 }
 
 interface StatisticsContextType {
-  // Données de rendement
+  // Dữ liệu về sản lượng
   yieldData: YieldData[];
   setYieldData: React.Dispatch<React.SetStateAction<YieldData[]>>;
   
-  // Données financières
+  // Dữ liệu tài chính
   financialData: {
     profitabilityByParcel: FinancialData[];
     costAnalysis: CostData[];
-    revenueByMonth: any[];
+      revenueByMonth: unknown[];
   };
   setFinancialData: React.Dispatch<React.SetStateAction<{
     profitabilityByParcel: FinancialData[];
@@ -47,7 +47,7 @@ interface StatisticsContextType {
     revenueByMonth: any[];
   }>>;
   
-  // Données environnementales
+  // Dữ liệu môi trường
   environmentalData: {
     indicators: EnvironmentalData[];
     carbonFootprint: number;
@@ -61,17 +61,17 @@ interface StatisticsContextType {
     biodiversity: number;
   }>>;
   
-  // Données de prévision
-  forecastData: any[];
-  setForecastData: React.Dispatch<React.SetStateAction<any[]>>;
+  // Dữ liệu dự báo
+  forecastData: unknown[];
+  setForecastData: React.Dispatch<React.SetStateAction<unknown[]>>;
   
-  // Période et filtres
+  // Khoảng thời gian và bộ lọc
   period: 'day' | 'week' | 'month' | 'year';
   setPeriod: React.Dispatch<React.SetStateAction<'day' | 'week' | 'month' | 'year'>>;
   cropFilter: string;
   setCropFilter: React.Dispatch<React.SetStateAction<string>>;
   
-  // Fonction pour mettre à jour les données en fonction des filtres
+  // Hàm cập nhật dữ liệu theo bộ lọc
   updateDataWithFilters: (period: string, crop: string) => void;
 }
 
@@ -87,52 +87,52 @@ export const useStatistics = () => {
 
 // Données initiales
 const initialYieldData: YieldData[] = [
-  { name: 'Canne à Sucre', current: 85, previous: 75, unit: 't/ha' },
-  { name: 'Banane', current: 32, previous: 30, unit: 't/ha' },
-  { name: 'Ananas', current: 45, previous: 48, unit: 't/ha' },
-  { name: 'Igname', current: 18, previous: 15, unit: 't/ha' },
-  { name: 'Madère', current: 22, previous: 20, unit: 't/ha' }
+  { name: 'Mía', current: 85, previous: 75, unit: 't/ha' },
+  { name: 'Chuối', current: 32, previous: 30, unit: 't/ha' },
+  { name: 'Dứa', current: 45, previous: 48, unit: 't/ha' },
+  { name: 'Khoai môn', current: 18, previous: 15, unit: 't/ha' },
+  { name: 'Gỗ', current: 22, previous: 20, unit: 't/ha' }
 ];
 
 const initialProfitabilityData: FinancialData[] = [
-  { name: 'Parcelle Nord', profitability: 1250, size: 12.5, crop: 'Canne à Sucre' },
-  { name: 'Parcelle Est', profitability: 980, size: 8.3, crop: 'Banane' },
-  { name: 'Parcelle Sud', profitability: 1580, size: 15.7, crop: 'Ananas' },
-  { name: 'Parcelle Ouest', profitability: 850, size: 10.2, crop: 'Igname' },
-  { name: 'Parcelle Centrale', profitability: 920, size: 6.8, crop: 'Madère' }
+  { name: 'Thửa Bắc', profitability: 1250, size: 12.5, crop: 'Mía' },
+  { name: 'Thửa Đông', profitability: 980, size: 8.3, crop: 'Chuối' },
+  { name: 'Thửa Nam', profitability: 1580, size: 15.7, crop: 'Dứa' },
+  { name: 'Thửa Tây', profitability: 850, size: 10.2, crop: 'Khoai môn' },
+  { name: 'Thửa Trung tâm', profitability: 920, size: 6.8, crop: 'Gỗ' }
 ];
 
 const initialCostData: CostData[] = [
-  { name: 'Semences', value: 1800, color: '#4CAF50' },
-  { name: 'Fertilisants', value: 2200, color: '#8D6E63' },
-  { name: 'Phyto', value: 1500, color: '#FFC107' },
-  { name: 'Carburant', value: 1200, color: '#2196F3' },
-  { name: 'Main d\'œuvre', value: 3500, color: '#673AB7' },
-  { name: 'Mécanisation', value: 2800, color: '#E91E63' },
-  { name: 'Divers', value: 900, color: '#9E9E9E' }
+  { name: 'Hạt giống', value: 1800, color: '#4CAF50' },
+  { name: 'Phân bón', value: 2200, color: '#8D6E63' },
+  { name: 'Thuốc BVTV', value: 1500, color: '#FFC107' },
+  { name: 'Nhiên liệu', value: 1200, color: '#2196F3' },
+  { name: 'Nhân công', value: 3500, color: '#673AB7' },
+  { name: 'Cơ giới hóa', value: 2800, color: '#E91E63' },
+  { name: 'Khác', value: 900, color: '#9E9E9E' }
 ];
 
 const initialRevenueData = [
-  { month: 'Jan', revenue: 28500, expenses: 20100, profit: 8400 },
-  { month: 'Fév', revenue: 30200, expenses: 21800, profit: 8400 },
-  { month: 'Mar', revenue: 32800, expenses: 22400, profit: 10400 },
-  { month: 'Avr', revenue: 35500, expenses: 23100, profit: 12400 },
-  { month: 'Mai', revenue: 38200, expenses: 23500, profit: 14700 },
-  { month: 'Juin', revenue: 37800, expenses: 22900, profit: 14900 },
-  { month: 'Juil', revenue: 42500, expenses: 24200, profit: 18300 },
-  { month: 'Août', revenue: 44800, expenses: 25300, profit: 19500 },
-  { month: 'Sep', revenue: 40200, expenses: 24800, profit: 15400 },
-  { month: 'Oct', revenue: 38200, expenses: 23100, profit: 15100 },
-  { month: 'Nov', revenue: 36500, expenses: 22500, profit: 14000 },
-  { month: 'Déc', revenue: 41200, expenses: 25800, profit: 15400 }
+  { month: 'Thg 1', revenue: 28500, expenses: 20100, profit: 8400 },
+  { month: 'Thg 2', revenue: 30200, expenses: 21800, profit: 8400 },
+  { month: 'Thg 3', revenue: 32800, expenses: 22400, profit: 10400 },
+  { month: 'Thg 4', revenue: 35500, expenses: 23100, profit: 12400 },
+  { month: 'Thg 5', revenue: 38200, expenses: 23500, profit: 14700 },
+  { month: 'Thg 6', revenue: 37800, expenses: 22900, profit: 14900 },
+  { month: 'Thg 7', revenue: 42500, expenses: 24200, profit: 18300 },
+  { month: 'Thg 8', revenue: 44800, expenses: 25300, profit: 19500 },
+  { month: 'Thg 9', revenue: 40200, expenses: 24800, profit: 15400 },
+  { month: 'Thg 10', revenue: 38200, expenses: 23100, profit: 15100 },
+  { month: 'Thg 11', revenue: 36500, expenses: 22500, profit: 14000 },
+  { month: 'Thg 12', revenue: 41200, expenses: 25800, profit: 15400 }
 ];
 
 const initialEnvironmentalIndicators: EnvironmentalData[] = [
-  { indicator: 'Émissions CO2 (t/ha)', current: 2.8, target: 2.5, trend: '-5%', status: 'En progrès' },
-  { indicator: 'Consommation d\'eau (m³/ha)', current: 350, target: 320, trend: '-8%', status: 'Atteint' },
-  { indicator: 'Utilisation d\'intrants (kg/ha)', current: 180, target: 150, trend: '-12%', status: 'En progrès' },
-  { indicator: 'Surface en agriculture bio (%)', current: 15, target: 25, trend: '+5%', status: 'En progrès' },
-  { indicator: 'Biodiversité (espèces/ha)', current: 12, target: 15, trend: '+12%', status: 'Atteint' }
+  { indicator: 'Phát thải CO2 (t/ha)', current: 2.8, target: 2.5, trend: '-5%', status: 'Đang tiến triển' },
+  { indicator: 'Tiêu thụ nước (m³/ha)', current: 350, target: 320, trend: '-8%', status: 'Đạt' },
+  { indicator: 'Sử dụng đầu vào (kg/ha)', current: 180, target: 150, trend: '-12%', status: 'Đang tiến triển' },
+  { indicator: 'Diện tích canh tác hữu cơ (%)', current: 15, target: 25, trend: '+5%', status: 'Đang tiến triển' },
+  { indicator: 'Đa dạng sinh học (loài/ha)', current: 12, target: 15, trend: '+12%', status: 'Đạt' }
 ];
 
 export const StatisticsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {

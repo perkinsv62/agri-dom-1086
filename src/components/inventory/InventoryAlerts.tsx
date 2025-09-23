@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { AlertTriangle } from 'lucide-react';
-import { EditableField } from '../ui/editable-field';
+// EditableField removed; using inputs for inline editing
 
 interface InventoryAlert {
   id: number;
@@ -49,19 +49,19 @@ const InventoryAlerts: React.FC<InventoryAlertsProps> = ({ alerts, onQuantityCha
             </div>
             <div className="mt-2 text-sm">
               <span>Tồn kho hiện tại: </span>
-              <EditableField
-                value={alert.current}
+              <input
                 type="number"
-                onSave={(value) => onQuantityChange(alert.id, 'quantity', Number(value))}
-                className="inline-block"
+                className="inline-block w-20 border rounded px-2 py-0.5"
+                defaultValue={String(alert.current)}
+                onBlur={(e) => onQuantityChange(alert.id, 'quantity', Number(e.target.value))}
               />
               <span className="mx-1">|</span>
               <span>Tối thiểu: </span>
-              <EditableField
-                value={alert.min}
+              <input
                 type="number"
-                onSave={(value) => onQuantityChange(alert.id, 'minQuantity', Number(value))}
-                className="inline-block"
+                className="inline-block w-20 border rounded px-2 py-0.5"
+                defaultValue={String(alert.min)}
+                onBlur={(e) => onQuantityChange(alert.id, 'minQuantity', Number(e.target.value))}
               />
             </div>
           </div>

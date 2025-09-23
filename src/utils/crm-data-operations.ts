@@ -4,7 +4,7 @@ import Papa from 'papaparse';
 /**
  * Export any module data to CSV format
  */
-export const exportToCSV = (data: any[], fileName: string): boolean => {
+export const exportToCSV = (data: Record<string, unknown>[], fileName: string): boolean => {
   try {
     // Convert data to CSV format
     const csv = Papa.unparse(data);
@@ -20,11 +20,11 @@ export const exportToCSV = (data: any[], fileName: string): boolean => {
     link.click();
     document.body.removeChild(link);
     
-    toast.success("Données exportées avec succès au format CSV");
+    toast.success("Dữ liệu đã được xuất thành công ở định dạng CSV");
     return true;
   } catch (error) {
     console.error("Export error:", error);
-    toast.error("Erreur lors de l'exportation des données");
+    toast.error("Lỗi khi xuất dữ liệu");
     return false;
   }
 };
@@ -32,7 +32,7 @@ export const exportToCSV = (data: any[], fileName: string): boolean => {
 /**
  * Export data to Excel format (simulated with CSV for now)
  */
-export const exportToExcel = (data: any[], fileName: string): boolean => {
+export const exportToExcel = (data: Record<string, unknown>[], fileName: string): boolean => {
   try {
     // For now, we'll use CSV as a stand-in for Excel
     // In a production app, you'd use a library like xlsx
@@ -47,10 +47,10 @@ export const exportToExcel = (data: any[], fileName: string): boolean => {
 /**
  * Export data to PDF format
  */
-export const exportToPDF = async (data: any[], fileName: string, options: any = {}): Promise<boolean> => {
+export const exportToPDF = async (data: Record<string, unknown>[], fileName: string, options: Record<string, unknown> = {}): Promise<boolean> => {
   try {
     // Show toast notification
-    toast.info("Génération du PDF en cours...");
+    toast.info("Đang tạo PDF...");
     
     // Create HTML content based on template type
     let htmlContent = '';
@@ -58,20 +58,28 @@ export const exportToPDF = async (data: any[], fileName: string, options: any = 
     if (options.template === 'technical_sheet' && data.length > 0) {
       // Create technical sheet layout
       const item = data[0];
-      htmlContent = createTechnicalSheetHTML(item, options.title || 'Fiche Technique');
-    } else if (options.template === 'report' && data.length > 0) {
+      const opt = options as Record<string, unknown>;
+      const title = typeof opt.title === 'string' ? opt.title : 'Fiche Technique';
+      htmlContent = createTechnicalSheetHTML(item, title);
+    } else if ((options as Record<string, unknown>).template === 'report' && data.length > 0) {
       // Create report layout
-      htmlContent = createReportHTML(data, options.title || fileName, options.columns || []);
+      const opt2 = options as Record<string, unknown>;
+      const title = typeof opt2.title === 'string' ? opt2.title : fileName;
+      const cols = Array.isArray(opt2.columns) ? (opt2.columns as any[]) : [];
+      htmlContent = createReportHTML(data, title, cols);
     } else {
       // Create standard table-based layout
-      htmlContent = createTableBasedHTML(data, options.title || fileName, options.columns || []);
+      const opt3 = options as Record<string, unknown>;
+      const title = typeof opt3.title === 'string' ? opt3.title : fileName;
+      const cols = Array.isArray(opt3.columns) ? (opt3.columns as any[]) : [];
+      htmlContent = createTableBasedHTML(data, title, cols);
     }
     
     // Create and open print window
     const printWindow = window.open('', '_blank');
     
     if (!printWindow) {
-      toast.error("Impossible d'ouvrir la fenêtre d'impression");
+      toast.error("Không thể mở cửa sổ in");
       return false;
     }
     
@@ -85,23 +93,23 @@ export const exportToPDF = async (data: any[], fileName: string, options: any = 
       try {
         printWindow.focus();
         printWindow.print();
-        toast.success("PDF généré avec succès");
+        toast.success("PDF được tạo thành công");
       } catch (printError) {
         console.error("Print error:", printError);
-        toast.error("Erreur lors de l'impression du PDF");
+        toast.error("Lỗi khi in PDF");
       }
     }, 1000);
     
     return true;
   } catch (error) {
     console.error("PDF export error:", error);
-    toast.error("Erreur lors de la génération du PDF");
+    toast.error("Lỗi khi tạo PDF");
     return false;
   }
 };
 
 // Helper function to create technical sheet HTML
-const createTechnicalSheetHTML = (item: any, title: string): string => {
+const createTechnicalSheetHTML = (item: Record<string, unknown>, title: string): string => {
   return `
     <!DOCTYPE html>
     <html>
@@ -207,7 +215,7 @@ const createTechnicalSheetHTML = (item: any, title: string): string => {
 };
 
 // Helper function to create enhanced report HTML
-const createReportHTML = (data: any[], title: string, columns: { key: string, header: string }[]): string => {
+const createReportHTML = (data: Record<string, unknown>[], title: string, columns: { key: string, header: string }[]): string => {
   // Generate table headers
   const tableHeaders = columns
     .map(col => `<th>${col.header}</th>`)
@@ -215,9 +223,10 @@ const createReportHTML = (data: any[], title: string, columns: { key: string, he
     
   // Generate table rows
   const tableRows = data.map((row) => {
-    const cells = columns.map((column) => 
-      `<td>${typeof row[column.key] === 'object' ? JSON.stringify(row[column.key]) : row[column.key] || ''}</td>`
-    ).join('');
+    const cells = columns.map((column) => {
+      const value = (row as Record<string, unknown>)[column.key];
+      return `<td>${typeof value === 'object' ? JSON.stringify(value) : value || ''}</td>`;
+    }).join('');
     return `<tr>${cells}</tr>`;
   }).join('');
 
@@ -284,7 +293,7 @@ const createReportHTML = (data: any[], title: string, columns: { key: string, he
 };
 
 // Helper function to create table-based HTML
-const createTableBasedHTML = (data: any[], title: string, columns: { key: string, header: string }[]): string => {
+const createTableBasedHTML = (data: Record<string, unknown>[], title: string, columns: { key: string, header: string }[]): string => {
   // Generate table headers
   const tableHeaders = columns
     .map(col => `<th>${col.header}</th>`)
@@ -292,9 +301,10 @@ const createTableBasedHTML = (data: any[], title: string, columns: { key: string
     
   // Generate table rows
   const tableRows = data.map((row) => {
-    const cells = columns.map((column) => 
-      `<td>${typeof row[column.key] === 'object' ? JSON.stringify(row[column.key]) : row[column.key] || ''}</td>`
-    ).join('');
+    const cells = columns.map((column) => {
+      const value = (row as Record<string, unknown>)[column.key];
+      return `<td>${typeof value === 'object' ? JSON.stringify(value) : value || ''}</td>`;
+    }).join('');
     return `<tr>${cells}</tr>`;
   }).join('');
   
@@ -340,25 +350,25 @@ const createTableBasedHTML = (data: any[], title: string, columns: { key: string
 /**
  * Import data from CSV file
  */
-export const importFromCSV = (file: File): Promise<any[]> => {
+export const importFromCSV = (file: File): Promise<Record<string, unknown>[]> => {
   return new Promise((resolve, reject) => {
     Papa.parse(file, {
       header: true,
       complete: (results) => {
-        const parsedData = results.data as any[];
+  const parsedData = results.data as Record<string, unknown>[];
         
         if (parsedData.length === 0) {
-          toast.error("Aucune donnée valide n'a été trouvée dans le fichier");
+          toast.error("Không tìm thấy dữ liệu hợp lệ trong tệp");
           reject("No valid data found");
           return;
         }
         
-        toast.success(`${parsedData.length} enregistrements importés avec succès`);
+        toast.success(`${parsedData.length} bản ghi đã được nhập thành công`);
         resolve(parsedData);
       },
       error: (error) => {
         console.error("Import error:", error);
-        toast.error("Erreur lors de l'importation des données");
+        toast.error("Lỗi khi nhập dữ liệu");
         reject(error);
       }
     });
@@ -369,10 +379,10 @@ export const importFromCSV = (file: File): Promise<any[]> => {
  * Print data
  */
 export const printData = (
-  data: any[], 
+  data: Record<string, unknown>[], 
   title: string, 
   columns: { key: string, header: string }[],
-  options: any = {}
+  options: Record<string, unknown> = {}
 ): Promise<boolean> => {
   return new Promise((resolve) => {
     try {

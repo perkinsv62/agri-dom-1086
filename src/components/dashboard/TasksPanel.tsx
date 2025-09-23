@@ -45,18 +45,18 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
       task.id === taskId ? { ...task, title: editedTaskTitle } : task
     ));
     setEditingTask(null);
-    toast.success('Tâche mise à jour');
+    toast.success('Cập nhật công việc thành công');
   };
   
   const handleDeleteTask = (taskId: number) => {
     setTasks(tasks.filter(task => task.id !== taskId));
-    toast.success('Tâche supprimée');
+    toast.success('Xóa công việc thành công');
   };
   
   // Add new task
   const handleAddTask = () => {
-    if (!newTask.title.trim() || !newTask.due.trim()) {
-      toast.error('Veuillez remplir tous les champs obligatoires');
+      if (!newTask.title.trim() || !newTask.due.trim()) {
+      toast.error('Vui lòng điền đầy đủ các trường bắt buộc');
       return;
     }
     
@@ -74,13 +74,13 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
       priority: 'medium'
     });
     
-    toast.success('Nouvelle tâche ajoutée');
+    toast.success('Thêm công việc mới thành công');
   };
   
   return (
     <div className="dashboard-card card-hover animate-enter">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold">Tâches à venir</h3>
+    <h3 className="font-semibold">Công việc sắp tới</h3>
         <div className="flex items-center space-x-2">
           <Button 
             size="sm" 
@@ -89,7 +89,7 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
             className="text-xs text-agri-primary hover:bg-agri-primary/10"
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
-            Ajouter
+            Thêm
           </Button>
         </div>
       </div>
@@ -135,7 +135,7 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
               ) : (
                 <>
                   <p className="text-sm font-medium">{task.title}</p>
-                  <p className="text-xs text-muted-foreground">Échéance: {task.due}</p>
+                  <p className="text-xs text-muted-foreground">Hạn chót: {task.due}</p>
                 </>
               )}
             </div>
@@ -160,43 +160,43 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
           </div>
         ))}
         {tasks.length === 0 && (
-          <p className="text-center text-muted-foreground py-4">Aucune tâche à venir</p>
+          <p className="text-center text-muted-foreground py-4">Không có công việc nào</p>
         )}
       </div>
       
       <Dialog open={showAddTaskDialog} onOpenChange={setShowAddTaskDialog}>
         <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Ajouter une tâche</DialogTitle>
+            <DialogHeader>
+            <DialogTitle>Thêm công việc</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="taskTitle" className="text-right">
-                Titre
+                <Label htmlFor="taskTitle" className="text-right">
+                Tiêu đề
               </Label>
               <Input
                 id="taskTitle"
                 value={newTask.title}
                 onChange={(e) => setNewTask({...newTask, title: e.target.value})}
-                placeholder="Titre de la tâche"
+                placeholder="Tiêu đề công việc"
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="dueDate" className="text-right">
-                Échéance
+                Hạn chót
               </Label>
               <Input
                 id="dueDate"
                 value={newTask.due}
                 onChange={(e) => setNewTask({...newTask, due: e.target.value})}
-                placeholder="ex: Aujourd'hui, Demain, 15/06"
+                placeholder="ví dụ: Hôm nay, Ngày mai, 15/06"
                 className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="priority" className="text-right">
-                Priorité
+                Ưu tiên
               </Label>
               <select
                 id="priority"
@@ -204,18 +204,18 @@ const TasksPanel: React.FC<TasksPanelProps> = ({ tasks, setTasks }) => {
                 onChange={(e) => setNewTask({...newTask, priority: e.target.value})}
                 className="col-span-3 flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               >
-                <option value="low">Faible</option>
-                <option value="medium">Moyenne</option>
-                <option value="high">Haute</option>
+                <option value="low">Thấp</option>
+                <option value="medium">Trung bình</option>
+                <option value="high">Cao</option>
               </select>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddTaskDialog(false)}>
-              Annuler
+              Hủy
             </Button>
             <Button onClick={handleAddTask}>
-              Ajouter
+              Thêm
             </Button>
           </DialogFooter>
         </DialogContent>

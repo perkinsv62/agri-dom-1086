@@ -79,7 +79,7 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
         onClick={handleExportClick}
       >
         <Download className="h-4 w-4" />
-        Exporter
+    Xuất
       </Button>
       
       <Button
@@ -88,7 +88,7 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
         onClick={handleImportClick}
       >
         <Upload className="h-4 w-4" />
-        Importer
+    Nhập
       </Button>
       
       <Button
@@ -97,18 +97,18 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
         onClick={handlePrintClick}
       >
         <Printer className="h-4 w-4" />
-        Imprimer
+    In
       </Button>
       
       {/* Import Dialog */}
       <Dialog open={importDialogOpen} onOpenChange={setImportDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Importer des données</DialogTitle>
+            <DialogTitle>Nhập dữ liệu</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="file">Fichier CSV</Label>
+              <Label htmlFor="file">Tệp CSV</Label>
               <input 
                 type="file" 
                 id="file" 
@@ -118,13 +118,12 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
               />
             </div>
             <p className="text-sm text-muted-foreground">
-              Les données seront importées dans le module {moduleName}. 
-              Assurez-vous que le fichier est au format CSV.
+              Dữ liệu sẽ được nhập vào module {moduleName}. Vui lòng đảm bảo tệp ở định dạng CSV.
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Annuler</Button>
-            <Button onClick={handleImportConfirm}>Importer</Button>
+            <Button variant="outline" onClick={() => setImportDialogOpen(false)}>Hủy</Button>
+              <Button onClick={handleImportConfirm}>Nhập</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -133,11 +132,11 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
       <Dialog open={exportDialogOpen} onOpenChange={setExportDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Exporter des données</DialogTitle>
+            <DialogTitle>Xuất dữ liệu</DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label>Format d'export</Label>
+              <Label>Định dạng xuất</Label>
               <div className="flex gap-2">
                 <Button 
                   variant={exportFormat === 'csv' ? 'default' : 'outline'}
@@ -164,8 +163,8 @@ const ImportExportControls: React.FC<ImportExportControlsProps> = ({
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setExportDialogOpen(false)}>Annuler</Button>
-            <Button onClick={handleExportConfirm}>Exporter</Button>
+            <Button variant="outline" onClick={() => setExportDialogOpen(false)}>Hủy</Button>
+            <Button onClick={handleExportConfirm}>Xuất</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

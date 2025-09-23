@@ -1,0 +1,65 @@
+{
+  "notificationCenter": {
+    "title": "Thông báo",
+    "markAllRead": "Đánh dấu tất cả là đã đọc",
+    "clearAll": "Xóa tất cả",
+    "noNotifications": "Không có thông báo"
+  },
+  "importExport": {
+    "export": "Xuất",
+    "import": "Nhập",
+    "importDataTitle": "Nhập dữ liệu",
+    "importDialogInfo": "Dữ liệu sẽ được nhập vào module {moduleName}.",
+    "cancel": "Hủy",
+    "confirmImport": "Nhập",
+    "exportDataTitle": "Xuất dữ liệu",
+    "exportFormatLabel": "Định dạng xuất",
+    "confirmExport": "Xuất"
+  },
+  "preview": {
+    "noData": "Không có dữ liệu để xem trước",
+    "viewDetails": "Xem chi tiết",
+    "previewTitle": "Xem trước - {moduleName}",
+    "print": "In"
+  },
+  "crmOperations": {
+    "noDataToExport": "Không có dữ liệu để xuất",
+    "preparingExport": "Chuẩn bị xuất định dạng {format}...",
+    "exportSuccess": "Xuất {format} thành công",
+    "exportError": "Lỗi khi xuất định dạng {format}",
+    "importing": "Đang nhập dữ liệu...",
+    "noValidDataInFile": "Không tìm thấy dữ liệu hợp lệ trong tệp",
+    "noValidDataAfterValidation": "Không có dữ liệu hợp lệ sau khi xác thực",
+    "importSuccess": "Đã nhập thành công {count} bản ghi",
+    "importError": "Lỗi khi nhập dữ liệu"
+  },
+  "crmDataOperations": {
+    "csvExportedSuccess": "Dữ liệu đã được xuất thành công ở định dạng CSV",
+    "exportError": "Lỗi khi xuất dữ liệu",
+    "noValidDataFound": "Không tìm thấy dữ liệu hợp lệ trong tệp",
+    "noValidDataAfterValidation": "Không có dữ liệu hợp lệ sau khi xác thực",
+    "importedRecords": "Đã nhập thành công {count} bản ghi",
+    "noNotes": "Không có ghi chú",
+    "noValidDataInFile": "Không tìm thấy dữ liệu hợp lệ trong tệp",
+    "print": "In"
+  },
+  "alertsPanel": {
+    "title": "Cảnh báo",
+    "noActiveAlerts": "Không có cảnh báo đang hoạt động",
+    "warning": "Cảnh báo",
+    "messageLabel": "Nội dung",
+    "alertUpdated": "Cập nhật cảnh báo thành công",
+    "alertDeleted": "Đã xóa cảnh báo",
+    "enterMessage": "Vui lòng nhập nội dung cảnh báo",
+    "alertAdded": "Đã thêm cảnh báo mới"
+  },
+  "common": {
+    "view": "Xem",
+    "edit": "Chỉnh sửa",
+    "delete": "Xóa",
+    "save": "Lưu",
+    "search": "Tìm kiếm",
+    "confirm": "Xác nhận",
+    "close": "Đóng"
+  }
+}

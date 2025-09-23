@@ -8,6 +8,7 @@ export interface User {
   email: string;
   role: UserRole;
   status: 'active' | 'inactive';
+  twoFactorEnabled: boolean;
   createdAt: string;
   lastLogin?: string;
 }
@@ -33,6 +34,7 @@ const initialUsers: User[] = [
     email: 'admin@agri.com',
     role: 'admin',
     status: 'active',
+    twoFactorEnabled: true,
     createdAt: '2024-01-01',
     lastLogin: '2024-09-22'
   },
@@ -42,6 +44,7 @@ const initialUsers: User[] = [
     email: 'farmer@agri.com',
     role: 'user',
     status: 'active',
+    twoFactorEnabled: false,
     createdAt: '2024-02-01',
     lastLogin: '2024-09-20'
   },
@@ -51,8 +54,90 @@ const initialUsers: User[] = [
     email: 'manager@agri.com',
     role: 'manager',
     status: 'active',
+    twoFactorEnabled: false,
     createdAt: '2024-03-01',
     lastLogin: '2024-09-21'
+  }
+  ,
+  {
+    id: '4',
+    name: 'Phạm Thị Hồng',
+    email: 'pham.hong@example.com',
+    role: 'user',
+    status: 'active',
+    twoFactorEnabled: false,
+    createdAt: '2024-04-12',
+    lastLogin: '2024-09-18'
+  },
+  {
+    id: '5',
+    name: 'Ngô Văn B',
+    email: 'ngovanb@example.com',
+    role: 'user',
+    status: 'inactive',
+    twoFactorEnabled: false,
+    createdAt: '2024-05-03',
+    lastLogin: '2024-07-20'
+  },
+  {
+    id: '6',
+    name: 'Bùi Thị C',
+    email: 'buitc@example.com',
+    role: 'manager',
+    status: 'active',
+    twoFactorEnabled: true,
+    createdAt: '2024-06-15',
+    lastLogin: '2024-09-15'
+  },
+  {
+    id: '7',
+    name: 'Trịnh Văn D',
+    email: 'trinhvd@example.com',
+    role: 'user',
+    status: 'active',
+    twoFactorEnabled: false,
+    createdAt: '2024-07-01',
+    lastLogin: '2024-08-22'
+  },
+  {
+    id: '8',
+    name: 'Lưu Thị E',
+    email: 'luite@example.com',
+    role: 'user',
+    status: 'inactive',
+    twoFactorEnabled: false,
+    createdAt: '2024-07-20',
+    lastLogin: '2024-07-21'
+  },
+  {
+    id: '9',
+    name: 'Hoàng Văn F',
+    email: 'hoangvf@example.com',
+    role: 'manager',
+    status: 'active',
+    twoFactorEnabled: true,
+    createdAt: '2024-08-05',
+    lastLogin: '2024-09-10'
+  },
+  {
+    id: '10',
+    name: 'Đặng Thị G',
+    email: 'dangtg@example.com',
+    role: 'user',
+    status: 'active',
+    twoFactorEnabled: false,
+    createdAt: '2024-08-25',
+    lastLogin: '2024-09-02'
+  },
+  {
+    id: '11',
+    name: 'Phan Văn H',
+    email: 'phanvh@example.com',
+    role: 'user',
+    status: 'active',
+    twoFactorEnabled: false,
+    createdAt: '2024-09-01',
+    lastLogin: '2024-09-05'
   }
 ];
 
@@ -68,6 +153,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const addUser = (userData: Omit<User, 'id' | 'createdAt'>) => {
     const newUser: User = {
       ...userData,
+      twoFactorEnabled: (userData as any)?.twoFactorEnabled ?? false,
       id: Date.now().toString(),
       createdAt: new Date().toISOString().split('T')[0]
     };

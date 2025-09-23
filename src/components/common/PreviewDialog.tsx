@@ -1,4 +1,5 @@
 
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Printer } from 'lucide-react';
@@ -12,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 
 interface PreviewDialogProps {
-  open: boolean;
+  open: boolean;  
   onOpenChange: (open: boolean) => void;
   title?: string;
   moduleName: string;
@@ -21,7 +22,7 @@ interface PreviewDialogProps {
 }
 
 const PreviewDialog: React.FC<PreviewDialogProps> = ({
-  open,
+  open: openProp,
   onOpenChange,
   title,
   moduleName,
@@ -31,23 +32,23 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
   const { settings } = useAppSettings();
   
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={openProp} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl h-[80vh]">
         <DialogHeader>
-          <DialogTitle>{title || `Aperçu - ${moduleName}`}</DialogTitle>
+          <DialogTitle>{title || `Xem trước - ${moduleName}`}</DialogTitle>
           <DialogDescription>
-            Aperçu avant impression
+            Xem trước trước khi in
           </DialogDescription>
         </DialogHeader>
         <div className="flex-grow overflow-auto border rounded-md mt-4 bg-white">
           <iframe
             srcDoc={`
               <!DOCTYPE html>
-              <html lang="${settings.locale || 'fr'}">
+              <html lang="${settings.locale || 'vi-VN'}">
                 <head>
                   <meta charset="UTF-8">
                   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>${title || `Aperçu - ${moduleName}`}</title>
+                  <title>${title || `Xem trước - ${moduleName}`}</title>
                   <style>
                     :root {
                       --font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -155,8 +156,8 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
               </html>
             `}
             className="w-full h-full border-none"
-            title="Preview"
-            aria-label={`Aperçu du document: ${title || moduleName}`}
+            title="Xem trước"
+            aria-label={`Xem trước tài liệu: ${title || moduleName}`}
           />
         </div>
         <div className="flex justify-end gap-2 mt-4">
@@ -164,11 +165,11 @@ const PreviewDialog: React.FC<PreviewDialogProps> = ({
             variant="outline" 
             onClick={() => onOpenChange(false)}
           >
-            Fermer
+            Đóng
           </Button>
           <Button onClick={onPrint}>
             <Printer className="mr-2 h-4 w-4" aria-hidden="true" />
-            Imprimer
+            In
           </Button>
         </div>
       </DialogContent>

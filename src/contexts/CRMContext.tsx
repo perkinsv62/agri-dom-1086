@@ -11,9 +11,9 @@ interface CRMContextType {
   syncDataAcrossCRM: () => void;
   updateModuleData: (moduleName: string, data: any) => void;
   getModuleData: (moduleName: string) => any;
-  exportModuleData: (moduleName: string, format: 'csv' | 'excel' | 'pdf', customData?: any[]) => Promise<boolean>;
+  exportModuleData: (moduleName: string, format: 'csv' | 'excel' | 'pdf', customData?: unknown[]) => Promise<boolean>;
   importModuleData: (moduleName: string, file: File) => Promise<boolean>;
-  printModuleData: (moduleName: string, options?: any) => Promise<boolean>;
+  printModuleData: (moduleName: string, options?: Record<string, unknown>) => Promise<boolean>;
 }
 
 const CRMContext = createContext<CRMContextType | undefined>(undefined);

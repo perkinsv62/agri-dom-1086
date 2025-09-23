@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { AlertTriangle, Trash2, Edit, X, Check, Plus } from 'lucide-react';
+import { AlertTriangle, Trash2, Plus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '../ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '../ui/dialog';
@@ -24,25 +24,18 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
   const [newAlertMessage, setNewAlertMessage] = useState('');
   const [newAlertType, setNewAlertType] = useState('warning');
   
-  // Edit alert
-  const handleEditAlert = (id: number, message: string) => {
-    setAlerts(alerts.map(alert => 
-      alert.id === id ? { ...alert, message } : alert
-    ));
-    toast.success('Alerte mise à jour');
-  };
   
   // Delete alert
   const handleDeleteAlert = (id: number) => {
-    setAlerts(alerts.filter(alert => alert.id !== id));
+  setAlerts(alerts.filter(alert => alert.id !== id));
     setAlertsCount(prev => prev - 1);
-    toast.success('Alerte supprimée');
+  toast.success('Xóa cảnh báo thành công');
   };
   
   // Add new alert
   const handleAddAlert = () => {
     if (!newAlertMessage.trim()) {
-      toast.error('Veuillez saisir un message pour l\'alerte');
+      toast.error('Vui lòng nhập nội dung cảnh báo');
       return;
     }
     
@@ -57,13 +50,13 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
     setAlertsCount(prev => prev + 1);
     setNewAlertMessage('');
     setShowAddAlertDialog(false);
-    toast.success('Nouvelle alerte ajoutée');
+  toast.success('Thêm cảnh báo mới thành công');
   };
   
   return (
     <div className="dashboard-card card-hover animate-enter">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-semibold">Alertes</h3>
+  <h3 className="font-semibold">Cảnh báo</h3>
         <div className="flex items-center space-x-2">
           <Button 
             size="sm" 
@@ -72,7 +65,7 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
             className="text-xs text-agri-primary hover:bg-agri-primary/10"
           >
             <Plus className="h-3.5 w-3.5 mr-1" />
-            Ajouter
+            Thêm
           </Button>
         </div>
       </div>
@@ -110,14 +103,14 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
           </div>
         ))}
         {alerts.length === 0 && (
-          <p className="text-center text-muted-foreground py-4">Aucune alerte active</p>
+          <p className="text-center text-muted-foreground py-4">Không có cảnh báo hoạt động</p>
         )}
       </div>
       
       <Dialog open={showAddAlertDialog} onOpenChange={setShowAddAlertDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Ajouter une alerte</DialogTitle>
+            <DialogTitle>Thêm cảnh báo</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
@@ -136,24 +129,24 @@ const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts, setAlerts, setAlertsC
               </select>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="message" className="text-right">
-                Message
+                <Label htmlFor="message" className="text-right">
+                Nội dung
               </Label>
               <Input
                 id="message"
                 value={newAlertMessage}
                 onChange={(e) => setNewAlertMessage(e.target.value)}
-                placeholder="Entrez le message de l'alerte"
+                placeholder="Nhập nội dung cảnh báo"
                 className="col-span-3"
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddAlertDialog(false)}>
-              Annuler
+              Hủy
             </Button>
             <Button onClick={handleAddAlert}>
-              Ajouter
+              Thêm
             </Button>
           </DialogFooter>
         </DialogContent>

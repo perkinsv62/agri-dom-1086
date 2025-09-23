@@ -97,6 +97,23 @@ export const EditableTable = ({
     }
   };
 
+  const translatePriority = (priority: string) => {
+    if (!priority) return '';
+    switch (priority) {
+      case 'Haute':
+      case 'Élevée':
+      case 'Urgente':
+        return 'Cao';
+      case 'Moyenne':
+        return 'Trung bình';
+      case 'Basse':
+      case 'Faible':
+        return 'Thấp';
+      default:
+        return priority;
+    }
+  };
+
   return (
     <div className={`bg-white rounded-xl border overflow-hidden ${className}`}>
       <div className="overflow-x-auto">
@@ -166,7 +183,7 @@ export const EditableTable = ({
                 {(onDelete || actions.length > 0) && (
                   <td className="px-4 py-3">
                     <div className="flex space-x-1">
-                      {actions.map((action, index) => (
+                        {actions.map((action, index) => (
                         <button 
                           key={index}
                           onClick={() => action.onClick(rowIndex)}
@@ -180,7 +197,7 @@ export const EditableTable = ({
                         <button 
                           onClick={() => onDelete(rowIndex)}
                           className="p-1.5 hover:bg-agri-danger/10 text-agri-danger rounded"
-                          title="Supprimer"
+                          title="Xóa"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -193,7 +210,7 @@ export const EditableTable = ({
             {data.length === 0 && (
               <tr>
                 <td colSpan={columns.length + ((onDelete || actions.length > 0) ? 1 : 0)} className="px-4 py-4 text-center text-muted-foreground">
-                  Aucune donnée disponible
+                  Không có dữ liệu
                 </td>
               </tr>
             )}
@@ -208,7 +225,7 @@ export const EditableTable = ({
             className="flex items-center px-4 py-2 text-sm bg-agri-primary text-white rounded-lg hover:bg-agri-primary-dark"
           >
             <Plus className="h-4 w-4 mr-2" />
-            Ajouter une ligne
+            Thêm một dòng
           </button>
         </div>
       )}

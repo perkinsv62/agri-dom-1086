@@ -76,13 +76,13 @@ export const exportInventoryToCSV = (
     link.click();
     document.body.removeChild(link);
     
-    toast.success("Données exportées avec succès", {
-      description: `Le fichier ${fileName} a été téléchargé`
+    toast.success("Dữ liệu đã được xuất thành công", {
+      description: `Tệp ${fileName} đã được tải xuống`
     });
     return true;
   } catch (error) {
     console.error("Export error:", error);
-    toast.error("Erreur lors de l'exportation des données");
+    toast.error("Lỗi khi xuất dữ liệu");
     return false;
   }
 };
@@ -110,7 +110,7 @@ export const importInventoryFromCSV = (
         
         // Check if there's data to process
         if (!parsedData || parsedData.length === 0 || !parsedData[0]) {
-          toast.error("Le fichier importé ne contient aucune donnée valide");
+          toast.error("Tệp nhập không chứa dữ liệu hợp lệ");
           return;
         }
 
@@ -146,7 +146,7 @@ export const importInventoryFromCSV = (
               name: item.name || '',
               category: item.category || '',
               quantity: Number(item.quantity) || 0,
-              unit: item.unit || 'unité',
+              unit: item.unit || 'đơn vị',
               minQuantity: Number(item.minQuantity) || 0,
               price: Number(item.price) || 0,
               location: item.location || '',
@@ -159,35 +159,35 @@ export const importInventoryFromCSV = (
           });
         
         if (validData.length === 0) {
-          toast.error("Aucune donnée valide n'a été trouvée dans le fichier");
+          toast.error("Không tìm thấy dữ liệu hợp lệ trong tệp");
           return;
         }
         
         onComplete(validData);
-        toast.success(`${validData.length} articles importés avec succès`, {
-          description: `Importation terminée depuis ${file.name}`
+        toast.success(`${validData.length} mục đã được nhập thành công`, {
+          description: `Nhập dữ liệu hoàn tất từ ${file.name}`
         });
       },
       error: (error) => {
         console.error("Import error:", error);
-        toast.error("Erreur lors de l'importation des données");
+  toast.error("Lỗi khi nhập dữ liệu");
       }
     });
     return true;
   } catch (error) {
     console.error("Import error:", error);
-    toast.error("Erreur lors de l'importation des données");
+  toast.error("Lỗi khi nhập dữ liệu");
     return false;
   }
 };
 
 export const exportInventoryToPDF = (inventoryData: InventoryItem[], fileName?: string) => {
-  toast.info("Préparation du PDF en cours...");
+  toast.info("Đang chuẩn bị PDF...");
   // In a real app, you would use a library like jsPDF, pdfmake, or react-pdf
   // This is a placeholder for the actual PDF generation functionality
   setTimeout(() => {
-    toast.success("PDF généré avec succès", {
-      description: "Le fichier a été téléchargé"
+    toast.success("PDF đã được tạo thành công", {
+      description: "Tệp đã được tải xuống"
     });
   }, 1500);
   return true;
@@ -217,15 +217,15 @@ export const downloadInventoryTemplate = () => {
   const url = URL.createObjectURL(blob);
   
   link.setAttribute('href', url);
-  link.setAttribute('download', 'modele_inventaire.csv');
+  link.setAttribute('download', 'mau_kho.csv');
   link.style.visibility = 'hidden';
   
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
   
-  toast.success("Modèle d'inventaire téléchargé", {
-    description: "Utilisez ce modèle pour préparer vos données d'importation"
+  toast.success("Mẫu kho đã được tải xuống", {
+    description: "Sử dụng mẫu này để chuẩn bị dữ liệu nhập"
   });
   
   return true;

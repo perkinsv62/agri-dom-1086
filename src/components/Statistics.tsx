@@ -9,7 +9,7 @@ import FinancialCharts from './statistics/FinancialCharts';
 import EnvironmentalCharts from './statistics/EnvironmentalCharts';
 import { useStatistics } from '../contexts/StatisticsContext';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { FileText, Printer, ArrowLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import PreviewPrintButton from './common/PreviewPrintButton';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from './ui/breadcrumb';

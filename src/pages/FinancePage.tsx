@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PageLayout from '../components/layout/PageLayout';
 import FinancialTracking from '../components/FinancialTracking';
 import PageHeader from '../components/layout/PageHeader';
 import usePageMetadata from '../hooks/use-page-metadata';
 import TabContainer, { TabItem } from '../components/layout/TabContainer';
 import { Button } from "@/components/ui/button";
-import { Download, Upload, PieChart, BarChart, CreditCard, DollarSign, Filter, CalendarRange, Plus, FileText } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
+import { Download, Upload, PieChart, BarChart, CreditCard, DollarSign, Filter, Plus, FileText } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -16,15 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import FinancialCharts from '../components/statistics/FinancialCharts';
-import FinancialForecast from '../components/statistics/FinancialForecast';
 import BudgetPlanning from '../components/BudgetPlanning';
 import { toast } from 'sonner';
 import { StatisticsProvider } from '../contexts/StatisticsContext';
 
 const FinancePage = () => {
-  const { toast: shadowToast } = useToast();
   const { 
     title, 
     description, 
@@ -496,25 +493,6 @@ const FinancePage = () => {
             </div>
           )}
         </div>
-      )
-    },
-    {
-      value: 'forecast',
-      label: 'Dự báo',
-      content: (
-        <StatisticsProvider>
-          <div className="p-6 bg-white rounded-xl border">
-            <h2 className="text-xl font-bold mb-4 flex items-center">
-              <BarChart className="h-5 w-5 mr-2 text-indigo-500" />
-              Dự Báo Tài Chính
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              Mô phỏng các kịch bản khác nhau để dự đoán sự phát triển của tình hình tài chính
-            </p>
-            
-            <FinancialForecast />
-          </div>
-        </StatisticsProvider>
       )
     },
     {

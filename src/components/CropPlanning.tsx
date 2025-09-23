@@ -351,9 +351,12 @@ const CropPlanning = () => {
     toast.success('Tác vụ mới đã được thêm');
   };
 
-  const handleTaskUpdate = (index: number, field: string, value: any) => {
+  const handleTaskUpdate = (index: number, field: keyof CropTask | string, value: string | number | boolean) => {
     const updatedTasks = [...cropTasks];
-    (updatedTasks[index] as any)[field] = value;
+    const task = { ...updatedTasks[index] } as Partial<CropTask>;
+  // assign dynamically but avoid `any` by using an unknown->Record cast with limited value types
+  (task as unknown as Record<string, string | number | boolean>)[field as string] = value;
+    updatedTasks[index] = task as CropTask;
     setCropTasks(updatedTasks);
   };
 

@@ -13,9 +13,9 @@ interface UseDataOperationsProps<T> {
 }
 
 export function useDataOperations<T extends Record<string, any>>({
-  initialData = [],
-  idField = 'id',
-  dateField = 'date',
+  initialData = [], 
+  idField = 'id', 
+  dateField = 'date', 
   requiredFields = [],
   searchFields = []
 }: UseDataOperationsProps<T> = {}) {
@@ -33,8 +33,8 @@ export function useDataOperations<T extends Record<string, any>>({
     } as T;
     
     setData(prev => [...prev, newItem]);
-    setFilteredData(prev => [...prev, newItem]);
-    toast.success("Élément ajouté avec succès");
+  setFilteredData(prev => [...prev, newItem]);
+  toast.success("Thêm mục thành công");
     
     return newItem;
   }, [idField]);
@@ -52,19 +52,19 @@ export function useDataOperations<T extends Record<string, any>>({
       )
     );
     
-    toast.success("Élément mis à jour avec succès");
+  toast.success("Cập nhật mục thành công");
   }, [idField]);
 
   const deleteItem = useCallback((id: number | string) => {
     setData(prev => prev.filter(item => item[idField] !== id));
     setFilteredData(prev => prev.filter(item => item[idField] !== id));
-    toast.success("Élément supprimé avec succès");
+  toast.success("Xóa mục thành công");
   }, [idField]);
 
   const bulkDelete = useCallback((ids: (number | string)[]) => {
     setData(prev => prev.filter(item => !ids.includes(item[idField])));
     setFilteredData(prev => prev.filter(item => !ids.includes(item[idField])));
-    toast.success(`${ids.length} élément(s) supprimé(s) avec succès`);
+  toast.success(`${ids.length} mục đã được xóa thành công`);
   }, [idField]);
 
   // Search and filter operations
@@ -130,15 +130,15 @@ export function useDataOperations<T extends Record<string, any>>({
 
   const handleImport = useCallback((
     file: File,
-    customValidation?: (row: any) => boolean
+  customValidation?: (row: unknown) => boolean
   ) => {
     setIsLoading(true);
     
     return enhancedImport(
       file,
       (importedData) => {
-        setData(prev => [...prev, ...importedData as T[]]);
-        setFilteredData(prev => [...prev, ...importedData as T[]]);
+  setData(prev => [...prev, ...(importedData as T[])]);
+  setFilteredData(prev => [...prev, ...(importedData as T[])]);
         setIsLoading(false);
       },
       requiredFields,
@@ -163,7 +163,7 @@ export function useDataOperations<T extends Record<string, any>>({
       )
     );
     
-    toast.success(`${ids.length} élément(s) mis à jour avec succès`);
+  toast.success(`${ids.length} mục đã được cập nhật thành công`);
   }, [idField]);
 
   // Reset filters

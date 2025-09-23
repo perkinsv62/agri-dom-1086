@@ -8,8 +8,8 @@ interface AppSettings {
 
 interface AppSettingsContextType {
   settings: AppSettings;
-  updateSetting: (key: string, value: any) => void;
-  updateNestedSetting: (section: string, key: string, value: any) => void;
+  updateSetting: (key: string, value: unknown) => void;
+  updateNestedSetting: (section: string, key: string, value: unknown) => void;
 }
 
 const defaultSettings: AppSettings = {
@@ -34,6 +34,9 @@ export const AppSettingsProvider: React.FC<AppSettingsProviderProps> = ({ childr
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
 
   const updateSetting = (key: string, value: any) => {
+    // Prevent darkMode from being changed - keep it always false
+    if (key === 'darkMode') return;
+
     setSettings(prevSettings => ({
       ...prevSettings,
       [key]: value,
@@ -47,9 +50,12 @@ export const AppSettingsProvider: React.FC<AppSettingsProviderProps> = ({ childr
       const updatedSettings = { ...prevSettings };
       
       // Safely handle the nested section
-      const sectionData = updatedSettings[section] as Record<string, any>;
+      const sectionData = updatedSettings[section] as Record<string, unknown>;
       
       // If the section exists, update it
+      // Guard: don't allow updating darkMode via nested calls
+      if (section === 'darkMode') return prevSettings;
+
       if (sectionData) {
         // Create a new object for the section to avoid direct mutation
         updatedSettings[section] = {
@@ -62,8 +68,11 @@ export const AppSettingsProvider: React.FC<AppSettingsProviderProps> = ({ childr
     });
   };
 
+  // Always expose darkMode as false regardless of internal state
+  const exposedSettings = { ...settings, darkMode: false };
+
   return (
-    <AppSettingsContext.Provider value={{ settings, updateSetting, updateNestedSetting }}>
+    <AppSettingsContext.Provider value={{ settings: exposedSettings, updateSetting, updateNestedSetting }}>
       {children}
     </AppSettingsContext.Provider>
   );

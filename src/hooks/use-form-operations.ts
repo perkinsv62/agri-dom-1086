@@ -12,7 +12,7 @@ interface FieldValidation {
   isNumber?: boolean;
   min?: number;
   max?: number;
-  custom?: (value: any) => boolean;
+  custom?: (value: unknown) => boolean;
   errorMessage?: string;
 }
 
@@ -96,45 +96,45 @@ export const useFormOperations = <T extends Record<string, any>>(
   // Validate a single field
   const validateField = (field: string, value: any, rules: FieldValidation): string | null => {
     if (rules.required && (!value && value !== false && value !== 0)) {
-      return rules.errorMessage || `Ce champ est obligatoire`;
+      return rules.errorMessage || `Trường này là bắt buộc`;
     }
     
     if (value !== null && value !== undefined) {
       const strValue = String(value);
       
       if (rules.minLength && strValue.length < rules.minLength) {
-        return rules.errorMessage || `Minimum ${rules.minLength} caractères requis`;
+  return rules.errorMessage || `Yêu cầu tối thiểu ${rules.minLength} ký tự`;
       }
       
       if (rules.maxLength && strValue.length > rules.maxLength) {
-        return rules.errorMessage || `Maximum ${rules.maxLength} caractères autorisés`;
+  return rules.errorMessage || `Tối đa ${rules.maxLength} ký tự`;
       }
       
       if (rules.pattern && !rules.pattern.test(strValue)) {
-        return rules.errorMessage || `Format invalide`;
+  return rules.errorMessage || `Định dạng không hợp lệ`;
       }
       
       if (rules.isEmail && !isValidEmail(strValue)) {
-        return rules.errorMessage || `Email invalide`;
+  return rules.errorMessage || `Email không hợp lệ`;
       }
       
       if (rules.isNumber) {
         const numValue = Number(value);
         if (isNaN(numValue)) {
-          return rules.errorMessage || `Veuillez entrer un nombre valide`;
+          return rules.errorMessage || `Vui lòng nhập một số hợp lệ`;
         }
         
-        if (rules.min !== undefined && numValue < rules.min) {
-          return rules.errorMessage || `La valeur minimale est ${rules.min}`;
+          if (rules.min !== undefined && numValue < rules.min) {
+          return rules.errorMessage || `Giá trị tối thiểu là ${rules.min}`;
         }
         
-        if (rules.max !== undefined && numValue > rules.max) {
-          return rules.errorMessage || `La valeur maximale est ${rules.max}`;
+          if (rules.max !== undefined && numValue > rules.max) {
+          return rules.errorMessage || `Giá trị tối đa là ${rules.max}`;
         }
       }
       
       if (rules.custom && !rules.custom(value)) {
-        return rules.errorMessage || `Valeur invalide`;
+  return rules.errorMessage || `Giá trị không hợp lệ`;
       }
     }
     
@@ -178,10 +178,10 @@ export const useFormOperations = <T extends Record<string, any>>(
         setIsDirty(false);
       } catch (error) {
         console.error('Form submission error:', error);
-        toast.error('Erreur lors de l\'envoi du formulaire');
+        toast.error('Lỗi khi gửi biểu mẫu');
       }
     } else {
-      toast.error('Veuillez corriger les erreurs dans le formulaire');
+      toast.error('Vui lòng sửa các lỗi trong biểu mẫu');
       
       // Focus the first field with error
       if (formRef.current) {

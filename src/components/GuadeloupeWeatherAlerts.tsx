@@ -149,19 +149,28 @@ const GuadeloupeWeatherAlerts = () => {
     return matchesSearch && matchesSeverity && matchesStatus;
   });
   
-  const handleTableUpdate = (rowIndex: number, columnId: string, value: any) => {
+  const handleTableUpdate = (
+    rowIndex: number,
+    columnId: keyof WeatherAlert,
+    value: string | number | boolean | null
+  ) => {
     const newData = [...weatherAlerts];
     const itemId = filteredAlerts[rowIndex].id;
-    const dataIndex = newData.findIndex(item => item.id === itemId);
-    
+    const dataIndex = newData.findIndex((item) => item.id === itemId);
+
     if (dataIndex !== -1) {
-      const updatedItem = { ...newData[dataIndex], [columnId]: value };
+      const updatedItem: WeatherAlert = {
+        ...newData[dataIndex],
+        // dynamic key update - cast to Partial<WeatherAlert> to keep type safety
+        ...({ [columnId]: value } as Partial<WeatherAlert>),
+      };
+
       newData[dataIndex] = updatedItem;
       setWeatherAlerts(newData);
-      
+
       toast({
         title: "Cảnh báo đã cập nhật",
-        description: `Thông tin cảnh báo đã được cập nhật`
+        description: `Thông tin cảnh báo đã được cập nhật`,
       });
     }
   };

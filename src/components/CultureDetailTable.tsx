@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { EditableTable, Column } from './ui/editable-table';
-import { Trash2, X, Save, Plus, ExternalLink, Download, FileText } from 'lucide-react';
+import { X, Save, ExternalLink, Download, FileText } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
@@ -9,7 +9,25 @@ import { useToast } from "@/hooks/use-toast";
 import { useCRM } from '../contexts/CRMContext';
 import { toast } from 'sonner';
 
-const initialCultureData = [
+interface Culture {
+  id: number;
+  name: string;
+  scientificName: string;
+  family: string;
+  origin: string;
+  growingSeason: string;
+  soilType: string;
+  waterNeeds: string;
+  fertilization: string;
+  pests: string;
+  diseases: string;
+  notes: string;
+  type: string;
+  harvestPeriod: string;
+  yieldPerHectare: string;
+}
+
+const initialCultureData: Culture[] = [
   {
     id: 1,
     name: 'Igname',
@@ -98,22 +116,22 @@ const initialCultureData = [
 ];
 
 interface CultureDetailTableProps {
-  showAddForm?: boolean;
-  setShowAddForm?: (show: boolean) => void;
   searchTerm?: string;
   filterType?: string;
+  showAddForm?: boolean;
+  setShowAddForm?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const CultureDetailTable = ({ 
-  showAddForm, 
-  setShowAddForm, 
   searchTerm = '',
-  filterType = 'all'
+  filterType = 'all',
+  showAddForm = false,
+  setShowAddForm,
 }: CultureDetailTableProps) => {
   const { toast: shadowToast } = useToast();
   const [cultureData, setCultureData] = useState(initialCultureData);
   const [isAddFormVisible, setIsAddFormVisible] = useState(false);
-  const [selectedCulture, setSelectedCulture] = useState<null | any>(null);
+  const [selectedCulture, setSelectedCulture] = useState<Culture | null>(null);
   const { exportModuleData } = useCRM();
   const [newCulture, setNewCulture] = useState({
     name: '',
@@ -132,8 +150,9 @@ export const CultureDetailTable = ({
     yieldPerHectare: ''
   });
 
-  const localShowAddForm = showAddForm !== undefined ? showAddForm : isAddFormVisible;
-  const localSetShowAddForm = setShowAddForm || setIsAddFormVisible;
+  // Respect caller-controlled form visibility when provided
+  const localShowAddForm = typeof setShowAddForm === 'function' ? showAddForm : isAddFormVisible;
+  const localSetShowAddForm = typeof setShowAddForm === 'function' ? setShowAddForm : setIsAddFormVisible;
 
   const filteredCultures = cultureData.filter(culture => {
     const matchesSearch = 
@@ -145,7 +164,7 @@ export const CultureDetailTable = ({
     return matchesSearch && culture.type === filterType;
   });
 
-  const handleUpdateCulture = (rowIndex: number, columnId: string, value: any) => {
+  const handleUpdateCulture = (rowIndex: number, columnId: string, value: string) => {
     const updatedData = [...cultureData];
     const targetIndex = cultureData.findIndex(c => c.id === filteredCultures[rowIndex].id);
     
@@ -157,15 +176,15 @@ export const CultureDetailTable = ({
       setCultureData(updatedData);
       
       shadowToast({
-        description: `Information mise à jour pour ${updatedData[targetIndex].name}`,
+        description: `Đã cập nhật thông tin cho ${updatedData[targetIndex].name}`,
       });
     }
   };
 
   const handleAddCulture = () => {
     if (!newCulture.name) {
-      toast.error("Erreur", {
-        description: "Le nom de la culture est obligatoire"
+      toast.error("Lỗi", {
+        description: "Tên cây trồng là bắt buộc"
       });
       return;
     }
@@ -191,8 +210,8 @@ export const CultureDetailTable = ({
       yieldPerHectare: ''
     });
     
-    toast.success("Culture ajoutée", {
-      description: `${newCulture.name} a été ajoutée à la liste des cultures`
+    toast.success("Thêm cây trồng thành công", {
+      description: `${newCulture.name} đã được thêm vào danh sách cây trồng`
     });
   };
 
@@ -201,8 +220,8 @@ export const CultureDetailTable = ({
     const updatedData = cultureData.filter(culture => culture.id !== cultureToDelete.id);
     setCultureData(updatedData);
     
-    toast.success("Culture supprimée", {
-      description: `${cultureToDelete.name} a été supprimée de la liste`
+    toast.success("Xóa cây trồng thành công", {
+      description: `${cultureToDelete.name} đã được xóa khỏi danh sách`
     });
   };
 
@@ -210,9 +229,9 @@ export const CultureDetailTable = ({
     setSelectedCulture(filteredCultures[rowIndex]);
   };
 
-  const downloadTechnicalSheet = async (culture: any) => {
-    toast.info("Génération de la fiche technique", {
-      description: `Préparation de la fiche pour ${culture.name}`
+  const downloadTechnicalSheet = async (culture: Culture) => {
+    toast.info("Đang tạo phiếu kỹ thuật", {
+      description: `Chuẩn bị phiếu cho ${culture.name}`
     });
     
     const techSheetData = [{
@@ -235,18 +254,18 @@ export const CultureDetailTable = ({
     const success = await exportModuleData('fiche_technique', 'pdf', techSheetData);
     
     if (success) {
-      toast.success("Fiche technique générée", {
-        description: `La fiche technique pour ${culture.name} a été téléchargée`
+      toast.success("Phiếu kỹ thuật đã được tạo", {
+        description: `Phiếu kỹ thuật cho ${culture.name} đã được tải xuống`
       });
     }
   };
 
   const columns: Column[] = [
-    { id: 'name', header: 'Nom', accessorKey: 'name', isEditable: true },
-    { id: 'scientificName', header: 'Nom scientifique', accessorKey: 'scientificName', isEditable: true },
-    { id: 'growingSeason', header: 'Saison de culture', accessorKey: 'growingSeason', isEditable: true },
-    { id: 'soilType', header: 'Type de sol', accessorKey: 'soilType', isEditable: true },
-    { id: 'waterNeeds', header: 'Besoin en eau', accessorKey: 'waterNeeds', isEditable: true }
+  { id: 'name', header: 'Tên', accessorKey: 'name', isEditable: true },
+  { id: 'scientificName', header: 'Tên khoa học', accessorKey: 'scientificName', isEditable: true },
+  { id: 'growingSeason', header: 'Mùa trồng', accessorKey: 'growingSeason', isEditable: true },
+  { id: 'soilType', header: 'Loại đất', accessorKey: 'soilType', isEditable: true },
+  { id: 'waterNeeds', header: 'Nhu cầu nước', accessorKey: 'waterNeeds', isEditable: true }
   ];
 
   const renderDetailView = () => {

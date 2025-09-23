@@ -84,18 +84,18 @@ const NotificationCenter: React.FC = () => {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0" align="end">
-        <div className="flex items-center justify-between p-4 bg-muted/50">
-          <h3 className="font-medium">Notifications</h3>
+          <div className="flex items-center justify-between p-4 bg-muted/50">
+          <h3 className="font-medium">Thông báo</h3>
           <div className="flex gap-1">
             {unreadCount > 0 && (
               <Button variant="ghost" size="sm" onClick={handleMarkAllAsRead}>
                 <Check className="h-4 w-4 mr-1" />
-                Tout marquer lu
+                Đánh dấu tất cả là đã đọc
               </Button>
             )}
             <Button variant="ghost" size="sm" onClick={handleClearAll}>
               <Trash2 className="h-4 w-4 mr-1" />
-              Effacer tout
+              Xóa tất cả
             </Button>
           </div>
         </div>
@@ -104,7 +104,7 @@ const NotificationCenter: React.FC = () => {
           {notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-8 text-center text-muted-foreground">
               <BellOff className="h-8 w-8 mb-2" />
-              <p>Aucune notification</p>
+              <p>Không có thông báo</p>
             </div>
           ) : (
             <div className="divide-y">

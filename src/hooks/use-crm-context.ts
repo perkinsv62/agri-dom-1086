@@ -1,18 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { exportToCSV, exportToExcel, exportToPDF, importFromCSV, printData } from '../utils/crm-data-operations';
 
-// Types pour le contexte CRM global
+// Kiểu cho context CRM toàn cục
 interface CRMContextState {
   lastSync: Date;
   isRefreshing: boolean;
   companyName: string;
   activeModules: string[];
   syncDataAcrossCRM: () => void;
-  updateModuleData: (moduleName: string, data: any) => void;
-  getModuleData: (moduleName: string) => any;
-  exportModuleData: (moduleName: string, format: 'csv' | 'excel' | 'pdf', customData?: any[]) => Promise<boolean>;
+  updateModuleData: (moduleName: string, data: Record<string, unknown>) => void;
+  getModuleData: (moduleName: string) => Record<string, unknown> | undefined;
+  exportModuleData: (moduleName: string, format: 'csv' | 'excel' | 'pdf', customData?: unknown[]) => Promise<boolean>;
   importModuleData: (moduleName: string, file: File) => Promise<boolean>;
-  printModuleData: (moduleName: string, options?: any) => Promise<boolean>;
+  printModuleData: (moduleName: string, options?: Record<string, unknown>) => Promise<boolean>;
 }
 
 // Hook personnalisé pour gérer le contexte global du CRM
@@ -22,44 +22,44 @@ export const useCRMContext = (): CRMContextState => {
   const [moduleData, setModuleData] = useState<Record<string, any>>({
     parcelles: {
       items: [
-        { id: 1, nom: "Parcelle Nord", surface: 12.5, culture: "Canne à Sucre", statut: "En culture" },
-        { id: 2, nom: "Parcelle Sud", surface: 8.3, culture: "Banane", statut: "En récolte" },
-        { id: 3, nom: "Parcelle Est", surface: 5.2, culture: "Ananas", statut: "En préparation" }
+        { id: 1, nom: "Thửa Bắc", surface: 12.5, culture: "Mía", statut: "Đang trồng" },
+        { id: 2, nom: "Thửa Nam", surface: 8.3, culture: "Chuối", statut: "Đang thu hoạch" },
+        { id: 3, nom: "Thửa Đông", surface: 5.2, culture: "Dứa", statut: "Chuẩn bị" }
       ],
       columns: [
         { key: "id", header: "ID" },
-        { key: "nom", header: "Nom" },
-        { key: "surface", header: "Surface (ha)" },
-        { key: "culture", header: "Culture" },
-        { key: "statut", header: "Statut" }
+        { key: "nom", header: "Tên" },
+        { key: "surface", header: "Diện tích (ha)" },
+        { key: "culture", header: "Cây trồng" },
+        { key: "statut", header: "Trạng thái" }
       ]
     },
     cultures: {
       items: [
-        { id: 1, nom: "Canne à Sucre", variete: "R579", dateDebut: "2023-03-15", dateFin: "2024-03-15" },
-        { id: 2, nom: "Banane", variete: "Grande Naine", dateDebut: "2023-02-10", dateFin: "2023-12-10" },
-        { id: 3, nom: "Ananas", variete: "MD-2", dateDebut: "2023-05-05", dateFin: "2024-06-01" }
+        { id: 1, nom: "Mía", variete: "R579", dateDebut: "2023-03-15", dateFin: "2024-03-15" },
+        { id: 2, nom: "Chuối", variete: "Grande Naine", dateDebut: "2023-02-10", dateFin: "2023-12-10" },
+        { id: 3, nom: "Dứa", variete: "MD-2", dateDebut: "2023-05-05", dateFin: "2024-06-01" }
       ],
       columns: [
         { key: "id", header: "ID" },
-        { key: "nom", header: "Culture" },
-        { key: "variete", header: "Variété" },
-        { key: "dateDebut", header: "Date de début" },
-        { key: "dateFin", header: "Date de fin" }
+        { key: "nom", header: "Cây trồng" },
+        { key: "variete", header: "Giống" },
+        { key: "dateDebut", header: "Ngày bắt đầu" },
+        { key: "dateFin", header: "Ngày kết thúc" }
       ]
     },
     finances: {
       items: [
-        { id: 1, type: "revenu", montant: 15000, description: "Vente récolte canne", date: "2023-06-15" },
-        { id: 2, type: "depense", montant: 5000, description: "Achat fertilisants", date: "2023-05-10" },
-        { id: 3, type: "revenu", montant: 8500, description: "Vente bananes", date: "2023-07-20" }
+        { id: 1, type: "revenu", montant: 15000, description: "Bán vụ thu hoạch mía", date: "2023-06-15" },
+        { id: 2, type: "depense", montant: 5000, description: "Mua phân bón", date: "2023-05-10" },
+        { id: 3, type: "revenu", montant: 8500, description: "Bán chuối", date: "2023-07-20" }
       ],
       columns: [
         { key: "id", header: "ID" },
-        { key: "date", header: "Date" },
-        { key: "type", header: "Type" },
-        { key: "description", header: "Description" },
-        { key: "montant", header: "Montant (€)" }
+        { key: "date", header: "Ngày" },
+        { key: "type", header: "Loại" },
+        { key: "description", header: "Mô tả" },
+        { key: "montant", header: "Số tiền (€)" }
       ]
     },
     statistiques: {
@@ -69,26 +69,26 @@ export const useCRMContext = (): CRMContextState => {
         { periode: "2023-T1", cultureId: 2, rendement: 15.3, revenus: 7800, couts: 2100 }
       ],
       columns: [
-        { key: "periode", header: "Période" },
-        { key: "cultureId", header: "Culture ID" },
-        { key: "rendement", header: "Rendement (t/ha)" },
-        { key: "revenus", header: "Revenus (€)" },
-        { key: "couts", header: "Coûts (€)" }
+        { key: "periode", header: "Kỳ" },
+        { key: "cultureId", header: "ID Cây trồng" },
+        { key: "rendement", header: "Năng suất (t/ha)" },
+        { key: "revenus", header: "Doanh thu (€)" },
+        { key: "couts", header: "Chi phí (€)" }
       ]
     },
     inventaire: {
       items: [
-        { id: 1, nom: "Engrais NPK", categorie: "Intrants", quantite: 500, unite: "kg", prix: 2.5 },
-        { id: 2, nom: "Pesticide Bio", categorie: "Intrants", quantite: 50, unite: "L", prix: 18.75 },
-        { id: 3, nom: "Tracteur", categorie: "Matériel", quantite: 2, unite: "unités", prix: 25000 }
+        { id: 1, nom: "Phân NPK", categorie: "Vật tư", quantite: 500, unite: "kg", prix: 2.5 },
+        { id: 2, nom: "Thuốc sinh học", categorie: "Vật tư", quantite: 50, unite: "L", prix: 18.75 },
+        { id: 3, nom: "Máy kéo", categorie: "Thiết bị", quantite: 2, unite: "chiếc", prix: 25000 }
       ],
       columns: [
         { key: "id", header: "ID" },
-        { key: "nom", header: "Nom" },
-        { key: "categorie", header: "Catégorie" },
-        { key: "quantite", header: "Quantité" },
-        { key: "unite", header: "Unité" },
-        { key: "prix", header: "Prix unitaire (€)" }
+        { key: "nom", header: "Tên" },
+        { key: "categorie", header: "Loại" },
+        { key: "quantite", header: "Số lượng" },
+        { key: "unite", header: "Đơn vị" },
+        { key: "prix", header: "Đơn giá (€)" }
       ]
     }
   });
@@ -211,12 +211,12 @@ export const useCRMContext = (): CRMContextState => {
     }
     
     const moduleNames: Record<string, string> = {
-      parcelles: "Parcelles",
-      cultures: "Cultures",
-      finances: "Finances",
-      statistiques: "Statistiques",
-      inventaire: "Inventaire",
-      fiche_technique: "Fiche Technique"
+      parcelles: "Thửa đất",
+      cultures: "Cây trồng",
+      finances: "Tài chính",
+      statistiques: "Thống kê",
+      inventaire: "Tồn kho",
+      fiche_technique: "Phiếu kỹ thuật"
     };
     
     const title = `${companyName} - ${moduleNames[moduleName] || moduleName}`;

@@ -1,12 +1,9 @@
-
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { EditableField } from './ui/editable-field';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "./ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
-import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -15,42 +12,42 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PageHeader from './layout/PageHeader';
 
-// Define monthly data
+// Define monthly data (Vietnamese labels)
 const monthlyData = [
-  { name: 'Jan', income: 8500, expenses: 7200 },
-  { name: 'Fév', income: 9200, expenses: 7800 },
-  { name: 'Mar', income: 8800, expenses: 7400 },
-  { name: 'Avr', income: 10500, expenses: 8100 },
-  { name: 'Mai', income: 11200, expenses: 9500 },
-  { name: 'Juin', income: 9800, expenses: 7900 },
-  { name: 'Juil', income: 12500, expenses: 10200 },
+  { name: 'Tháng 1', income: 8500, expenses: 7200 },
+  { name: 'Tháng 2', income: 9200, expenses: 7800 },
+  { name: 'Tháng 3', income: 8800, expenses: 7400 },
+  { name: 'Tháng 4', income: 10500, expenses: 8100 },
+  { name: 'Tháng 5', income: 11200, expenses: 9500 },
+  { name: 'Tháng 6', income: 9800, expenses: 7900 },
+  { name: 'Tháng 7', income: 12500, expenses: 10200 },
 ];
 
 // Schema for transaction form
 const transactionSchema = z.object({
-  date: z.string().min(1, "La date est requise"),
-  description: z.string().min(3, "Description trop courte"),
+  date: z.string().min(1, "Ngày là bắt buộc"),
+  description: z.string().min(3, "Mô tả quá ngắn"),
   amount: z.string().refine(val => !isNaN(Number(val)) && Number(val) !== 0, {
-    message: "Montant invalide"
+    message: "Số tiền không hợp lệ"
   }),
-  category: z.string().min(1, "La catégorie est requise"),
+  category: z.string().min(1, "Danh mục là bắt buộc"),
   type: z.enum(["income", "expense"]),
 });
 
 const FinancialTracking = () => {
-  // State for editable content
-  const [title, setTitle] = useState('Suivi Financier');
-  const [description, setDescription] = useState('Gérez vos revenus et dépenses pour optimiser la rentabilité de votre exploitation');
+  // State for editable content (Vietnamese)
+  const [title, setTitle] = useState('Theo dõi tài chính');
+  const [description, setDescription] = useState('Quản lý doanh thu và chi phí để tối ưu hóa hiệu quả kinh doanh');
   
   // State for transactions
   const [transactions, setTransactions] = useState([
-    { id: 1, date: '2023-07-05', description: 'Vente de récolte', amount: 3200, category: 'Ventes', type: 'income' },
-    { id: 2, date: '2023-07-10', description: 'Achat d\'engrais', amount: 850, category: 'Fournitures', type: 'expense' },
-    { id: 3, date: '2023-07-12', description: 'Facture d\'électricité', amount: 320, category: 'Utilities', type: 'expense' },
-    { id: 4, date: '2023-07-15', description: 'Vente de bananes', amount: 1500, category: 'Ventes', type: 'income' },
-    { id: 5, date: '2023-07-20', description: 'Réparation tracteur', amount: 750, category: 'Maintenance', type: 'expense' },
-    { id: 6, date: '2023-07-25', description: 'Subvention agricole', amount: 4200, category: 'Subventions', type: 'income' },
-    { id: 7, date: '2023-07-28', description: 'Salaires employés', amount: 2800, category: 'Salaires', type: 'expense' },
+    { id: 1, date: '2023-07-05', description: 'Bán thu hoạch', amount: 3200, category: 'Bán hàng', type: 'income' },
+    { id: 2, date: '2023-07-10', description: 'Mua phân bón', amount: 850, category: 'Vật tư', type: 'expense' },
+  { id: 3, date: '2023-07-12', description: 'Hóa đơn điện', amount: 320, category: 'Tiện ích', type: 'expense' },
+    { id: 4, date: '2023-07-15', description: 'Bán chuối', amount: 1500, category: 'Bán hàng', type: 'income' },
+    { id: 5, date: '2023-07-20', description: 'Sửa chữa máy kéo', amount: 750, category: 'Bảo trì', type: 'expense' },
+    { id: 6, date: '2023-07-25', description: 'Trợ cấp nông nghiệp', amount: 4200, category: 'Trợ cấp', type: 'income' },
+    { id: 7, date: '2023-07-28', description: 'Lương nhân công', amount: 2800, category: 'Lương', type: 'expense' },
   ]);
   
   // Filter and stats
@@ -121,33 +118,28 @@ const FinancialTracking = () => {
     setShowAddDialog(false);
     form.reset();
     
-    toast.success('Transaction ajoutée avec succès');
+  toast.success('Thêm giao dịch thành công');
   };
   
   // Handle delete transaction
   const handleDeleteTransaction = (id: number) => {
     setTransactions(transactions.filter(t => t.id !== id));
-    toast.success('Transaction supprimée');
+  toast.success('Xóa giao dịch thành công');
   };
   
   // Handle edit transaction
-  const handleUpdateTransaction = (id: number, field: string, value: any) => {
-    setTransactions(transactions.map(t => 
-      t.id === id ? { ...t, [field]: field === 'amount' ? parseFloat(value) : value } : t
-    ));
-    toast.success('Transaction mise à jour');
-  };
+  // Note: inline update helper was removed because it was not used in the component.
   
   // Export to CSV
   const exportToCSV = () => {
     // Create CSV content
-    const headers = ['Date', 'Description', 'Montant', 'Catégorie', 'Type'];
+    const headers = ['Ngày', 'Mô tả', 'Số tiền', 'Danh mục', 'Loại'];
     const rows = transactions.map(t => [
       t.date, 
       t.description, 
       t.amount.toString(), 
       t.category, 
-      t.type === 'income' ? 'Revenu' : 'Dépense'
+      t.type === 'income' ? 'Doanh thu' : 'Chi phí'
     ]);
     
     const csvContent = [
@@ -194,11 +186,11 @@ const FinancialTracking = () => {
           </style>
         </head>
         <body>
-          <h1>Transactions Financières</h1>
+          <h1>Giao dịch tài chính</h1>
           <div class="summary">
-            <p>Revenus totaux: <b>${totalIncome.toFixed(2)} €</b></p>
-            <p>Dépenses totales: <b>${totalExpenses.toFixed(2)} €</b></p>
-            <p>Solde: <b class="${balance >= 0 ? 'income' : 'expense'}">${balance.toFixed(2)} €</b></p>
+            <p>Tổng doanh thu: <b>${totalIncome.toFixed(2)} €</b></p>
+            <p>Tổng chi phí: <b>${totalExpenses.toFixed(2)} €</b></p>
+            <p>Số dư: <b class="${balance >= 0 ? 'income' : 'expense'}">${balance.toFixed(2)} €</b></p>
           </div>
           <table>
             <thead>
@@ -302,10 +294,10 @@ const FinancialTracking = () => {
                   <YAxis />
                   <Tooltip 
                     formatter={(value) => [`${value} €`, '']} 
-                    labelFormatter={(label) => `Mois: ${label}`}
+                    labelFormatter={(label) => `Tháng: ${label}`}
                   />
-                  <Bar name="Revenus" dataKey="income" fill="#4ade80" radius={[4, 4, 0, 0]} />
-                  <Bar name="Dépenses" dataKey="expenses" fill="#f87171" radius={[4, 4, 0, 0]} />
+                  <Bar name="Doanh thu" dataKey="income" fill="#4ade80" radius={[4, 4, 0, 0]} />
+                  <Bar name="Chi phí" dataKey="expenses" fill="#f87171" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -314,15 +306,15 @@ const FinancialTracking = () => {
         
         <Card className="bg-white">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Transactions Récentes</CardTitle>
+            <CardTitle>Giao dịch gần đây</CardTitle>
             <div className="flex gap-2">
-              <Button 
+                <Button 
                 variant="outline" 
                 size="sm"
                 onClick={exportToCSV}
               >
                 <Download className="h-4 w-4 mr-1" />
-                Exporter
+                Xuất CSV
               </Button>
               <Button 
                 variant="outline" 
@@ -330,14 +322,14 @@ const FinancialTracking = () => {
                 onClick={printTransactions}
               >
                 <Printer className="h-4 w-4 mr-1" />
-                Imprimer
+                In
               </Button>
               <Button 
                 onClick={() => setShowAddDialog(true)}
                 size="sm"
               >
                 <PlusCircle className="h-4 w-4 mr-1" />
-                Ajouter
+                Thêm
               </Button>
             </div>
           </CardHeader>
@@ -348,9 +340,9 @@ const FinancialTracking = () => {
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
               >
-                <option value="all">Tous types</option>
-                <option value="income">Revenus</option>
-                <option value="expense">Dépenses</option>
+                <option value="all">Tất cả loại</option>
+                <option value="income">Doanh thu</option>
+                <option value="expense">Chi phí</option>
               </select>
               
               <select
@@ -359,8 +351,8 @@ const FinancialTracking = () => {
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
                 {categories.map(cat => (
-                  <option key={cat} value={cat}>
-                    {cat === 'all' ? 'Toutes catégories' : cat}
+                    <option key={cat} value={cat}>
+                    {cat === 'all' ? 'Tất cả danh mục' : cat}
                   </option>
                 ))}
               </select>
@@ -374,10 +366,10 @@ const FinancialTracking = () => {
                   setSortOrder(order as 'asc' | 'desc');
                 }}
               >
-                <option value="date-desc">Date (récent)</option>
-                <option value="date-asc">Date (ancien)</option>
-                <option value="amount-desc">Montant (haut)</option>
-                <option value="amount-asc">Montant (bas)</option>
+                <option value="date-desc">Ngày (mới nhất)</option>
+                <option value="date-asc">Ngày (cũ nhất)</option>
+                <option value="amount-desc">Số tiền (cao)</option>
+                <option value="amount-asc">Số tiền (thấp)</option>
               </select>
             </div>
             
@@ -393,39 +385,20 @@ const FinancialTracking = () => {
                     
                     <div className="flex-1">
                       <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
-                        <EditableField
-                          value={new Date(transaction.date).toLocaleDateString()}
-                          type="date"
-                          onSave={(value) => handleUpdateTransaction(
-                            transaction.id, 
-                            'date', 
-                            typeof value === 'string' ? value : new Date(value).toISOString().split('T')[0]
-                          )}
-                          className="text-sm font-medium"
-                        />
+                        
+                        <span className="text-sm font-medium">{new Date(transaction.date).toLocaleDateString()}</span>
                         <span className="hidden sm:inline text-muted-foreground">•</span>
-                        <EditableField
-                          value={transaction.category}
-                          onSave={(value) => handleUpdateTransaction(transaction.id, 'category', value)}
-                          className="text-xs bg-muted px-2 py-1 rounded"
-                        />
+                        <span className="text-xs bg-muted px-2 py-1 rounded">{transaction.category}</span>
+						
                       </div>
-                      <EditableField
-                        value={transaction.description}
-                        onSave={(value) => handleUpdateTransaction(transaction.id, 'description', value)}
-                        className="text-muted-foreground text-sm mt-1"
-                      />
+					  <span className="text-muted-foreground text-sm mt-1">{transaction.description}</span>
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      <EditableField
-                        value={transaction.amount}
-                        type="number"
-                        onSave={(value) => handleUpdateTransaction(transaction.id, 'amount', value)}
-                        className={`font-semibold ${
+                     
+					   <span className={`font-semibold ${
                           transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
-                        }`}
-                      />
+                        }`}>{transaction.amount}</span>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -438,7 +411,7 @@ const FinancialTracking = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-muted-foreground py-8">Aucune transaction trouvée</p>
+                <p className="text-center text-muted-foreground py-8">Không tìm thấy giao dịch</p>
               )}
             </div>
           </CardContent>
@@ -449,7 +422,7 @@ const FinancialTracking = () => {
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>Ajouter une transaction</DialogTitle>
+            <DialogTitle>Thêm giao dịch</DialogTitle>
           </DialogHeader>
           
           <Form {...form}>
@@ -460,7 +433,7 @@ const FinancialTracking = () => {
                   name="type"
                   render={({ field }) => (
                     <FormItem className="col-span-2">
-                      <FormLabel>Type de transaction</FormLabel>
+                      <FormLabel>Loại giao dịch</FormLabel>
                       <div className="flex mt-1">
                         <Button
                           type="button"
@@ -468,7 +441,7 @@ const FinancialTracking = () => {
                           className={field.value === 'income' ? 'bg-green-600 hover:bg-green-700' : ''}
                           onClick={() => field.onChange('income')}
                         >
-                          Revenu
+                          Doanh thu
                         </Button>
                         <Button
                           type="button"
@@ -476,7 +449,7 @@ const FinancialTracking = () => {
                           className={`ml-2 ${field.value === 'expense' ? 'bg-red-600 hover:bg-red-700' : ''}`}
                           onClick={() => field.onChange('expense')}
                         >
-                          Dépense
+                          Chi phí
                         </Button>
                       </div>
                       <FormMessage />
@@ -489,7 +462,7 @@ const FinancialTracking = () => {
                   name="date"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Date</FormLabel>
+                      <FormLabel>Ngày</FormLabel>
                       <FormControl>
                         <div className="relative">
                           <Input
@@ -509,7 +482,7 @@ const FinancialTracking = () => {
                   name="amount"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Montant (€)</FormLabel>
+                      <FormLabel>Số tiền (€)</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
@@ -530,7 +503,7 @@ const FinancialTracking = () => {
                     <FormItem className="col-span-2">
                       <FormLabel>Catégorie</FormLabel>
                       <FormControl>
-                        <Input placeholder="Exemple: Ventes, Fournitures..." {...field} />
+                        <Input placeholder="Ví dụ: Bán hàng, Vật tư..." {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -542,7 +515,7 @@ const FinancialTracking = () => {
                   name="description"
                   render={({ field }) => (
                     <FormItem className="col-span-2">
-                      <FormLabel>Description</FormLabel>
+                      <FormLabel>Mô tả</FormLabel>
                       <FormControl>
                         <Input {...field} />
                       </FormControl>
@@ -558,9 +531,9 @@ const FinancialTracking = () => {
                   variant="outline" 
                   onClick={() => setShowAddDialog(false)}
                 >
-                  Annuler
+                  Hủy
                 </Button>
-                <Button type="submit">Ajouter</Button>
+                <Button type="submit">Thêm</Button>
               </DialogFooter>
             </form>
           </Form>

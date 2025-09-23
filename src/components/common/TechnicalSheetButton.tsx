@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { FileText, Loader2, Download, Eye, Printer } from 'lucide-react';
+import { Loader2, Download, Eye, Printer } from 'lucide-react';
 import { useCRM } from '../../contexts/CRMContext';
 import { useAppSettings } from '@/contexts/AppSettingsContext';
 import {
@@ -23,10 +23,39 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import PreviewContainer from './PreviewContainer';
+// PreviewContainer is not used in this component (kept intentionally removed)
+
+interface TechnicalSheetData {
+  name?: string;
+  nom?: string;
+  scientificName?: string;
+  nomScientifique?: string;
+  family?: string;
+  famille?: string;
+  origin?: string;
+  origine?: string;
+  growingSeason?: string;
+  saisonCulture?: string;
+  soilType?: string;
+  typeSol?: string;
+  waterNeeds?: string;
+  besoinEau?: string;
+  fertilization?: string;
+  ravageurs?: string;
+  pests?: string;
+  diseases?: string;
+  maladies?: string;
+  notes?: string;
+  type?: string;
+  harvestPeriod?: string;
+  periodeRecolte?: string;
+  yieldPerHectare?: string | number;
+  rendementHectare?: string | number;
+  currentYield?: string | number;
+}
 
 interface TechnicalSheetButtonProps {
-  data: any;
+  data?: Partial<TechnicalSheetData>;
   className?: string;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   children?: React.ReactNode;
@@ -61,7 +90,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
       saisonCulture: data.growingSeason || data.saisonCulture || "Non spécifiée",
       typeSol: data.soilType || data.typeSol || "Non spécifié",
       besoinEau: data.waterNeeds || data.besoinEau || "Non spécifié",
-      fertilisation: data.fertilization || data.fertilisation || "Non spécifiée",
+  fertilisation: data.fertilization || "Non spécifiée",
       ravageurs: data.pests || data.ravageurs || "Non spécifiés",
       maladies: data.diseases || data.maladies || "Non spécifiées",
       notes: data.notes || "Aucune note",
@@ -286,7 +315,7 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
                   ) : children || (
                     <>
                       <Download className="mr-2 h-4 w-4" />
-                      Télécharger fiche technique
+                      Tải phiếu kỹ thuật
                     </>
                   )}
                 </Button>
@@ -294,21 +323,21 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
               <DropdownMenuContent className="bg-white border shadow-lg">
                 <DropdownMenuItem onClick={handleShowPreview} className="cursor-pointer">
                   <Eye className="mr-2 h-4 w-4" />
-                  <span>Aperçu</span>
+                  <span>Xem trước</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handlePrint} className="cursor-pointer">
                   <Printer className="mr-2 h-4 w-4" />
-                  <span>Imprimer</span>
+                  <span>In</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={downloadTechnicalSheet} className="cursor-pointer">
                   <Download className="mr-2 h-4 w-4" />
-                  <span>Télécharger PDF</span>
+                  <span>Tải PDF</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </TooltipTrigger>
           <TooltipContent className="bg-white border shadow-lg">
-            <p>Générer une fiche technique détaillée</p>
+            <p>Tạo phiếu kỹ thuật chi tiết</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -316,9 +345,9 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
         <DialogContent className="max-w-4xl h-[80vh]">
           <DialogHeader>
-            <DialogTitle>Fiche Technique - {data?.name || data?.nom || 'Culture'}</DialogTitle>
+            <DialogTitle>Phiếu kỹ thuật - {data?.name || data?.nom || 'Cây trồng'}</DialogTitle>
             <DialogDescription>
-              Aperçu de la fiche technique
+              Xem trước phiếu kỹ thuật
             </DialogDescription>
           </DialogHeader>
           <div className="flex-grow overflow-auto border rounded-md mt-4 bg-white">
@@ -428,11 +457,11 @@ const TechnicalSheetButton: React.FC<TechnicalSheetButtonProps> = ({
           </div>
           <div className="flex justify-end gap-2 mt-4">
             <Button variant="outline" onClick={() => setPreviewOpen(false)}>
-              Fermer
+              Đóng
             </Button>
             <Button onClick={handlePrint}>
               <Printer className="mr-2 h-4 w-4" />
-              Imprimer
+              In
             </Button>
           </div>
         </DialogContent>

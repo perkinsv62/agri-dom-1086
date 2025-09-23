@@ -1,19 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { DateRange } from 'react-day-picker';
 import { 
-  Package, 
   Plus, 
   ArrowUp, 
   ArrowDown,
   ChevronRight,
   X,
-  Check,
   Save,
   FileUp,
   FileDown,
   BarChart2,
-  Search,
-  Filter,
   Trash2
 } from 'lucide-react';
 import { EditableTable, Column } from './ui/editable-table';
@@ -22,13 +17,12 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Textarea } from './ui/textarea';
 import { toast } from 'sonner';
-import { EditableField } from './ui/editable-field';
+// EditableField removed; using inputs/static text instead
 import ConfirmDialog from './inventory/ConfirmDialog';
 import { 
   exportInventoryToCSV, 
   importInventoryFromCSV,
   exportInventoryToPDF,
-  downloadInventoryTemplate,
   InventoryItem 
 } from './inventory/ImportExportFunctions';
 import InventoryFilters from './inventory/InventoryFilters';
@@ -143,11 +137,10 @@ const initialCategoryStats = [
 ];
 
 interface InventoryProps {
-  dateRange?: DateRange;
   searchTerm?: string;
 }
 
-const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSearchTerm }) => {
+const Inventory: React.FC<InventoryProps> = ({ searchTerm: externalSearchTerm }) => {
   const [inventoryData, setInventoryData] = useState(initialInventoryData);
   const [transactionHistory, setTransactionHistory] = useState(initialTransactionHistory);
   const [categoryStats, setCategoryStats] = useState(initialCategoryStats);
@@ -516,13 +509,6 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
     
     handleUpdateItem(item.id, columnId, value);
   };
-  
-  const handleKeyDown = (e: React.KeyboardEvent, action: Function) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      action();
-    }
-  };
 
   return (
     <div className="animate-enter">
@@ -599,11 +585,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                 >
                   <ChevronRight className="h-5 w-5 transform rotate-180" />
                 </button>
-                <EditableField 
-                  value={selectedItem.name}
-                  onSave={(value) => handleUpdateItem(selectedItem.id, 'name', value)}
-                  className="text-xl font-semibold"
-                />
+                <span className="text-xl font-semibold">{selectedItem.name}</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 <Button 
@@ -640,34 +622,36 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Danh mục:</span>
-                      <EditableField
-                        value={selectedItem.category}
-                        onSave={(value) => handleUpdateItem(selectedItem.id, 'category', value)}
+                      <input
+                        className="border rounded px-2 py-1"
+                        defaultValue={selectedItem.category}
+                        onBlur={(e) => handleUpdateItem(selectedItem.id, 'category', e.target.value)}
                       />
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Số lượng:</span>
                       <div className="flex items-center">
-                        <EditableField
-                          value={selectedItem.quantity}
+                        <input
                           type="number"
-                          onSave={(value) => handleUpdateItem(selectedItem.id, 'quantity', Number(value))}
-                          className="font-medium"
+                          className="border rounded px-2 py-1 font-medium"
+                          defaultValue={selectedItem.quantity}
+                          onBlur={(e) => handleUpdateItem(selectedItem.id, 'quantity', Number(e.target.value))}
                         />
-                        <EditableField
-                          value={selectedItem.unit}
-                          onSave={(value) => handleUpdateItem(selectedItem.id, 'unit', value)}
-                          className="ml-1"
+                        <input
+                          className="border rounded px-2 py-1 ml-1"
+                          defaultValue={selectedItem.unit}
+                          onBlur={(e) => handleUpdateItem(selectedItem.id, 'unit', e.target.value)}
                         />
                       </div>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Ngưỡng tối thiểu:</span>
                       <div className="flex items-center">
-                        <EditableField
-                          value={selectedItem.minQuantity}
+                        <input
                           type="number"
-                          onSave={(value) => handleUpdateItem(selectedItem.id, 'minQuantity', Number(value))}
+                          className="border rounded px-2 py-1"
+                          defaultValue={selectedItem.minQuantity}
+                          onBlur={(e) => handleUpdateItem(selectedItem.id, 'minQuantity', Number(e.target.value))}
                         />
                         <span className="ml-1">{selectedItem.unit}</span>
                       </div>
@@ -675,10 +659,11 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Giá đơn vị:</span>
                       <div className="flex items-center">
-                        <EditableField
-                          value={selectedItem.price}
+                        <input
                           type="number"
-                          onSave={(value) => handleUpdateItem(selectedItem.id, 'price', Number(value))}
+                          className="border rounded px-2 py-1"
+                          defaultValue={selectedItem.price}
+                          onBlur={(e) => handleUpdateItem(selectedItem.id, 'price', Number(e.target.value))}
                         />
                         <span className="ml-1">€/{selectedItem.unit}</span>
                       </div>
@@ -689,9 +674,10 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-muted-foreground">Vị trí:</span>
-                      <EditableField
-                        value={selectedItem.location}
-                        onSave={(value) => handleUpdateItem(selectedItem.id, 'location', value)}
+                      <input
+                        className="border rounded px-2 py-1"
+                        defaultValue={selectedItem.location}
+                        onBlur={(e) => handleUpdateItem(selectedItem.id, 'location', e.target.value)}
                       />
                     </div>
                     <div className="flex justify-between items-center">
@@ -844,15 +830,16 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                           <td className="px-4 py-3">{transaction.quantity} {selectedItem.unit}</td>
                           <td className="px-4 py-3">{transaction.user}</td>
                           <td className="px-4 py-3">
-                            <EditableField
-                              value={transaction.notes}
-                              onSave={(value) => {
+                            <textarea
+                              className="w-full border rounded px-2 py-1"
+                              defaultValue={transaction.notes}
+                              onBlur={(e) => {
                                 const updatedTransactions = [...transactionHistory];
                                 const index = updatedTransactions.findIndex(t => t.id === transaction.id);
                                 if (index !== -1) {
                                   updatedTransactions[index] = {
                                     ...updatedTransactions[index],
-                                    notes: value.toString()
+                                    notes: e.target.value
                                   };
                                   setTransactionHistory(updatedTransactions);
                                 }
@@ -895,7 +882,7 @@ const Inventory: React.FC<InventoryProps> = ({ dateRange, searchTerm: externalSe
                 sortBy={sortBy}
                 setSortBy={setSortBy}
                 sortOrder={sortOrder}
-                setSortOrder={setSortOrder as (order: 'asc' | 'desc') => void}
+                setSortOrder={setSortOrder as () => void}
               />
             </div>
             

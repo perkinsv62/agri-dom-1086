@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
-import { Settings, X, Check, ArrowLeft, ArrowRight } from 'lucide-react';
-import { EditableField } from './editable-field';
+import { Settings, X, Check } from 'lucide-react';
+// EditableField removed — using static title/description and plain inputs in config
 
 interface ChartConfigProps {
   title: string;
@@ -15,7 +15,7 @@ interface ChartConfigProps {
     showTooltip?: boolean;
     chartColors?: string[];
   };
-  onOptionsChange?: (options: any) => void;
+  onOptionsChange?: (options: unknown) => void;
   className?: string;
 }
 
@@ -37,8 +37,8 @@ export const ChartConfig = ({
     chartColors: ['#4CAF50', '#2196F3', '#FFC107', '#F44336', '#9C27B0']
   });
 
-  const handleOptionChange = (key: string, value: any) => {
-    const newOptions = { ...currentOptions, [key]: value };
+  const handleOptionChange = (key: string, value: unknown) => {
+    const newOptions = { ...currentOptions, [key]: value as any };
     setCurrentOptions(newOptions);
     if (onOptionsChange) {
       onOptionsChange(newOptions);
@@ -55,26 +55,11 @@ export const ChartConfig = ({
     <div className={`bg-white rounded-xl border overflow-hidden relative ${className}`}>
       <div className="p-4 border-b flex justify-between items-center">
         <div>
-          {onTitleChange ? (
-            <EditableField
-              value={title}
-              onSave={onTitleChange}
-              className="text-lg font-medium"
-            />
-          ) : (
-            <h3 className="text-lg font-medium">{title}</h3>
-          )}
+          <h3 className="text-lg font-medium">{title}</h3>
           
           {description && (
             <div className="mt-1 text-sm text-muted-foreground">
-              {onDescriptionChange ? (
-                <EditableField
-                  value={description}
-                  onSave={onDescriptionChange}
-                />
-              ) : (
-                description
-              )}
+              {description}
             </div>
           )}
         </div>
@@ -106,21 +91,21 @@ export const ChartConfig = ({
             
             <div className="space-y-4 flex-1 overflow-auto">
               <div>
-                <label className="block text-sm font-medium mb-1">Titre</label>
-                <EditableField
-                  value={title}
-                  onSave={(value) => onTitleChange && onTitleChange(value.toString())}
-                  className="w-full border rounded-md"
+                <label className="block text-sm font-medium mb-1">Tiêu đề</label>
+                <input
+                  className="w-full border rounded-md p-2"
+                  defaultValue={title}
+                  onBlur={(e) => onTitleChange && onTitleChange(e.target.value)}
                 />
               </div>
               
               {description !== undefined && (
                 <div>
-                  <label className="block text-sm font-medium mb-1">Description</label>
-                  <EditableField
-                    value={description}
-                    onSave={(value) => onDescriptionChange && onDescriptionChange(value.toString())}
-                    className="w-full border rounded-md"
+                  <label className="block text-sm font-medium mb-1">Mô tả</label>
+                  <textarea
+                    className="w-full border rounded-md p-2"
+                    defaultValue={description}
+                    onBlur={(e) => onDescriptionChange && onDescriptionChange(e.target.value)}
                   />
                 </div>
               )}

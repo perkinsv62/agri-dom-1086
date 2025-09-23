@@ -3,33 +3,32 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
-import ParcelsPage from "./pages/ParcelsPage";
-import ParcelsDetailsPage from "./pages/ParcelsDetailsPage";
-import CropsPage from "./pages/CropsPage";
-import InventoryPage from "./pages/InventoryPage";
+
+import DonatePage from "./pages/DonatePage";
 import FinancePage from "./pages/FinancePage";
 import StatsPage from "./pages/StatsPage";
 import AdminPage from "./pages/AdminPage";
 import NotFound from "./pages/NotFound";
+import ParametresPage from "./pages/ParametresPage";
 import { useEffect } from "react";
 import { CRMProvider } from "./contexts/CRMContext";
 import { StatisticsProvider } from "./contexts/StatisticsContext";
 import { AppSettingsProvider } from "./contexts/AppSettingsContext";
 import { UserProvider } from "./contexts/UserContext";
 import { trackPageView } from "./utils/analytics";
+import RapportsPage from "./pages/RapportsPage";
+import NewsPage from "./pages/NewsPage";
 
 // Define routes configuration with redirects
 const routes = [
   { path: "/", element: <Index /> },
-  { path: "/parcelles", element: <ParcelsPage /> },
-  { path: "/parcelles/:id", element: <ParcelsDetailsPage /> },
-  { path: "/cultures", element: <CropsPage /> },
-  { path: "/inventaire", element: <InventoryPage /> },
+  { path: "/rapports", element: <RapportsPage /> },
   { path: "/finances", element: <FinancePage /> },
   { path: "/statistiques", element: <StatisticsProvider><StatsPage /></StatisticsProvider> },
   { path: "/admin", element: <AdminPage /> },
-  { path: "/rapports", element: <Navigate to="/statistiques" replace /> },
-  { path: "/parametres", element: <Navigate to="/" replace /> },
+  { path: "/news", element: <NewsPage /> },
+  { path: "/parametres", element: <ParametresPage /> },
+  { path: "/donations", element: <DonatePage /> },
   { path: "/dashboard", element: <Navigate to="/" replace /> },
   { path: "*", element: <NotFound /> }
 ];
@@ -51,13 +50,13 @@ const RouterChangeHandler = () => {
   useEffect(() => {
     // Scroll to top on route change
     window.scrollTo(0, 0);
-    
+
     // Track page view for analytics
     const currentPath = window.location.pathname;
     const pageName = currentPath === '/' ? 'dashboard' : currentPath.replace(/^\//, '');
     trackPageView(pageName);
   }, [location.pathname]);
-  
+
   return null;
 };
 
@@ -73,10 +72,10 @@ const App = () => {
                 <RouterChangeHandler />
                 <Routes>
                   {routes.map((route) => (
-                    <Route 
-                      key={route.path} 
-                      path={route.path} 
-                      element={route.element} 
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={route.element}
                     />
                   ))}
                 </Routes>

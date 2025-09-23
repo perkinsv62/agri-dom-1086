@@ -8,13 +8,13 @@ interface Coordinates {
 }
 
 interface ParcelMapProps {
-  coordinates: Coordinates;
+  coordinates: Coordinates;  
   parcelName: string;
   isEditing: boolean;
   onCoordinatesChange?: (coordinates: Coordinates) => void;
 }
 
-const ParcelMap = ({ coordinates, parcelName, isEditing, onCoordinatesChange }: ParcelMapProps) => {
+const ParcelMap = ({ coordinates: coordinatesProp, parcelName, isEditing, onCoordinatesChange }: ParcelMapProps) => {
   // In a real implementation, this would use a mapping library like Leaflet or Google Maps
   // For now, we'll create a placeholder that simulates a map
   
@@ -55,8 +55,8 @@ const ParcelMap = ({ coordinates, parcelName, isEditing, onCoordinatesChange }: 
         <div 
           className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center"
           style={{ 
-            left: `${((coordinates.lng - 4.3) / 0.1) * 100}%`, 
-            top: `${((coordinates.lat - 45.4) / 0.1) * 100}%` 
+            left: `${((coordinatesProp.lng - 4.3) / 0.1) * 100}%`, 
+            top: `${((coordinatesProp.lat - 45.4) / 0.1) * 100}%` 
           }}
         >
           <MapPin className="h-8 w-8 text-agri-primary drop-shadow-md" />
@@ -73,8 +73,8 @@ const ParcelMap = ({ coordinates, parcelName, isEditing, onCoordinatesChange }: 
         )}
         
         {/* Coordinates display */}
-        <div className="absolute top-2 right-2 bg-white px-2 py-1 text-xs rounded shadow">
-          Lat: {coordinates.lat} | Lng: {coordinates.lng}
+          <div className="absolute top-2 right-2 bg-white px-2 py-1 text-xs rounded shadow">
+          Lat: {coordinatesProp.lat} | Lng: {coordinatesProp.lng}
         </div>
       </div>
     </div>

@@ -1,15 +1,9 @@
 import React, { useState } from 'react';
-import { EditableField } from './ui/editable-field';
+// EditableField removed; using static text/inputs instead
 import { EditableTable, Column } from './ui/editable-table';
 import { 
   Map, 
   MapPin, 
-  Tractor, 
-  Calendar, 
-  PlaneTakeoff, 
-  CloudRain, 
-  Thermometer, 
-  LineChart,
   Camera,
   Plus,
   Trash2,
@@ -17,7 +11,6 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Input } from './ui/input';
-import { useParams } from 'react-router-dom';
 import { Button } from './ui/button';
 
 interface ParcelDetail {
@@ -43,8 +36,8 @@ interface TaskData {
   task: string;
   dueDate: string;
   assignedTo: string;
-  priority: 'Basse' | 'Moyenne' | 'Élevée' | 'Urgente';
-  status: 'À faire' | 'En cours' | 'Terminée';
+  priority: 'Thấp' | 'Trung bình' | 'Cao' | 'Khẩn';
+  status: 'Chưa làm' | 'Đang làm' | 'Hoàn thành';
 }
 
 const parcelData: ParcelDetail = {
@@ -59,19 +52,19 @@ const parcelData: ParcelDetail = {
       variety: 'R579', 
       plantingDate: '2023-02-10', 
       harvestDate: '2024-02-15',
-      status: 'En croissance'
+  status: 'Đang phát triển'
     },
     { 
       crop: 'Igname', 
       variety: 'Pacala', 
       plantingDate: '2023-05-20', 
       harvestDate: '2023-12-10',
-      status: 'Récolté'
+  status: 'Đã thu hoạch'
     }
   ],
-  irrigationSystem: 'Goutte-à-goutte avec captation d\'eau de pluie',
-  notes: 'Parcelle en conversion bio depuis 2022. Exposition Sud-Est favorable.',
-  owner: 'Coopérative Agricole de Grande-Terre',
+  irrigationSystem: 'Tưới nhỏ giọt với thu nước mưa',
+  notes: 'Thửa đang chuyển sang hữu cơ từ 2022. Hướng Đông Nam thuận lợi.',
+  owner: 'Hợp tác xã Nông nghiệp Grande-Terre',
   lastInspection: '2023-11-15',
   coordinates: {
     latitude: 16.3312,
@@ -89,61 +82,60 @@ const initialTasks: TaskData[] = [
     task: 'Fertilisation de la canne', 
     dueDate: '2023-09-25', 
     assignedTo: 'Jean Dupont', 
-    priority: 'Élevée',
-    status: 'À faire'
+    priority: 'Cao',
+      status: 'Chưa làm'
   },
   { 
     id: 2, 
     task: 'Traitement contre la cercosporiose', 
     dueDate: '2023-09-28', 
     assignedTo: 'Marie Lambert', 
-    priority: 'Moyenne',
-    status: 'En cours'
+    priority: 'Trung bình',
+      status: 'Đang làm'
   },
   { 
     id: 3, 
     task: 'Inspection croissance ananas', 
     dueDate: '2023-09-30', 
     assignedTo: 'Pierre Lafortune', 
-    priority: 'Basse',
-    status: 'À faire'
+    priority: 'Thấp',
+      status: 'Chưa làm'
   },
   {
     id: 4,
     task: 'Désherbage parcelle madère',
     dueDate: '2023-10-05',
     assignedTo: 'Sophie Martin',
-    priority: 'Moyenne',
-    status: 'À faire'
+    priority: 'Trung bình',
+      status: 'Chưa làm'
   },
   {
     id: 5,
     task: 'Préparation coupe canne',
     dueDate: '2024-01-10',
     assignedTo: 'Jean Dupont',
-    priority: 'Élevée',
-    status: 'À faire'
+    priority: 'Cao',
+      status: 'Chưa làm'
   }
 ];
 
 const taskColumns: Column[] = [
-  { id: 'task', header: 'Tâche', accessorKey: 'task', isEditable: true },
-  { id: 'assignedTo', header: 'Assigné à', accessorKey: 'assignedTo', isEditable: true },
-  { id: 'dueDate', header: 'Date', accessorKey: 'dueDate', isEditable: true, width: '120px' },
-  { id: 'priority', header: 'Priorité', accessorKey: 'priority', isEditable: true, width: '120px' },
-  { id: 'status', header: 'Statut', accessorKey: 'status', isEditable: true, width: '100px' }
+  { id: 'task', header: 'Công việc', accessorKey: 'task', isEditable: true },
+  { id: 'assignedTo', header: 'Giao cho', accessorKey: 'assignedTo', isEditable: true },
+  { id: 'dueDate', header: 'Ngày', accessorKey: 'dueDate', isEditable: true, width: '120px' },
+  { id: 'priority', header: 'Ưu tiên', accessorKey: 'priority', isEditable: true, width: '120px' },
+  { id: 'status', header: 'Trạng thái', accessorKey: 'status', isEditable: true, width: '100px' }
 ];
 
 const cropColumns: Column[] = [
-  { id: 'crop', header: 'Culture', accessorKey: 'crop', isEditable: true },
-  { id: 'variety', header: 'Variété', accessorKey: 'variety', isEditable: true },
-  { id: 'plantingDate', header: 'Date plantation', accessorKey: 'plantingDate', isEditable: true },
-  { id: 'harvestDate', header: 'Date récolte prévue', accessorKey: 'harvestDate', isEditable: true },
-  { id: 'status', header: 'Statut', accessorKey: 'status', isEditable: true },
+  { id: 'crop', header: 'Cây trồng', accessorKey: 'crop', isEditable: true },
+  { id: 'variety', header: 'Giống', accessorKey: 'variety', isEditable: true },
+  { id: 'plantingDate', header: 'Ngày trồng', accessorKey: 'plantingDate', isEditable: true },
+  { id: 'harvestDate', header: 'Ngày dự kiến thu hoạch', accessorKey: 'harvestDate', isEditable: true },
+  { id: 'status', header: 'Trạng thái', accessorKey: 'status', isEditable: true },
 ];
 
 const GuadeloupeParcelDetail = () => {
-  const { id } = useParams<{ id: string }>();
   const [parcel, setParcel] = useState<ParcelDetail>(parcelData);
   const [tasks, setTasks] = useState<TaskData[]>(initialTasks);
   const [activeTab, setActiveTab] = useState<'info' | 'crops' | 'tasks'>('info');
@@ -157,31 +149,33 @@ const GuadeloupeParcelDetail = () => {
     toast.success(`${field} mis à jour`);
   };
 
-  const handleTaskUpdate = (rowIndex: number, columnId: string, value: any) => {
+  const handleTaskUpdate = (rowIndex: number, columnId: string, value: string) => {
     const updatedTasks = [...tasks];
     const updatedTask = { ...updatedTasks[rowIndex] };
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (updatedTask as any)[columnId] = value;
     updatedTasks[rowIndex] = updatedTask;
     
     setTasks(updatedTasks);
-    toast.success('Tâche mise à jour');
+    toast.success('Cập nhật công việc thành công');
   };
 
-  const handleCropUpdate = (rowIndex: number, columnId: string, value: any) => {
+  const handleCropUpdate = (rowIndex: number, columnId: string, value: string) => {
     const updatedParcel = { ...parcel };
     const updatedCrops = [...updatedParcel.crops];
     const updatedCrop = { ...updatedCrops[rowIndex] };
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (updatedCrop as any)[columnId] = value;
     updatedCrops[rowIndex] = updatedCrop;
     
     updatedParcel.crops = updatedCrops;
     setParcel(updatedParcel);
-    toast.success('Culture mise à jour');
+    toast.success('Cập nhật cây trồng thành công');
   };
 
-  const handleAddTask = (newRow: Record<string, any>) => {
+  const handleAddTask = (newRow: Record<string, string>) => {
     const newId = Math.max(0, ...tasks.map(t => t.id)) + 1;
     
     const newTask: TaskData = {
@@ -189,15 +183,15 @@ const GuadeloupeParcelDetail = () => {
       task: String(newRow.task || ''),
       dueDate: String(newRow.dueDate || new Date().toISOString().split('T')[0]),
       assignedTo: String(newRow.assignedTo || ''),
-      priority: (newRow.priority as TaskData['priority']) || 'Moyenne',
-      status: (newRow.status as TaskData['status']) || 'À faire'
+      priority: (newRow.priority as TaskData['priority']) || 'Trung bình',
+      status: (newRow.status as TaskData['status']) || 'Chưa làm'
     };
     
     setTasks([...tasks, newTask]);
-    toast.success('Nouvelle tâche ajoutée');
+    toast.success('Thêm công việc mới thành công');
   };
 
-  const handleAddCrop = (newRow: Record<string, any>) => {
+  const handleAddCrop = (newRow: Record<string, string>) => {
     const updatedParcel = { ...parcel };
     
     const newCrop = {
@@ -205,19 +199,19 @@ const GuadeloupeParcelDetail = () => {
       variety: String(newRow.variety || ''),
       plantingDate: String(newRow.plantingDate || new Date().toISOString().split('T')[0]),
       harvestDate: String(newRow.harvestDate || ''),
-      status: String(newRow.status || 'Planifié')
+      status: String(newRow.status || 'Đã lên kế hoạch')
     };
     
     updatedParcel.crops = [...updatedParcel.crops, newCrop];
     setParcel(updatedParcel);
-    toast.success('Nouvelle culture ajoutée');
+    toast.success('Thêm cây trồng mới thành công');
   };
 
   const handleDeleteTask = (rowIndex: number) => {
     const updatedTasks = [...tasks];
     updatedTasks.splice(rowIndex, 1);
     setTasks(updatedTasks);
-    toast.success('Tâche supprimée');
+    toast.success('Xóa công việc thành công');
   };
 
   const handleDeleteCrop = (rowIndex: number) => {
@@ -226,7 +220,7 @@ const GuadeloupeParcelDetail = () => {
     updatedCrops.splice(rowIndex, 1);
     updatedParcel.crops = updatedCrops;
     setParcel(updatedParcel);
-    toast.success('Culture supprimée');
+    toast.success('Xóa cây trồng thành công');
   };
 
   return (
@@ -236,19 +230,11 @@ const GuadeloupeParcelDetail = () => {
           <div>
             <h2 className="text-xl font-bold flex items-center">
               <MapPin className="h-6 w-6 mr-2 text-agri-primary" />
-              <EditableField
-                value={parcel.name}
-                onSave={(value) => handleParcelUpdate('name', value)}
-                className="inline-block"
-              />
+              <span className="inline-block font-semibold">{parcel.name}</span>
             </h2>
             <p className="text-muted-foreground flex items-center mt-1">
               <Map className="h-4 w-4 mr-1.5" />
-              <EditableField
-                value={parcel.location}
-                onSave={(value) => handleParcelUpdate('location', value)}
-                className="inline-block"
-              />
+              <span className="inline-block">{parcel.location}</span>
             </p>
           </div>
           
@@ -280,11 +266,11 @@ const GuadeloupeParcelDetail = () => {
               <div className="bg-muted/30 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-muted-foreground mb-2">Superficie</h3>
                 <div className="flex items-center">
-                  <EditableField
-                    value={parcel.surface}
+                  <input
                     type="number"
-                    onSave={(value) => handleParcelUpdate('surface', value)}
-                    className="text-xl font-bold"
+                    className="text-xl font-bold border rounded px-2 py-1"
+                    defaultValue={String(parcel.surface)}
+                    onBlur={(e) => handleParcelUpdate('surface', Number(e.target.value))}
                   />
                   <span className="ml-1 text-xl">ha</span>
                 </div>
@@ -292,47 +278,47 @@ const GuadeloupeParcelDetail = () => {
               
               <div className="bg-muted/30 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-muted-foreground mb-2">Type de sol</h3>
-                <EditableField
-                  value={parcel.soilType}
-                  onSave={(value) => handleParcelUpdate('soilType', value)}
-                  className="text-xl font-bold"
+                <input
+                  className="text-xl font-bold border rounded px-2 py-1"
+                  defaultValue={parcel.soilType}
+                  onBlur={(e) => handleParcelUpdate('soilType', e.target.value)}
                 />
               </div>
               
               <div className="bg-muted/30 p-4 rounded-lg">
                 <h3 className="text-sm font-medium text-muted-foreground mb-2">Dernière inspection</h3>
-                <EditableField
-                  value={parcel.lastInspection}
-                  onSave={(value) => handleParcelUpdate('lastInspection', value)}
-                  className="text-xl font-bold"
+                <input
+                  className="text-xl font-bold border rounded px-2 py-1"
+                  defaultValue={parcel.lastInspection}
+                  onBlur={(e) => handleParcelUpdate('lastInspection', e.target.value)}
                 />
               </div>
             </div>
             
             <div className="bg-muted/30 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">Système d'irrigation</h3>
-              <EditableField
-                value={parcel.irrigationSystem}
-                onSave={(value) => handleParcelUpdate('irrigationSystem', value)}
-                className="text-lg"
+              <textarea
+                className="w-full border rounded px-2 py-2"
+                defaultValue={parcel.irrigationSystem}
+                onBlur={(e) => handleParcelUpdate('irrigationSystem', e.target.value)}
               />
             </div>
             
             <div className="bg-muted/30 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">Notes</h3>
-              <EditableField
-                value={parcel.notes}
-                onSave={(value) => handleParcelUpdate('notes', value)}
-                className="text-lg"
+              <textarea
+                className="w-full border rounded px-2 py-2"
+                defaultValue={parcel.notes}
+                onBlur={(e) => handleParcelUpdate('notes', e.target.value)}
               />
             </div>
             
             <div className="bg-muted/30 p-4 rounded-lg">
               <h3 className="text-sm font-medium text-muted-foreground mb-2">Propriétaire</h3>
-              <EditableField
-                value={parcel.owner}
-                onSave={(value) => handleParcelUpdate('owner', value)}
-                className="text-lg"
+              <input
+                className="w-full border rounded px-2 py-1"
+                defaultValue={parcel.owner}
+                onBlur={(e) => handleParcelUpdate('owner', e.target.value)}
               />
             </div>
             
@@ -400,13 +386,13 @@ const GuadeloupeParcelDetail = () => {
         {activeTab === 'tasks' && (
           <div className="space-y-6">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium">Tâches à venir</h3>
+              <h3 className="text-lg font-medium">Công việc sắp tới</h3>
               <Button 
-                onClick={() => toast.success('Redirection vers la page des tâches')}
+                onClick={() => toast.success('Chuyển đến trang công việc')}
                 variant="outline"
                 className="text-sm"
               >
-                Voir toutes les tâches
+                Xem tất cả công việc
               </Button>
             </div>
             
@@ -420,11 +406,11 @@ const GuadeloupeParcelDetail = () => {
               actions={[
                 {
                   icon: <Check className="h-4 w-4 text-green-600" />,
-                  label: "Marquer comme terminée",
+                  label: "Đánh dấu hoàn thành",
                   onClick: (rowIndex) => {
-                    toast.success(`Tâche "${tasks[rowIndex].task}" marquée comme terminée`);
+                    toast.success(`Công việc "${tasks[rowIndex].task}" đã được đánh dấu hoàn thành`);
                     const updatedTasks = [...tasks];
-                    updatedTasks[rowIndex].status = 'Terminée';
+                    updatedTasks[rowIndex].status = 'Hoàn thành';
                     setTasks(updatedTasks);
                   }
                 }

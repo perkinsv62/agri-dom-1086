@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Switch } from '../ui/switch';
 import { useUser } from '../../contexts/UserContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -19,14 +20,17 @@ const userSchema = z.object({
 
 type UserFormData = z.infer<typeof userSchema>;
 
-interface AddUserDialogProps {
+interface EditUserDialogProps {
   open: boolean; // eslint-disable-line no-unused-vars
   onOpenChange: (open: boolean) => void;
+  userId: string | null;
 }
 
-const AddUserDialog: React.FC<AddUserDialogProps> = ({ open: openProp, onOpenChange }) => {
-  const { addUser } = useUser();
+const EditUserDialog: React.FC<EditUserDialogProps> = ({ open: openProp, onOpenChange, userId }) => {
+  const { users, updateUser } = useUser();
   const { toast } = useToast();
+
+  const user = users.find(u => u.id === userId) || null;
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -38,27 +42,58 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open: openProp, onOpenCha
     }
   });
 
+  useEffect(() => {
+    if (user) {
+      form.reset({
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: user.status
+      });
+    }
+  }, [user, form, userId]);
+
   const onSubmit = (data: UserFormData) => {
-    addUser({
+    if (!user) return;
+    updateUser(user.id, {
       name: data.name,
       email: data.email,
       role: data.role,
-      status: data.status,
-      twoFactorEnabled: false
+      status: data.status
     });
     toast({
-      title: "Người dùng đã được thêm",
-      description: `Tài khoản của ${data.name} đã được tạo thành công.`
+      title: 'Cập nhật người dùng',
+      description: `Thông tin của ${data.name} đã được cập nhật.`
     });
-    form.reset();
     onOpenChange(false);
+  };
+  
+  // Only allow disabling 2FA here. Enabling should be handled via a secure flow elsewhere.
+  const handle2FAChange = (checked: boolean) => {
+    if (!user) return;
+    // If user doesn't have 2FA enabled, the switch is disabled and nothing should happen
+    if (!user.twoFactorEnabled) return;
+    // If checked is true, user attempted to enable — ignore
+    if (checked) return;
+    // Disable 2FA
+    updateUser(user.id, { twoFactorEnabled: false });
+    toast({
+      title: '2FA đã bị tắt',
+      description: `Xác thực hai yếu tố cho ${user.name} đã bị tắt.`
+    });
+    form.reset({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      status: user.status
+    });
   };
 
   return (
     <Dialog open={openProp} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Thêm người dùng mới</DialogTitle>
+          <DialogTitle>Chỉnh sửa người dùng</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -119,20 +154,45 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open: openProp, onOpenCha
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Trạng thái</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Chọn trạng thái" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="active">Hoạt động</SelectItem>
-                      <SelectItem value="inactive">Vô hiệu hóa</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <FormLabel>Trạng thái</FormLabel>
+                      <FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Chọn trạng thái" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="active">Hoạt động</SelectItem>
+                            <SelectItem value="inactive">Vô hiệu hóa</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </div>
+
+                    
+                  </div>
                 </FormItem>
+              )}
+            />
+<FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem>
+            <div className="flex-shrink-0 w-40">
+                      <FormLabel className="mb-1">Xác thực hai yếu tố</FormLabel>
+                      <div className="flex items-center gap-3">
+                        <Switch
+                          checked={!!user?.twoFactorEnabled}
+                          disabled={!user?.twoFactorEnabled}
+                          onCheckedChange={(val) => handle2FAChange(!!val)}
+                        />
+                      </div>
+                    </div></FormItem>
               )}
             />
 
@@ -140,7 +200,7 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open: openProp, onOpenCha
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Hủy
               </Button>
-              <Button type="submit">Thêm người dùng</Button>
+              <Button type="submit">Lưu thay đổi</Button>
             </DialogFooter>
           </form>
         </Form>
@@ -149,4 +209,4 @@ const AddUserDialog: React.FC<AddUserDialogProps> = ({ open: openProp, onOpenCha
   );
 };
 
-export default AddUserDialog;
+export default EditUserDialog;

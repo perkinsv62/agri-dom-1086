@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Eye, Printer, FileText, Loader2, Download } from 'lucide-react';
+import { Eye, Printer, FileText, Loader2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,7 +19,7 @@ import PreviewDialog from './PreviewDialog';
 import { usePreviewActions } from '@/hooks/use-preview-actions';
 
 interface PreviewPrintButtonProps {
-  data: any[];
+  data: unknown[];
   moduleName: string;
   className?: string;
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
@@ -45,7 +45,7 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
     handlePrint,
     handleShowPreview,
     handleExportPDF
-  } = usePreviewActions({ data, moduleName, columns, title });
+  } = usePreviewActions({ data: data as any, moduleName, columns, title });
 
   const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -66,19 +66,19 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
                   size="sm"
                   className={`transition-all ${className}`}
                   disabled={isActionInProgress}
-                  aria-label="Options d'aperçu et d'impression"
+                  aria-label="Tùy chọn xem trước và in"
                 >
                   {isActionInProgress ? (
                     <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
                   ) : (
                     <Eye className="h-4 w-4" aria-hidden="true" />
                   )}
-                  <span className="ml-2 hidden sm:inline">Aperçu</span>
+                  <span className="ml-2 hidden sm:inline">Xem trước</span>
                 </Button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Aperçu et impression</p>
+              <p>Xem trước và in</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -90,7 +90,7 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
               onKeyDown={(e) => handleKeyDown(e, handleShowPreview)}
             >
               <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
-              <span>Aperçu à l'écran</span>
+              <span>Xem trước trên màn hình</span>
             </DropdownMenuItem>
           )}
           <DropdownMenuItem 
@@ -99,7 +99,7 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
             onKeyDown={(e) => handleKeyDown(e, handlePrint)}
           >
             <Printer className="mr-2 h-4 w-4" aria-hidden="true" />
-            <span>Imprimer</span>
+            <span>In</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem 
@@ -108,7 +108,7 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
             onKeyDown={(e) => handleKeyDown(e, handleExportPDF)}
           >
             <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
-            <span>Exporter en PDF</span>
+            <span>Xuất thành PDF</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

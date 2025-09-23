@@ -16,7 +16,6 @@ import {
   Upload,
   ChevronDown
 } from 'lucide-react';
-import { useToast } from "@/hooks/use-toast";
 import { toast } from 'sonner';
 import { EditableTable, Column } from './ui/editable-table';
 import ParcelMap from './ParcelMap';
@@ -123,8 +122,11 @@ const ParcelCard = ({
   onDelete
 }: { 
   parcel: ParcelData, 
+  // eslint-disable-next-line no-unused-vars
   onSelect: (parcel: ParcelData) => void,
+  // eslint-disable-next-line no-unused-vars
   onEdit: (parcel: ParcelData) => void,
+  // eslint-disable-next-line no-unused-vars
   onDelete: (id: number) => void
 }) => {
   const getStatusColor = (status: string) => {
@@ -389,7 +391,7 @@ const ParcelManagement = () => {
     { id: 'notes', header: 'Ghi chú', accessorKey: 'notes', isEditable: true }
   ];
 
-  const handleCropHistoryUpdate = (rowIndex: number, columnId: string, value: any) => {
+  const handleCropHistoryUpdate = (rowIndex: number, columnId: string, value: string) => {
     const updatedHistory = [...cropHistory];
     updatedHistory[rowIndex] = {
       ...updatedHistory[rowIndex],
@@ -399,7 +401,7 @@ const ParcelManagement = () => {
     toast.success('Lịch sử đã được cập nhật');
   };
 
-  const handleAddCropHistory = (newRow: Record<string, any>) => {
+  const handleAddCropHistory = (newRow: Record<string, string>) => {
     setCropHistory([...cropHistory, {
       year: newRow.year || new Date().getFullYear().toString(),
       crop: newRow.crop || '',

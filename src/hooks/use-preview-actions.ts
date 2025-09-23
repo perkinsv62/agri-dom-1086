@@ -6,7 +6,7 @@ import { generatePreviewHTML } from '@/utils/preview-generator';
 import { toast } from 'sonner';
 
 interface UsePreviewActionsProps {
-  data: any[];
+  data: unknown[];
   moduleName: string;
   columns?: { key: string, header: string }[];
   title?: string;

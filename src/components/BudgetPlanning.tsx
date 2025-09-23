@@ -60,7 +60,7 @@ const BudgetPlanning = () => {
   // Handle adding new budget item
   const handleAddBudgetItem = () => {
     if (!newCategory || !newPlanned) {
-      toast.error("Veuillez remplir les champs obligatoires");
+        toast.error("Vui lòng điền các trường bắt buộc");
       return;
     }
     
@@ -68,7 +68,7 @@ const BudgetPlanning = () => {
     const actual = newActual ? parseFloat(newActual) : 0;
     
     if (isNaN(planned) || (newActual && isNaN(actual))) {
-      toast.error("Les montants doivent être des nombres valides");
+      toast.error("Số tiền phải là số hợp lệ");
       return;
     }
     
@@ -85,7 +85,7 @@ const BudgetPlanning = () => {
     };
     
     setBudgetItems([...budgetItems, newItem]);
-    toast.success("Catégorie de budget ajoutée avec succès");
+  toast.success("Thêm mục ngân sách thành công");
     setShowAddDialog(false);
     setNewCategory('');
     setNewPlanned('');
@@ -105,20 +105,20 @@ const BudgetPlanning = () => {
   // Handle removing a budget item
   const handleRemoveItem = (id: number) => {
     setBudgetItems(budgetItems.filter(item => item.id !== id));
-    toast.success("Catégorie de budget supprimée");
+  toast.success("Xóa mục ngân sách thành công");
   };
   
   // Handle saving budget
   const handleSaveBudget = () => {
-    toast.success("Budget enregistré avec succès", {
-      description: `Budget ${selectedPeriod} pour ${selectedYear}`
+    toast.success("Lưu ngân sách thành công", {
+      description: `${selectedPeriod === 'annual' ? 'Hàng năm' : selectedPeriod === 'quarterly' ? 'Hàng quý' : 'Hàng tháng'} cho ${selectedYear}`
     });
   };
   
   // Handle export budget
   const handleExportBudget = () => {
-    toast.success("Budget exporté", {
-      description: "Le fichier a été téléchargé avec succès"
+    toast.success("Xuất ngân sách thành công", {
+      description: "Tệp đã được tải xuống thành công"
     });
   };
   
@@ -126,31 +126,31 @@ const BudgetPlanning = () => {
     <div className="space-y-6">
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-6">
         <div>
-          <h2 className="text-xl font-bold">Planification Budgétaire</h2>
+          <h2 className="text-xl font-bold">Lập kế hoạch ngân sách</h2>
           <p className="text-muted-foreground">
-            Gérez et suivez votre budget pour optimiser vos dépenses
+            Quản lý và theo dõi ngân sách để tối ưu hóa chi tiêu
           </p>
         </div>
         
         <div className="flex gap-2">
           <div className="flex items-center bg-muted rounded-md p-1">
-            <button 
+              <button 
               className={`px-3 py-1 rounded-sm ${selectedPeriod === 'annual' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
               onClick={() => setSelectedPeriod('annual')}
             >
-              Annuel
+              Hàng năm
             </button>
-            <button 
+              <button 
               className={`px-3 py-1 rounded-sm ${selectedPeriod === 'quarterly' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
               onClick={() => setSelectedPeriod('quarterly')}
             >
-              Trimestriel
+              Hàng quý
             </button>
-            <button 
+              <button 
               className={`px-3 py-1 rounded-sm ${selectedPeriod === 'monthly' ? 'bg-background shadow-sm' : 'hover:bg-muted/80'}`}
               onClick={() => setSelectedPeriod('monthly')}
             >
-              Mensuel
+              Hàng tháng
             </button>
           </div>
           
@@ -170,17 +170,17 @@ const BudgetPlanning = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Statut du budget</CardTitle>
+            <CardTitle>Trạng thái ngân sách</CardTitle>
             <CardDescription>
               {budgetStatus === 'under' ? 
-                'Vous êtes en dessous du budget prévu' : 
-                'Vous avez dépassé le budget prévu'}
+                'Bạn đang trong giới hạn ngân sách' : 
+                'Bạn đã vượt quá ngân sách'}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Progression</span>
+                <span className="text-sm text-muted-foreground">Tiến độ</span>
                 <span className="text-sm font-medium">{budgetProgress}%</span>
               </div>
               <Progress 
@@ -201,11 +201,11 @@ const BudgetPlanning = () => {
               
               <div className="pt-4 space-y-2">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Budget prévu:</span>
+                  <span className="text-muted-foreground">Ngân sách dự kiến:</span>
                   <span className="font-medium">{totalPlanned.toLocaleString()} €</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Dépensé:</span>
+                  <span className="text-muted-foreground">Đã chi:</span>
                   <span className="font-medium">{totalActual.toLocaleString()} €</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t">
@@ -225,9 +225,9 @@ const BudgetPlanning = () => {
         
         <Card className="md:col-span-2">
           <CardHeader className="pb-2">
-            <CardTitle>Répartition des dépenses</CardTitle>
+            <CardTitle>Phân bổ chi tiêu</CardTitle>
             <CardDescription>
-              Visualisation de la distribution budgétaire
+              Hiển thị phân bố ngân sách
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -261,16 +261,16 @@ const BudgetPlanning = () => {
       </div>
       
       <Card>
-        <CardHeader className="flex-row justify-between items-center">
+          <CardHeader className="flex-row justify-between items-center">
           <div>
-            <CardTitle>Catégories budgétaires</CardTitle>
+            <CardTitle>Danh mục ngân sách</CardTitle>
             <CardDescription>
-              Suivi détaillé par catégorie de dépense
+              Theo dõi chi tiết theo danh mục
             </CardDescription>
           </div>
           <Button size="sm" onClick={() => setShowAddDialog(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Ajouter
+            Thêm
           </Button>
         </CardHeader>
         <CardContent>
@@ -278,12 +278,12 @@ const BudgetPlanning = () => {
             <table className="w-full">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 px-4 font-medium">Catégorie</th>
-                  <th className="text-right py-3 px-4 font-medium">Budget prévu</th>
-                  <th className="text-right py-3 px-4 font-medium">Dépensé</th>
-                  <th className="text-right py-3 px-4 font-medium">Progression</th>
-                  <th className="text-right py-3 px-4 font-medium">Solde</th>
-                  <th className="text-right py-3 px-4 font-medium">Statut</th>
+                  <th className="text-left py-3 px-4 font-medium">Danh mục</th>
+                  <th className="text-right py-3 px-4 font-medium">Ngân sách dự kiến</th>
+                  <th className="text-right py-3 px-4 font-medium">Đã chi</th>
+                  <th className="text-right py-3 px-4 font-medium">Tiến độ</th>
+                  <th className="text-right py-3 px-4 font-medium">Số dư</th>
+                  <th className="text-right py-3 px-4 font-medium">Trạng thái</th>
                   <th className="py-3 px-4"></th>
                 </tr>
               </thead>
@@ -349,11 +349,11 @@ const BudgetPlanning = () => {
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={handleExportBudget}>
             <Download className="h-4 w-4 mr-2" />
-            Exporter
+            Xuất
           </Button>
           <Button onClick={handleSaveBudget}>
             <Save className="h-4 w-4 mr-2" />
-            Enregistrer
+            Lưu
           </Button>
         </CardFooter>
       </Card>
