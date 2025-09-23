@@ -21,7 +21,7 @@ const userSchema = z.object({
 type UserFormData = z.infer<typeof userSchema>;
 
 interface EditUserDialogProps {
-  open: boolean; // eslint-disable-line no-unused-vars
+  open: boolean;  
   onOpenChange: (open: boolean) => void;
   userId: string | null;
 }

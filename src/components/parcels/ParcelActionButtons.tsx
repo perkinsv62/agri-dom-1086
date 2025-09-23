@@ -38,7 +38,7 @@ interface ParcelActionButtonsProps {
   activeParcelAlerts: ParcelAlert[];
   weatherAlertsOpen: boolean;
   setWeatherAlertsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  getSeverityColor: (_severity: string) => string; // eslint-disable-line no-unused-vars
+  getSeverityColor: (_severity: string) => string;  
 }
 
 const ParcelActionButtons = ({

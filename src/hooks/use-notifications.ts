@@ -24,10 +24,13 @@ export const useNotifications = () => {
     try {
       const storedNotifications = localStorage.getItem(STORAGE_KEY);
       if (storedNotifications) {
-        const parsedNotifications = JSON.parse(storedNotifications).map((notification: any) => ({
-          ...notification,
-          date: new Date(notification.date)
-        }));
+        const parsedNotifications = JSON.parse(storedNotifications).map((notification: unknown) => {
+          const notificationObj = notification as Record<string, unknown>;
+          return {
+            ...notificationObj,
+            date: new Date(notificationObj.date as string)
+          } as Notification;
+        });
         
         setNotifications(parsedNotifications);
         setUnreadCount(parsedNotifications.filter((note: Notification) => !note.read).length);

@@ -38,7 +38,7 @@ export const ChartConfig = ({
   });
 
   const handleOptionChange = (key: string, value: unknown) => {
-    const newOptions = { ...currentOptions, [key]: value as any };
+    const newOptions = { ...currentOptions, [key]: value };
     setCurrentOptions(newOptions);
     if (onOptionsChange) {
       onOptionsChange(newOptions);

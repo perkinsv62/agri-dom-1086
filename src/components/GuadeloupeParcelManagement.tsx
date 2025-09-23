@@ -114,9 +114,9 @@ const ParcelCard = ({
   onEdit 
 }: { 
   parcel: ParcelData, 
-  // eslint-disable-next-line no-unused-vars
+   
   onSelect: (parcel: ParcelData) => void,
-  // eslint-disable-next-line no-unused-vars
+   
   onEdit: (parcel: ParcelData) => void
 }) => {
   const getStatusColor = (status: string) => {

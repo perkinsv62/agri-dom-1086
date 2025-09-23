@@ -22,6 +22,13 @@ export interface CostData {
   color: string;
 }
 
+export interface RevenueData {
+  month: string;
+  revenue: number;
+  expenses: number;
+  profit: number;
+}
+
 export interface EnvironmentalData {
   indicator: string;
   current: number;
@@ -39,12 +46,12 @@ interface StatisticsContextType {
   financialData: {
     profitabilityByParcel: FinancialData[];
     costAnalysis: CostData[];
-      revenueByMonth: unknown[];
+    revenueByMonth: RevenueData[];
   };
   setFinancialData: React.Dispatch<React.SetStateAction<{
     profitabilityByParcel: FinancialData[];
     costAnalysis: CostData[];
-    revenueByMonth: any[];
+    revenueByMonth: RevenueData[];
   }>>;
   
   // Dữ liệu môi trường

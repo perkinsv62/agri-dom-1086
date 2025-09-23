@@ -45,7 +45,7 @@ const PreviewPrintButton: React.FC<PreviewPrintButtonProps> = ({
     handlePrint,
     handleShowPreview,
     handleExportPDF
-  } = usePreviewActions({ data: data as any, moduleName, columns, title });
+  } = usePreviewActions({ data, moduleName, columns, title });
 
   const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === 'Enter' || e.key === ' ') {

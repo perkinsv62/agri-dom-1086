@@ -12,7 +12,7 @@ interface UseDataOperationsProps<T> {
   searchFields?: string[];
 }
 
-export function useDataOperations<T extends Record<string, any>>({
+export function useDataOperations<T extends Record<string, unknown>>({
   initialData = [], 
   idField = 'id', 
   dateField = 'date', 

@@ -13,7 +13,7 @@ interface InventoryAlert {
 
 interface InventoryAlertsProps {
   alerts: InventoryAlert[];
-  onQuantityChange: (id: number, field: string, value: any) => void;
+  onQuantityChange: (id: number, field: string, value: unknown) => void;
 }
 
 const InventoryAlerts: React.FC<InventoryAlertsProps> = ({ alerts, onQuantityChange }) => {

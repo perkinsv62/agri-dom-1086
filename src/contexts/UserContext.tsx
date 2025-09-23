@@ -153,7 +153,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const addUser = (userData: Omit<User, 'id' | 'createdAt'>) => {
     const newUser: User = {
       ...userData,
-      twoFactorEnabled: (userData as any)?.twoFactorEnabled ?? false,
+      twoFactorEnabled: userData.twoFactorEnabled ?? false,
       id: Date.now().toString(),
       createdAt: new Date().toISOString().split('T')[0]
     };

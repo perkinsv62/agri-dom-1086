@@ -19,7 +19,7 @@ interface CRMContextState {
 export const useCRMContext = (): CRMContextState => {
   const [lastSync, setLastSync] = useState<Date>(new Date());
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
-  const [moduleData, setModuleData] = useState<Record<string, any>>({
+  const [moduleData, setModuleData] = useState<Record<string, unknown>>({
     parcelles: {
       items: [
         { id: 1, nom: "Thửa Bắc", surface: 12.5, culture: "Mía", statut: "Đang trồng" },

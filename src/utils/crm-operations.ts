@@ -194,13 +194,13 @@ export const enhancedExport = async (
     
     switch (format) {
       case 'csv':
-        success = exportToCSV(data as unknown as any[], fileName);
+        success = exportToCSV(data, fileName);
         break;
       case 'excel':
-        success = exportToExcel(data as unknown as any[], fileName);
+        success = exportToExcel(data, fileName);
         break;
       case 'pdf':
-        success = await exportToPDF(data as unknown as any[], fileName, options as any);
+        success = await exportToPDF(data, fileName, options);
         break;
     }
     

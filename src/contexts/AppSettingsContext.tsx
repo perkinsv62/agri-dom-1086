@@ -33,7 +33,7 @@ interface AppSettingsProviderProps {
 export const AppSettingsProvider: React.FC<AppSettingsProviderProps> = ({ children }) => {
   const [settings, setSettings] = useState<AppSettings>(defaultSettings);
 
-  const updateSetting = (key: string, value: any) => {
+  const updateSetting = (key: string, value: unknown) => {
     // Prevent darkMode from being changed - keep it always false
     if (key === 'darkMode') return;
 
@@ -44,7 +44,7 @@ export const AppSettingsProvider: React.FC<AppSettingsProviderProps> = ({ childr
   };
 
   // Fix the updateNestedSetting function with proper typing
-  const updateNestedSetting = (section: string, key: string, value: any) => {
+  const updateNestedSetting = (section: string, key: string, value: unknown) => {
     setSettings((prevSettings) => {
       // Create a copy of the current settings
       const updatedSettings = { ...prevSettings };

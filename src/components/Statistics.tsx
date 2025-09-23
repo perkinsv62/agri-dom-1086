@@ -47,7 +47,7 @@ const Statistics = () => {
     }
   };
 
-  const handleFilterChange = (newPeriod: any, newCropFilter: string) => {
+  const handleFilterChange = (newPeriod: 'day' | 'week' | 'month' | 'year', newCropFilter: string) => {
     setPeriod(newPeriod);
     setCropFilter(newCropFilter);
     updateDataWithFilters(newPeriod, newCropFilter);

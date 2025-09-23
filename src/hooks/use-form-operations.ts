@@ -20,7 +20,7 @@ interface ValidationConfig {
   [key: string]: FieldValidation;
 }
 
-export const useFormOperations = <T extends Record<string, any>>(
+export const useFormOperations = <T extends Record<string, unknown>>(
   initialValues: T,
   validationConfig: ValidationConfig = {}
 ) => {
@@ -35,7 +35,7 @@ export const useFormOperations = <T extends Record<string, any>>(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value, type } = e.target;
-    let processedValue: any = value;
+    let processedValue: unknown = value;
     
     // Handle different input types
     if (type === 'number') {
@@ -58,7 +58,7 @@ export const useFormOperations = <T extends Record<string, any>>(
   }, [errors]);
   
   // Set a specific field value programmatically
-  const setFieldValue = useCallback((field: keyof T, value: any) => {
+  const setFieldValue = useCallback((field: keyof T, value: unknown) => {
     setValues(prev => ({ ...prev, [field]: value }));
     setIsDirty(true);
     
@@ -94,7 +94,7 @@ export const useFormOperations = <T extends Record<string, any>>(
   }, [validationConfig]);
   
   // Validate a single field
-  const validateField = (field: string, value: any, rules: FieldValidation): string | null => {
+  const validateField = (field: string, value: unknown, rules: FieldValidation): string | null => {
     if (rules.required && (!value && value !== false && value !== 0)) {
       return rules.errorMessage || `Trường này là bắt buộc`;
     }

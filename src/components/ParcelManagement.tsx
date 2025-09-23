@@ -122,11 +122,11 @@ const ParcelCard = ({
   onDelete
 }: { 
   parcel: ParcelData, 
-  // eslint-disable-next-line no-unused-vars
+   
   onSelect: (parcel: ParcelData) => void,
-  // eslint-disable-next-line no-unused-vars
+   
   onEdit: (parcel: ParcelData) => void,
-  // eslint-disable-next-line no-unused-vars
+   
   onDelete: (id: number) => void
 }) => {
   const getStatusColor = (status: string) => {

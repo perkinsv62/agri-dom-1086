@@ -9,8 +9,8 @@ interface CRMContextType {
   companyName: string;
   activeModules: string[];
   syncDataAcrossCRM: () => void;
-  updateModuleData: (moduleName: string, data: any) => void;
-  getModuleData: (moduleName: string) => any;
+  updateModuleData: (moduleName: string, data: unknown) => void;
+  getModuleData: (moduleName: string) => unknown;
   exportModuleData: (moduleName: string, format: 'csv' | 'excel' | 'pdf', customData?: unknown[]) => Promise<boolean>;
   importModuleData: (moduleName: string, file: File) => Promise<boolean>;
   printModuleData: (moduleName: string, options?: Record<string, unknown>) => Promise<boolean>;

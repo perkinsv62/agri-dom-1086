@@ -65,13 +65,13 @@ export const exportToPDF = async (data: Record<string, unknown>[], fileName: str
       // Create report layout
       const opt2 = options as Record<string, unknown>;
       const title = typeof opt2.title === 'string' ? opt2.title : fileName;
-      const cols = Array.isArray(opt2.columns) ? (opt2.columns as any[]) : [];
+      const cols = Array.isArray(opt2.columns) ? (opt2.columns as unknown[]) : [];
       htmlContent = createReportHTML(data, title, cols);
     } else {
       // Create standard table-based layout
       const opt3 = options as Record<string, unknown>;
       const title = typeof opt3.title === 'string' ? opt3.title : fileName;
-      const cols = Array.isArray(opt3.columns) ? (opt3.columns as any[]) : [];
+      const cols = Array.isArray(opt3.columns) ? (opt3.columns as unknown[]) : [];
       htmlContent = createTableBasedHTML(data, title, cols);
     }
     
